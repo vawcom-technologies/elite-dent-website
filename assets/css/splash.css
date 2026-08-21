@@ -1,0 +1,204 @@
+:root {
+  --navy: #1d3557;
+  --dental-blue: #4a90e2;
+  --surface: #e4ebf4;
+  --smile-x: 68%;
+  --smile-y: 48%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--surface);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+  background: #0f1c2e;
+}
+
+.splash.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Return visits / in-session Home clicks: never paint the splash */
+html.no-splash .splash {
+  display: none !important;
+}
+
+html.no-splash .home[hidden] {
+  display: block;
+}
+
+html.no-splash .home .nav,
+html.no-splash .home .hero__word,
+html.no-splash .home .hero__orb,
+html.no-splash .home .hero__figure,
+html.no-splash .home .hero__cta {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+html.no-splash .home .hero__orb {
+  transform: translate(-50%, 48%);
+}
+
+html.no-splash .home .hero__figure {
+  transform: translateY(0) scale(1);
+}
+
+/* Clip only — perspective on the child so 3D isn’t flattened */
+.splash__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.splash__camera {
+  width: 100%;
+  height: 100%;
+  perspective: 1600px;
+  perspective-origin: 50% 45%;
+  transform-style: preserve-3d;
+}
+
+.splash__stage {
+  position: absolute;
+  inset: -18%;
+  width: 136%;
+  height: 136%;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  transform-origin: var(--smile-x) var(--smile-y);
+  transform: rotateY(-42deg) rotateX(14deg) translateZ(180px) scale(1.65);
+  will-change: transform;
+  opacity: 0;
+}
+
+.splash.is-ready .splash__stage {
+  opacity: 1;
+  animation: paramount-orbit 4.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.splash__smile {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--smile-x) var(--smile-y);
+  backface-visibility: hidden;
+}
+
+.splash__logo {
+  position: relative;
+  z-index: 2;
+  width: min(620px, 94vw);
+  height: auto;
+  opacity: 0;
+  transform: scale(2.35) translateZ(80px);
+  filter: drop-shadow(0 20px 55px rgb(0 0 0 / 0.35));
+  will-change: transform, opacity;
+}
+
+.splash.is-ready .splash__logo {
+  animation: logo-settle 4.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes paramount-orbit {
+  0% {
+    transform: rotateY(-42deg) rotateX(14deg) translateZ(180px) scale(1.65);
+  }
+  100% {
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0) scale(1);
+  }
+}
+
+@keyframes logo-settle {
+  0% {
+    opacity: 0;
+    transform: scale(2.35) translateZ(80px);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+.splash__flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 48%,
+    #fff 0%,
+    rgb(255 255 255 / 0.9) 14%,
+    rgb(255 255 255 / 0.3) 38%,
+    transparent 68%
+  );
+  opacity: 0;
+}
+
+.splash.is-ready .splash__flash {
+  animation: flash 0.75s ease 3.6s forwards;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash.is-ready .splash__stage,
+  .splash.is-ready .splash__logo,
+  .splash.is-ready .splash__flash {
+    animation: none;
+  }
+
+  .splash.is-ready .splash__stage {
+    opacity: 1;
+    transform: none;
+  }
+
+  .splash.is-ready .splash__logo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .splash__flash {
+    opacity: 0;
+  }
+}

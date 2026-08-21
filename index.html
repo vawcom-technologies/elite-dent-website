@@ -2,11 +2,186 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=support/" />
-  <link rel="canonical" href="support/" />
-  <title>Elite Dent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1D3557" />
+  <title>EliteDent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Manrope:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/splash.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+  <script>
+    try {
+      if (sessionStorage.getItem("elitedent-splash")) {
+        document.documentElement.classList.add("no-splash");
+      } else {
+        for (const href of [
+          "assets/images/perfectsmile.jpg",
+          "assets/images/elitedentlogo.png",
+        ]) {
+          const link = document.createElement("link");
+          link.rel = "preload";
+          link.as = "image";
+          link.href = href;
+          link.fetchPriority = "high";
+          document.head.appendChild(link);
+        }
+      }
+    } catch (_) {}
+  </script>
 </head>
 <body>
-  <p><a href="support/">Elite Dent Support</a> · <a href="privacy/">Datenschutz</a> · <a href="impressum/">Impressum</a></p>
+  <main id="app" class="home" hidden>
+    <header class="nav">
+      <a class="nav__brand" href="/">
+        <img src="assets/images/elitedentlogo.png" alt="EliteDent" width="512" height="512" />
+      </a>
+      <nav class="nav__links" aria-label="Hauptnavigation">
+        <a href="/">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="nav__cta" href="#book">Book</a>
+    </header>
+
+    <section class="hero" aria-label="EliteDent">
+      <h1 class="hero__title">
+        <span class="hero__word hero__word--1">EliteDent</span>
+        <span class="hero__word hero__word--2">Confident Smile.</span>
+        <span class="hero__word hero__word--3">Expert Care.</span>
+      </h1>
+
+      <div class="hero__stage">
+        <div class="hero__orb" aria-hidden="true"></div>
+        <div class="hero__figure">
+          <img
+            src="assets/images/heroimg.png"
+            alt="Hands holding dental care products"
+            width="3408"
+            height="2434"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <a class="hero__cta" href="#book">Book a consultation</a>
+    </section>
+
+    <section id="services" class="services" aria-labelledby="services-heading">
+      <header class="services__intro">
+        <p class="services__eyebrow">What we offer</p>
+        <h2 id="services-heading">Services</h2>
+        <p>Short overviews of our core care. Open any card to read the full detail.</p>
+      </header>
+
+      <div class="services__grid">
+        <a class="service-card" href="services/#whitening" data-reveal style="--i: 0">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/perfectsmile.jpg" alt="" width="6000" height="4000" loading="lazy" />
+          </div>
+          <div class="service-card__body">
+            <h3>Teeth whitening</h3>
+            <p>Brighten your smile with controlled, enamel-safe professional whitening.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+
+        <a class="service-card" href="services/#aligners" data-reveal style="--i: 1">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/heroimg.png" alt="" width="3408" height="2434" loading="lazy" />
+          </div>
+          <div class="service-card__body">
+            <h3>Clear aligners</h3>
+            <p>Discreet trays that gently correct crowding and spacing over time.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+
+        <a class="service-card" href="services/#veneers" data-reveal style="--i: 2">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/herosmile.png" alt="" width="5376" height="3584" loading="lazy" />
+          </div>
+          <div class="service-card__body">
+            <h3>Veneers</h3>
+            <p>Refine shape and color with thin ceramics matched to your smile.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+
+        <a class="service-card" href="services/#implants" data-reveal style="--i: 3">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/perfectsmile2.jpg" alt="" width="6000" height="4000" loading="lazy" />
+          </div>
+          <div class="service-card__body">
+            <h3>Dental implants</h3>
+            <p>Replace missing teeth with a stable foundation and natural-looking crown.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+
+        <a class="service-card" href="services/#preventive" data-reveal style="--i: 4">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/perfectsmile.jpg" alt="" width="6000" height="4000" loading="lazy" style="object-position: 70% 45%" />
+          </div>
+          <div class="service-card__body">
+            <h3>Preventive care</h3>
+            <p>Check-ups and cleanings that keep teeth and gums healthy long-term.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+
+        <a class="service-card" href="services/#restorative" data-reveal style="--i: 5">
+          <div class="service-card__media" aria-hidden="true">
+            <img src="assets/images/herosmile.png" alt="" width="5376" height="3584" loading="lazy" style="object-position: 50% 55%" />
+          </div>
+          <div class="service-card__body">
+            <h3>Restorative dentistry</h3>
+            <p>Fillings, crowns, and repairs that restore comfort and function.</p>
+            <span class="service-card__more">Read more</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__brand">EliteDent</p>
+      </div>
+    </footer>
+  </main>
+
+  <div id="splash" class="splash" role="presentation">
+    <div class="splash__viewport">
+      <div class="splash__camera">
+        <div class="splash__stage">
+          <img
+            class="splash__smile"
+            src="assets/images/perfectsmile.jpg"
+            alt=""
+            width="6000"
+            height="4000"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <img
+            class="splash__logo"
+            src="assets/images/elitedentlogo.png"
+            alt="EliteDent"
+            width="512"
+            height="512"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="splash__flash" aria-hidden="true"></div>
+  </div>
+
+  <script src="assets/js/splash.js" defer></script>
+  <script src="assets/js/services.js" defer></script>
 </body>
 </html>
