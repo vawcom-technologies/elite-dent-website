@@ -57,21 +57,24 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 
 | Role | Family | CSS variable | Weights in use |
 | --- | --- | --- | --- |
-| Display | **Fraunces** (opsz) | `--font-display` | 560, 650, 700 |
-| UI / body | **Manrope** | `--font-ui` | 500, 600, 700 |
+| Display | **Nunito** | `--font-display` | 700, 800 |
+| UI / body | **Nunito** | `--font-ui` | 500, 600, 700 |
 
-**Fallbacks:** Fraunces → `"Times New Roman", serif` · Manrope → `system-ui, sans-serif`
+**Fallbacks:** Nunito → `system-ui, sans-serif`
 
-**Load:** Google Fonts in page `<head>` (Fraunces opsz + Manrope). Do not switch to Inter, Roboto, Arial, or system-only stacks for marketing pages.
+**Load:** Google Fonts in page `<head>` (Nunito 500–800). Do not switch to Inter, Roboto, Arial, or system-only stacks for marketing pages.
+
+The script wordmark in `elitedentlogo.png` is the brand face. Site type stays rounded sans (Nunito) so it does not compete with the calligraphy — never typeset “EliteDent” in a second display font.
 
 ### Type rules
 
-- Brand and hero titles: Fraunces, tight tracking (`letter-spacing: -0.02em` to `-0.035em`)
-- Nav / CTA labels: Manrope, uppercase, wide tracking (`~0.08em`–`0.14em`)
-- Body / ledes: Manrope, normal case, comfortable line-height (`~1.5`–`1.65`)
+- Hero taglines and section titles: Nunito extra-bold, slight negative tracking (`letter-spacing: -0.02em` to `-0.025em`)
+- Nav / CTA labels: Nunito, uppercase, wide tracking (`~0.08em`–`0.14em`)
+- Body / ledes: Nunito, normal case, comfortable line-height (`~1.5`–`1.65`)
 - No random italics for emphasis
 - No gradient fills on text
-- One clear hierarchy per section: eyebrow → title → short support → action
+- One clear hierarchy per section: title → short support → action
+- No numbered labels (01 / 02), no uppercase eyebrow chips above titles
 
 ---
 
@@ -80,8 +83,9 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 ### First viewport (hero)
 
 - One composition, not a dashboard
-- Brand is a hero-level signal (large title or logo), not only nav text
-- Typical budget: brand, one headline idea, one short support line (optional), one CTA, one dominant image
+- Brand is a hero-level signal (large title), not only nav text; logo stays in the nav
+- Typical budget: brand title, one headline idea, one CTA, one dominant figure on the orb
+- Soft clinic photo may sit **behind** the orb only when it reads clearly; otherwise keep the solid `--orb` circle and the hands/products figure
 - Full-bleed or section-dominant imagery; avoid inset media cards in the hero
 - No floating badges, promo chips, or sticker overlays on hero media
 
@@ -94,8 +98,15 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 
 ### Footer
 
-- Minimal: brand mark/name
+- Minimal: logo image (same mark as nav), links to Home / Services / About, and one Book CTA
 - Legal pages (`/support`, `/privacy`, `/impressum`) stay reachable by URL; do not promote them in the marketing footer unless product/legal requires it
+
+### Book (`/book/`)
+
+- Calm single-column form: full name, email, phone, optional message
+- No extra sections, stats, or marketing clutter — trust through clarity and restraint
+- **Book** / **Consult now** CTAs go to `/book/`
+- Submits to `POST /api/book` (Resend): German confirmation to the visitor (ref id + short details + company placeholders); notify `BOOKINGS_INBOX` (default `djanieverlan@gmail.com`)
 
 ---
 
@@ -104,34 +115,58 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 ### Navigation
 
 - Logo image left → always `/`
-- Center links (desktop): Home, Services, About
-- Right: Book (consultation)
+- Center links (desktop **and** mobile): Home, Services, About
+- Right: **Consult now** (navy button → `/book/`)
 - Sticky/static bar; no heavy chrome
+- Logo mark ~54px tall
+- **Home** → `/` · **Services** → `/services/` · **About** → `/about/`
+- Desktop: hover (or focus) **Services** to open a single-column panel of the six treatments; each tab deep-links to `/services/#<id>`
+- Mobile: no hover panel — **Services** goes to `/services/`
 
 ### Buttons / CTAs
 
 - Primary on light: navy text on white, or white text on navy
 - Accent links: `--dental-blue`, underline or weight — not pills for decoration
 - Prefer modest radius or square corners; avoid `rounded-full` pill clusters
+- Closing **cta-band**: full-bleed white, navy button, short Nunito heading
 
 ### Service cards (home)
 
-- Image behind, navy scrim (`rgb(29 53 87 / ~0.72)`), white type
-- Short description + “Read more”
-- Link to `/services/#<id>` so the services page opens that panel
+- **One service per row** — large banner blocks (photo + copy), easy to scan
+- Photo on the side, fully visible
+- Title + short description + “Read more”
+- Link to `/services/#<id>` so the services page scrolls to that article
 
-### Services page panels
+### Services page
 
-- Hairline list, expand/collapse one panel
-- Hash deep-links must keep working
+- Page hero with a clear treatment-focused title (not vague slogans)
+- Article-style sections: paragraphs + simple bullets + image, separated by hairlines
+- No dense bordered “box cards”; alternate image side on desktop
+- Hash deep-links (`#whitening`, `#aligners`, `#veneers`, `#implants`, `#preventive`, `#restorative`) scroll to that article
+
+### About page (`/about/`)
+
+- Same hero language as services (orb + word-rise)
+- Story (copy + image on orb), stats band (`--orb` wash), three values, cta-band
+- No fake headshots; clinic imagery from existing assets
+- Copy is **placeholder** until the practice supplies real bio, years, and stats
+
+### Home about preview
+
+- One short section after the service cards: headline, 1–2 sentences, link to `/about/`
+- Orb + crop of existing smile photography — same motif as the hero, smaller
 
 ---
 
 ## Motion
 
-- Prefer short, purposeful motion (fade / slight rise / one camera settle)
+- Marketing pages: EN / DE toggle in the nav uses **Google Website Translator** (auto-translates the live DOM; no hardcoded German marketing copy). Choice is stored in `localStorage` (`elitedent-ui-lang`).
 - Splash: once per browser session (`sessionStorage` key `elitedent-splash`); not on every Home/logo click
-- Splash smile + logo animations start together only after both assets are ready
+- Splash sequence: Paramount smile orbit (slower) → logo clipped to center implant → clip opens with bounce to full wordmark → flash → logo flies into nav
+- Use the **same** `elitedentlogo.png` via `clip-path` for the tooth phase so alignment stays exact (no separate tooth PNG required)
+- **Inner pages:** at most three moments — (1) page-hero orb grow + masked title words, (2) lede fade-up, (3) scroll reveal (`.reveal[data-reveal]`) with staggered card copy
+- Title words sit in an overflow-hidden `.line`; they rise with `title-rise` (same easing family as the home hero)
+- Accent title lines use `--dental-blue` (same as home “Expert Care.”)
 - Respect `prefers-reduced-motion: reduce` — settle to final state, skip ornament
 - Avoid motion for its own sake; 2–3 intentional moments max on a visually led surface
 
@@ -141,8 +176,8 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 
 | Asset | Path | Role |
 | --- | --- | --- |
-| Splash smile | `assets/images/perfectsmile.jpg` | Paramount-style splash only |
-| Logo | `assets/images/elitedentlogo.png` | Nav + splash wordmark |
+| Splash smile | `assets/images/perfectsmile.jpg` | Paramount-style splash background |
+| Logo | `assets/images/elitedentlogo.png` | Nav + splash wordmark (clip-path reveals implant first) |
 | Hero | `assets/images/heroimg.png` | Home hero figure |
 | Hero smile crop | `assets/images/herosmile.png` | Optional teeth-focused media |
 | Card / support media | `perfectsmile.jpg`, `perfectsmile2.jpg`, etc. | Service cards, not hero clutter |
@@ -166,11 +201,12 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 ## CSS checklist for new UI
 
 1. Use existing `:root` variables; add a token here if a new color is required
-2. Fraunces for display, Manrope for UI
-3. Navy / dental-blue / surface / muted / white only unless using the extended table
+2. Nunito for display and UI (script logo is the only calligraphic type)
+3. Navy / dental-blue / surface / muted / white / orb only unless using the extended table
 4. One section = one job
 5. Interactive cards only; no decorative card chrome
-6. Test reduced motion and mobile (~375px) as well as desktop
+6. Inner pages: `home.css` + page sheet (`services.css` or `about.css`); shared shell lives in `home.css`
+7. Test reduced motion and mobile (~375px) as well as desktop
 
 ---
 
@@ -178,6 +214,9 @@ Auth screens (when built): light cool wash `#EAF1F8` → surface → `#DCE6F2`; 
 
 | Path | Role |
 | --- | --- |
-| `/` | Splash (first session load) + home |
-| `/services/` | Full service detail |
+| `/` | Splash (first session load) + home (hero, service cards, about preview) |
+| `/services/` | Full service detail (hash panels) |
+| `/about/` | Practice story, stats, values |
 | `/support`, `/privacy`, `/impressum` | App Store / legal — keep content stable; own older visual chrome OK until unified |
+
+Marketing copy on `/`, `/services/`, and `/about/` is placeholder and should be replaced with the clinic’s real wording. Do not invent awards, staff names, or a street address until supplied.

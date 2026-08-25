@@ -1,7 +1,8 @@
 :root {
   --navy: #1d3557;
   --dental-blue: #4a90e2;
-  --surface: #e4ebf4;
+  --orb: #d9ebf9;
+  --surface: #f4f8fc;
   --smile-x: 68%;
   --smile-y: 48%;
 }
@@ -28,16 +29,15 @@ body {
   inset: 0;
   z-index: 1000;
   opacity: 1;
-  transition: opacity 0.35s ease;
-  background: #0f1c2e;
+  background: transparent;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .splash.is-done {
   opacity: 0;
-  pointer-events: none;
 }
 
-/* Return visits / in-session Home clicks: never paint the splash */
 html.no-splash .splash {
   display: none !important;
 }
@@ -57,14 +57,44 @@ html.no-splash .home .hero__cta {
 }
 
 html.no-splash .home .hero__orb {
-  transform: translate(-50%, 48%);
+  transform: translate(-50%, var(--orb-y, 48%));
 }
 
 html.no-splash .home .hero__figure {
   transform: translateY(0) scale(1);
 }
 
-/* Clip only — perspective on the child so 3D isn’t flattened */
+.nav__brand img {
+  transition:
+    opacity 0.15s ease,
+    transform 0.35s cubic-bezier(0.22, 1.4, 0.36, 1);
+  transform-origin: 50% 50%;
+}
+
+.home.is-splash-handoff .nav__brand img {
+  opacity: 0;
+  transform: scale(0.72);
+  transition: none;
+}
+
+.home.is-splash-landed .nav__brand img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.home.is-splash-handoff .nav,
+.home.is-splash-landed .nav {
+  opacity: 1;
+  transform: none;
+}
+
+.splash__field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
 .splash__viewport {
   position: absolute;
   inset: 0;
@@ -90,12 +120,11 @@ html.no-splash .home .hero__figure {
   transform-origin: var(--smile-x) var(--smile-y);
   transform: rotateY(-42deg) rotateX(14deg) translateZ(180px) scale(1.65);
   will-change: transform;
-  opacity: 0;
+  opacity: 1;
 }
 
 .splash.is-ready .splash__stage {
-  opacity: 1;
-  animation: paramount-orbit 4.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: paramount-orbit 2.1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
 .splash__smile {
@@ -109,19 +138,53 @@ html.no-splash .home .hero__figure {
   backface-visibility: hidden;
 }
 
-.splash__logo {
-  position: relative;
+/* Splash mark = shell + tooth only (no full logo plate / no black canvas) */
+.splash__brand {
+  position: absolute;
+  left: 50%;
+  top: 48%;
   z-index: 2;
-  width: min(620px, 94vw);
-  height: auto;
+  width: min(520px, 82vw);
+  aspect-ratio: 3248 / 1800;
+  translate: -50% -50%;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 14px 32px rgb(0 0 0 / 0.35));
+  will-change: transform, opacity, filter;
+  opacity: 1;
+}
+
+.splash__shell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   opacity: 0;
-  transform: scale(2.35) translateZ(80px);
-  filter: drop-shadow(0 20px 55px rgb(0 0 0 / 0.35));
+}
+
+.splash__tooth {
+  position: absolute;
+  left: 43.5%;
+  top: 17.5%;
+  z-index: 2;
+  display: block;
+  width: 14.5%;
+  height: 53%;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateX(28%) scale(2.6);
+  transform-origin: 50% 40%;
   will-change: transform, opacity;
 }
 
-.splash.is-ready .splash__logo {
-  animation: logo-settle 4.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+.splash.is-ready .splash__tooth {
+  animation: tooth-symbol 0.85s cubic-bezier(0.22, 0.7, 0.3, 1) 0.02s forwards;
+}
+
+.splash.is-ready .splash__shell {
+  animation: words-in 0.45s cubic-bezier(0.22, 0.8, 0.3, 1) 0.4s forwards;
 }
 
 @keyframes paramount-orbit {
@@ -133,72 +196,105 @@ html.no-splash .home .hero__figure {
   }
 }
 
-@keyframes logo-settle {
+@keyframes tooth-symbol {
   0% {
     opacity: 0;
-    transform: scale(2.35) translateZ(80px);
+    transform: translateX(28%) scale(2.55);
   }
-  12% {
+  22% {
     opacity: 1;
+    transform: translateX(26%) scale(2.45);
+  }
+  48% {
+    opacity: 1;
+    transform: translateX(24%) scale(2.35);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateZ(0);
+    transform: translateX(0) scale(1);
   }
 }
 
-.splash__flash {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at 50% 48%,
-    #fff 0%,
-    rgb(255 255 255 / 0.9) 14%,
-    rgb(255 255 255 / 0.3) 38%,
-    transparent 68%
-  );
-  opacity: 0;
-}
-
-.splash.is-ready .splash__flash {
-  animation: flash 0.75s ease 3.6s forwards;
-}
-
-@keyframes flash {
+@keyframes words-in {
   0% {
     opacity: 0;
-    transform: scale(0.4);
-  }
-  30% {
-    opacity: 1;
-    transform: scale(1.08);
+    transform: scale(0.97);
   }
   100% {
-    opacity: 0;
-    transform: scale(1.5);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .splash.is-ready .splash__stage,
-  .splash.is-ready .splash__logo,
-  .splash.is-ready .splash__flash {
+  .splash.is-ready .splash__tooth,
+  .splash.is-ready .splash__shell {
     animation: none;
   }
 
   .splash.is-ready .splash__stage {
+    transform: none;
+  }
+
+  .splash.is-ready .splash__shell,
+  .splash.is-ready .splash__tooth {
     opacity: 1;
     transform: none;
   }
 
-  .splash.is-ready .splash__logo {
-    opacity: 1;
-    transform: none;
+  .nav__brand img {
+    transition: none;
+  }
+}
+
+/* Mobile splash: show a full smile, not an extreme lip crop */
+@media (max-width: 767px) {
+  .splash__camera {
+    perspective: 900px;
+    perspective-origin: 50% 42%;
   }
 
-  .splash__flash {
-    opacity: 0;
+  .splash__stage {
+    inset: -2%;
+    width: 104%;
+    height: 104%;
+    transform-origin: 52% 40%;
+    transform: rotateY(-14deg) rotateX(4deg) translateZ(24px) scale(1.06);
+  }
+
+  .splash.is-ready .splash__stage {
+    animation-name: paramount-orbit-mobile;
+    animation-duration: 1.85s;
+  }
+
+  .splash__smile {
+    object-position: 52% 38%;
+  }
+
+  .splash__brand {
+    top: 50%;
+    width: min(360px, 86vw);
+    filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.28));
+  }
+
+  .splash.is-ready .splash__tooth {
+    animation-duration: 0.75s;
+  }
+}
+
+@keyframes paramount-orbit-mobile {
+  0% {
+    transform: rotateY(-14deg) rotateX(4deg) translateZ(24px) scale(1.06);
+  }
+  100% {
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0) scale(1);
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .splash.is-ready .splash__stage {
+    animation: none;
+    transform: none;
   }
 }

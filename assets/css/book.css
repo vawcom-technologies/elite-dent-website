@@ -1,0 +1,220 @@
+/* Book — simple, calm consultation request */
+
+.book-page {
+  display: grid;
+  place-items: start center;
+  min-height: calc(100vh - 11rem);
+  padding: 3rem clamp(1.25rem, 4vw, 3rem) 4.5rem;
+  background: var(--surface);
+}
+
+.book-panel {
+  width: min(100%, 28rem);
+}
+
+.book-panel__intro {
+  margin-bottom: 2rem;
+}
+
+.book-panel__intro h1 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.15rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.book-panel__intro p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.6;
+}
+
+.book-form {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.book-form__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.book-form__field label {
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.book-form__field input {
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgb(29 53 87 / 0.16);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--navy);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+  transition: border-color 0.2s ease;
+}
+
+.book-form__field textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgb(29 53 87 / 0.16);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--navy);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.45;
+  resize: vertical;
+  min-height: 6.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.book-form__optional {
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.book-form__field input::placeholder,
+.book-form__field textarea::placeholder {
+  color: rgb(107 124 147 / 0.65);
+}
+
+.book-form__field input:hover,
+.book-form__field textarea:hover {
+  border-color: rgb(29 53 87 / 0.28);
+}
+
+.book-form__field input:focus,
+.book-form__field textarea:focus {
+  outline: none;
+  border-color: var(--dental-blue);
+  box-shadow: 0 0 0 3px rgb(74 144 226 / 0.18);
+}
+
+.book-form__field input.is-invalid {
+  border-color: #c45c5c;
+}
+
+.book-form__field input.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgb(196 92 92 / 0.18);
+}
+
+.book-form__hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.book-form__error {
+  margin: 0;
+  color: #b33b3b;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.book-form__submit {
+  margin-top: 0.35rem;
+  padding: 0.95rem 1.25rem;
+  border: 0;
+  background: var(--navy);
+  color: var(--white);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.book-form__submit:hover,
+.book-form__submit:focus-visible {
+  background: #152841;
+  outline: none;
+}
+
+.book-form__submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.book-form__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+#form-error:not([hidden]) {
+  margin: 0;
+}
+
+.book-success {
+  padding: 0.25rem 0;
+}
+
+.book-success h2 {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+.book-success p {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.book-success__ref {
+  margin: -0.5rem 0 1.25rem !important;
+  color: var(--navy) !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.book-success__link {
+  color: var(--dental-blue);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(74 144 226 / 0.35);
+  padding-bottom: 2px;
+}
+
+.book-success__link:hover {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+}
+
+.book-form[hidden],
+.book-success[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-form__field input,
+  .book-form__field textarea,
+  .book-form__submit {
+    transition: none;
+  }
+}
