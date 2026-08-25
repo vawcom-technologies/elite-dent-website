@@ -1,174 +1,258 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1D3557" />
-  <title>Services — EliteDent</title>
+  <title>Services · EliteDent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://translate.google.com" />
+  <link rel="preconnect" href="https://translate.googleapis.com" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Manrope:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="../assets/css/home.css" />
-  <link rel="stylesheet" href="../assets/css/services.css" />
+  <link rel="stylesheet" href="../assets/css/home.css?v=32" />
+  <link rel="stylesheet" href="../assets/css/services.css?v=4" />
+  <script src="../assets/js/i18n.js"></script>
 </head>
 <body class="page page--services">
   <header class="nav nav--static">
-    <a class="nav__brand" href="../">
-      <img src="../assets/images/elitedentlogo.png" alt="EliteDent" width="512" height="512" />
+    <a class="nav__brand notranslate" href="../" translate="no">
+      <img src="../assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
     </a>
-    <nav class="nav__links" aria-label="Hauptnavigation">
-      <a href="../">Home</a>
-      <a href="./" aria-current="page">Services</a>
-      <a href="../#about">About</a>
-    </nav>
-    <a class="nav__cta" href="../#book">Book</a>
+    <button
+      type="button"
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label="Open menu"
+    >
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav__panel" id="nav-panel">
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="../">Home</a>
+        <div class="nav__services">
+          <div class="nav__services-head">
+            <a href="./" aria-current="page">Services</a>
+            <button
+              type="button"
+              class="nav__services-toggle"
+              aria-expanded="false"
+              aria-label="Show services"
+            ></button>
+          </div>
+          <div class="nav__tabs">
+            <a href="#whitening">Whitening</a>
+            <a href="#aligners">Aligners</a>
+            <a href="#veneers">Veneers</a>
+            <a href="#implants">Implants</a>
+            <a href="#preventive">Preventive</a>
+            <a href="#restorative">Restorative</a>
+          </div>
+        </div>
+        <a href="../about/">About</a>
+      </nav>
+      <div class="nav__end">
+        <div class="lang-toggle notranslate" role="group" aria-label="Language" translate="no">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        </div>
+        <a class="nav__cta" href="../book/">Consult now</a>
+      </div>
+    </div>
   </header>
 
+  <div id="google_translate_element" aria-hidden="true"></div>
+
   <main class="services-page">
-    <header class="services-page__intro">
-      <p class="services-page__eyebrow">Care</p>
-      <h1>Services</h1>
-      <p>Focused treatments for healthy teeth and lasting confidence. Choose a service to learn more.</p>
+    <header class="page-hero">
+      <div class="page-hero__orb" aria-hidden="true"></div>
+      <div class="page-hero__inner">
+        <h1 class="page-hero__title">
+          <span class="line"><span class="title-word" style="--i: 0">Treatments</span></span>
+          <span class="line"><span class="title-word title-word--accent" style="--i: 1">that fit your smile.</span></span>
+        </h1>
+        <p class="page-hero__lede">
+          From a brighter shade to a missing tooth, here is how each treatment works, what a visit includes, and when it makes sense.
+        </p>
+      </div>
     </header>
 
-    <div class="service-list">
-      <article id="whitening" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Teeth whitening</span>
-          <span class="service-panel__hint">Professional brightening</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              In-clinic whitening lifts stains from coffee, tea, and time while protecting enamel.
-              We match shade goals to your smile and guide you through aftercare so results stay even.
-            </p>
-            <ul>
-              <li>Shade assessment before treatment</li>
-              <li>Controlled, enamel-safe whitening gels</li>
-              <li>Clear home-care instructions</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+    <nav class="service-jump" aria-label="Jump to treatment">
+      <div class="service-jump__inner">
+        <a href="#whitening">Whitening</a>
+        <a href="#aligners">Aligners</a>
+        <a href="#veneers">Veneers</a>
+        <a href="#implants">Implants</a>
+        <a href="#preventive">Preventive</a>
+        <a href="#restorative">Restorative</a>
+      </div>
+    </nav>
+
+    <div class="service-feed">
+      <article id="whitening" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Teeth whitening</h2>
+          <p>
+            Coffee, tea, and years of wear leave stains that home kits rarely lift evenly. In-clinic whitening uses
+            controlled gels so enamel stays protected while shade improves in a single, supervised session.
+          </p>
+          <p>
+            We start with a shade check, agree on a realistic target, then guide you through aftercare so the result
+            stays even, not blotchy a week later.
+          </p>
+          <ul>
+            <li>Shade assessment before treatment</li>
+            <li>Enamel-safe professional whitening gels</li>
+            <li>Clear home-care instructions</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/perfectsmile.jpg" alt="A bright, even smile" width="6000" height="4000" loading="lazy" />
+        </figure>
       </article>
 
-      <article id="aligners" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Clear aligners</span>
-          <span class="service-panel__hint">Discreet tooth movement</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              Custom clear aligners gradually correct crowding and spacing with a plan you can see
-              before you start. Removable trays keep daily life simple—eat, brush, and smile as usual.
-            </p>
-            <ul>
-              <li>Digital scan and treatment preview</li>
-              <li>Series of precisely fitted trays</li>
-              <li>Progress checks at comfortable intervals</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+      <article id="aligners" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Clear aligners</h2>
+          <p>
+            Crowding and small gaps can be corrected without metal braces. A digital scan builds a step-by-step plan
+            you can preview before the first tray arrives.
+          </p>
+          <p>
+            Trays are removable for meals and brushing, so daily life stays simple. We check progress at comfortable
+            intervals and adjust the series if your bite needs a finer finish.
+          </p>
+          <ul>
+            <li>Digital scan and treatment preview</li>
+            <li>Series of precisely fitted trays</li>
+            <li>Progress checks along the way</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/heroimg.png" alt="Hands holding dental care products" width="3408" height="2434" loading="lazy" />
+        </figure>
       </article>
 
-      <article id="veneers" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Veneers</span>
-          <span class="service-panel__hint">Shape, color, and harmony</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              Thin ceramic veneers refine chips, gaps, and uneven color so your smile reads clean and
-              natural. We plan proportions carefully so the result fits your face—not a template.
-            </p>
-            <ul>
-              <li>Mock-up and shade matching</li>
-              <li>Conservative preparation where possible</li>
-              <li>Durable, stain-resistant ceramics</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+      <article id="veneers" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Veneers</h2>
+          <p>
+            Chips, gaps, and uneven color can make a smile feel unfinished. Thin ceramic veneers refine shape and shade
+            so the result looks like your teeth, only calmer and more even.
+          </p>
+          <p>
+            We plan proportions against your face, not a stock template. Where possible we keep preparation light, then
+            bond ceramics chosen for strength and stain resistance.
+          </p>
+          <ul>
+            <li>Mock-up and shade matching</li>
+            <li>Conservative preparation where possible</li>
+            <li>Durable, stain-resistant ceramics</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/teeth.jpg" alt="Close view of a natural-looking smile" width="2400" height="1600" loading="lazy" />
+        </figure>
       </article>
 
-      <article id="implants" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Dental implants</span>
-          <span class="service-panel__hint">Stable tooth replacement</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              Implants replace missing teeth with a titanium foundation and a custom crown that feels
-              secure when you chew and speak. Planning includes bone and bite so the restoration lasts.
-            </p>
-            <ul>
-              <li>Thorough clinical and imaging review</li>
-              <li>Precise placement and healing guidance</li>
-              <li>Crown designed to match neighboring teeth</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+      <article id="implants" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Dental implants</h2>
+          <p>
+            A missing tooth affects chewing, speech, and the teeth around it. An implant places a titanium foundation
+            in the bone, then a custom crown that feels secure when you eat and speak.
+          </p>
+          <p>
+            Planning covers bone, bite, and neighboring teeth so the restoration lasts. Healing guidance and a matched
+            crown finish the process.
+          </p>
+          <ul>
+            <li>Clinical and imaging review</li>
+            <li>Precise placement and healing guidance</li>
+            <li>Crown matched to neighboring teeth</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/perfectsmile2.jpg" alt="A full, confident smile" width="6000" height="4000" loading="lazy" />
+        </figure>
       </article>
 
-      <article id="preventive" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Preventive care</span>
-          <span class="service-panel__hint">Cleanings and check-ups</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              Regular exams and hygiene visits catch issues early and keep gums and enamel healthy.
-              We keep visits calm, clear, and practical—so prevention becomes a habit, not a chore.
-            </p>
-            <ul>
-              <li>Comprehensive oral examination</li>
-              <li>Professional cleaning and polish</li>
-              <li>Personalized home-care advice</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+      <article id="preventive" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Preventive care</h2>
+          <p>
+            Most problems are quieter, and cheaper, when caught early. Regular exams and cleanings keep gums and
+            enamel healthy and give us a clear baseline for your smile over time.
+          </p>
+          <p>
+            Visits stay calm and practical: a full check, a professional clean, and advice you can actually follow at home.
+          </p>
+          <ul>
+            <li>Comprehensive oral examination</li>
+            <li>Professional cleaning and polish</li>
+            <li>Personal home-care advice</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/perfectsmile.jpg" alt="Healthy teeth after routine care" width="6000" height="4000" loading="lazy" style="object-position: 70% 45%" />
+        </figure>
       </article>
 
-      <article id="restorative" class="service-panel">
-        <button type="button" class="service-panel__toggle" aria-expanded="false">
-          <span class="service-panel__title">Restorative dentistry</span>
-          <span class="service-panel__hint">Fillings, crowns, repairs</span>
-        </button>
-        <div class="service-panel__body">
-          <div class="service-panel__inner">
-            <p>
-              From discreet fillings to crowns that rebuild worn teeth, restorative care brings back
-              comfort and function. Materials and shade are chosen to blend with your natural smile.
-            </p>
-            <ul>
-              <li>Tooth-colored restorations</li>
-              <li>Crowns for strength and longevity</li>
-              <li>Repair of chips and worn edges</li>
-            </ul>
-            <a class="service-panel__cta" href="../#book">Book a consultation</a>
-          </div>
+      <article id="restorative" class="service-article reveal" data-reveal>
+        <div class="service-article__copy">
+          <h2>Restorative dentistry</h2>
+          <p>
+            Decay, chips, and worn edges take comfort and confidence with them. Tooth-colored fillings and crowns
+            rebuild strength so you can chew normally again.
+          </p>
+          <p>
+            Materials and shade are chosen to blend with your natural teeth. We repair what is needed and leave healthy
+            structure alone.
+          </p>
+          <ul>
+            <li>Tooth-colored restorations</li>
+            <li>Crowns for strength and longevity</li>
+            <li>Repair of chips and worn edges</li>
+          </ul>
+          <a class="service-article__cta" href="../book/">Book a consultation</a>
         </div>
+        <figure class="service-article__media">
+          <img src="../assets/images/teeth.jpg" alt="Restored teeth in a natural smile" width="2400" height="1600" loading="lazy" style="object-position: 50% 55%" />
+        </figure>
       </article>
     </div>
+
+    <section class="cta-band reveal" data-reveal>
+      <h2>Not sure where to start?</h2>
+      <p>Describe what bothers you (a stain, a gap, a sensitive tooth) and we will suggest the gentlest next step.</p>
+      <a class="cta-band__btn" href="../book/">Book a consultation</a>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <p class="site-footer__brand">EliteDent</p>
+      <a class="site-footer__brand" href="../">
+        <img src="../assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
+      </a>
+      <nav class="site-footer__nav" aria-label="Footer">
+        <a href="../">Home</a>
+        <a href="./">Services</a>
+        <a href="../about/">About</a>
+        <a class="site-footer__cta" href="../book/">Book a consultation</a>
+      </nav>
     </div>
   </footer>
 
-  <script src="../assets/js/services.js" defer></script>
+  <script src="../assets/js/nav.js" defer></script>
+  <script src="../assets/js/services.js?v=9" defer></script>
 </body>
 </html>

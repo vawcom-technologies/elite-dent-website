@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1D3557" />
+  <title>Book · EliteDent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://translate.google.com" />
+  <link rel="preconnect" href="https://translate.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../assets/css/home.css?v=32" />
+  <link rel="stylesheet" href="../assets/css/book.css" />
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body class="page page--book">
+  <header class="nav nav--static">
+    <a class="nav__brand notranslate" href="../" translate="no">
+      <img src="../assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
+    </a>
+    <button
+      type="button"
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label="Open menu"
+    >
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav__panel" id="nav-panel">
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="../">Home</a>
+        <div class="nav__services">
+          <div class="nav__services-head">
+            <a href="../services/">Services</a>
+            <button
+              type="button"
+              class="nav__services-toggle"
+              aria-expanded="false"
+              aria-label="Show services"
+            ></button>
+          </div>
+          <div class="nav__tabs">
+            <a href="../services/#whitening">Whitening</a>
+            <a href="../services/#aligners">Aligners</a>
+            <a href="../services/#veneers">Veneers</a>
+            <a href="../services/#implants">Implants</a>
+            <a href="../services/#preventive">Preventive</a>
+            <a href="../services/#restorative">Restorative</a>
+          </div>
+        </div>
+        <a href="../about/">About</a>
+      </nav>
+      <div class="nav__end">
+        <div class="lang-toggle notranslate" role="group" aria-label="Language" translate="no">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        </div>
+        <a class="nav__cta" href="./" aria-current="page">Consult now</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="google_translate_element" aria-hidden="true"></div>
+
+  <main class="book-page">
+    <div class="book-panel">
+      <header class="book-panel__intro">
+        <h1>Book a consultation</h1>
+        <p>
+          Share a few details and we will get back to you to find a calm time to talk: no pressure, no sales script.
+        </p>
+      </header>
+
+      <form class="book-form" id="book-form" novalidate>
+        <div class="book-form__field">
+          <label for="full-name">Full name</label>
+          <input
+            id="full-name"
+            name="fullName"
+            type="text"
+            autocomplete="name"
+            placeholder="Jane Mueller"
+            required
+            maxlength="120"
+          />
+        </div>
+
+        <div class="book-form__field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="jane@email.com"
+            required
+            maxlength="160"
+          />
+        </div>
+
+        <div class="book-form__field">
+          <label for="phone">Phone</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            placeholder="+49 170 1234567"
+            required
+            maxlength="30"
+          />
+          <p class="book-form__error" id="phone-error" hidden>Please enter a phone number.</p>
+        </div>
+
+        <div class="book-form__field">
+          <label for="message">Message <span class="book-form__optional">(optional)</span></label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            maxlength="1000"
+            placeholder="Anything we should know before we call?"
+          ></textarea>
+        </div>
+
+        <button class="book-form__submit" type="submit">Request consultation</button>
+        <p class="book-form__error" id="form-error" hidden></p>
+        <p class="book-form__note">We only use this to reply about your visit.</p>
+      </form>
+
+      <div class="book-success" id="book-success" hidden tabindex="-1">
+        <h2>Thank you. We received your request.</h2>
+        <p>We will contact you shortly to arrange a consultation.</p>
+        <p class="book-success__ref" id="book-ref" hidden></p>
+        <a class="book-success__link" href="../">Back to home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <a class="site-footer__brand" href="../">
+        <img src="../assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
+      </a>
+      <nav class="site-footer__nav" aria-label="Footer">
+        <a href="../">Home</a>
+        <a href="../services/">Services</a>
+        <a href="../about/">About</a>
+        <a class="site-footer__cta" href="./">Book a consultation</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav.js" defer></script>
+  <script src="../assets/js/services.js?v=9" defer></script>
+  <script src="../assets/js/book.js" defer></script>
+</body>
+</html>
