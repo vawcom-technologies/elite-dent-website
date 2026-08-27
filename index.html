@@ -13,7 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="assets/css/splash.css?v=23" />
+  <link rel="stylesheet" href="assets/css/splash.css?v=34" />
   <link rel="stylesheet" href="assets/css/home.css?v=32" />
   <script src="assets/js/i18n.js"></script>
   <script>
@@ -25,17 +25,17 @@
       if (sessionStorage.getItem("elitedent-splash")) {
         document.documentElement.classList.add("no-splash");
       } else {
-        for (const href of [
-          "assets/images/perfectsmile.jpg",
-          "assets/images/elitedentlogo.png",
-          "assets/images/elitedentlogo-shell.png",
-          "assets/images/singletooth.png",
+        for (const [as, href] of [
+          ["video", "assets/video/splash.webm?v=36"],
+          ["video", "assets/video/splash.mp4?v=36"],
+          ["image", "assets/images/elitedentlogo.png"],
         ]) {
           const link = document.createElement("link");
           link.rel = "preload";
-          link.as = "image";
+          link.as = as;
           link.href = href;
           link.fetchPriority = "high";
+          if (as === "video") link.type = href.endsWith(".webm") ? "video/webm" : "video/mp4";
           document.head.appendChild(link);
         }
       }
@@ -221,39 +221,25 @@
   </main>
 
   <div id="splash" class="splash" role="presentation">
-    <div class="splash__field" aria-hidden="true">
-      <div class="splash__viewport">
-        <div class="splash__camera">
-          <div class="splash__stage">
-            <img
-              class="splash__smile"
-              src="assets/images/perfectsmile.jpg"
-              alt=""
-              width="6000"
-              height="4000"
-              decoding="async"
-              fetchpriority="high"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="splash__brand" id="splash-brand">
+    <video
+      class="splash__film"
+      id="splash-film"
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="assets/video/splash.webm?v=36" type="video/webm" />
+      <source src="assets/video/splash.mp4?v=36" type="video/mp4" />
+    </video>
+    <!-- Full mark used only for the whoosh-to-nav handoff after the film -->
+    <div class="splash__brand" id="splash-brand" hidden>
       <img
-        class="splash__shell"
-        src="assets/images/elitedentlogo-shell.png?v=21"
+        class="splash__mark"
+        src="assets/images/elitedentlogo.png?v=21"
         alt=""
         width="3248"
         height="1800"
-        decoding="async"
-        fetchpriority="high"
-      />
-      <img
-        class="splash__tooth"
-        src="assets/images/singletooth.png?v=21"
-        alt=""
-        width="288"
-        height="568"
         decoding="async"
         fetchpriority="high"
       />
@@ -261,7 +247,7 @@
   </div>
 
   <script src="assets/js/nav.js" defer></script>
-  <script src="assets/js/splash.js?v=22" defer></script>
+  <script src="assets/js/splash.js?v=32" defer></script>
   <script src="assets/js/services.js?v=9" defer></script>
 </body>
 </html>

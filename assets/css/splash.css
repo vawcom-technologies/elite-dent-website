@@ -3,8 +3,6 @@
   --dental-blue: #4a90e2;
   --orb: #d9ebf9;
   --surface: #f4f8fc;
-  --smile-x: 68%;
-  --smile-y: 48%;
 }
 
 *,
@@ -29,7 +27,7 @@ body {
   inset: 0;
   z-index: 1000;
   opacity: 1;
-  background: transparent;
+  background: #4a90e2;
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
@@ -88,72 +86,7 @@ html.no-splash .home .hero__figure {
   transform: none;
 }
 
-.splash__field {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: transparent;
-}
-
-.splash__viewport {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.splash__camera {
-  width: 100%;
-  height: 100%;
-  perspective: 1600px;
-  perspective-origin: 50% 45%;
-  transform-style: preserve-3d;
-}
-
-.splash__stage {
-  position: absolute;
-  inset: -18%;
-  width: 136%;
-  height: 136%;
-  display: grid;
-  place-items: center;
-  transform-style: preserve-3d;
-  transform-origin: var(--smile-x) var(--smile-y);
-  transform: rotateY(-42deg) rotateX(14deg) translateZ(180px) scale(1.65);
-  will-change: transform;
-  opacity: 1;
-}
-
-.splash.is-ready .splash__stage {
-  animation: paramount-orbit 2.1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-}
-
-.splash__smile {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--smile-x) var(--smile-y);
-  backface-visibility: hidden;
-}
-
-/* Splash mark = shell + tooth only (no full logo plate / no black canvas) */
-.splash__brand {
-  position: absolute;
-  left: 50%;
-  top: 48%;
-  z-index: 2;
-  width: min(520px, 82vw);
-  aspect-ratio: 3248 / 1800;
-  translate: -50% -50%;
-  transform-origin: 50% 50%;
-  filter: drop-shadow(0 14px 32px rgb(0 0 0 / 0.35));
-  will-change: transform, opacity, filter;
-  opacity: 1;
-}
-
-.splash__shell {
+.splash__film {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -161,86 +94,63 @@ html.no-splash .home .hero__figure {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background: #4a90e2;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.splash.is-ready .splash__film {
+  opacity: 1;
+}
+
+.splash.is-handoff .splash__film {
   opacity: 0;
 }
 
-.splash__tooth {
+/* Whoosh mark — small centered lockup, matches final film framing */
+.splash__brand {
   position: absolute;
-  left: 43.5%;
-  top: 17.5%;
+  left: 50%;
+  top: 50%;
   z-index: 2;
-  display: block;
-  width: 14.5%;
-  height: 53%;
-  object-fit: contain;
+  width: min(380px, 42vw);
+  aspect-ratio: 3248 / 1800;
+  translate: -50% -50%;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 10px 28px rgb(29 53 87 / 0.12));
+  will-change: transform, opacity, filter;
   opacity: 0;
-  transform: translateX(28%) scale(2.6);
-  transform-origin: 50% 40%;
-  will-change: transform, opacity;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.splash.is-ready .splash__tooth {
-  animation: tooth-symbol 0.85s cubic-bezier(0.22, 0.7, 0.3, 1) 0.02s forwards;
+.splash__brand[hidden] {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.splash.is-ready .splash__shell {
-  animation: words-in 0.45s cubic-bezier(0.22, 0.8, 0.3, 1) 0.4s forwards;
+.splash.is-handoff .splash__brand {
+  opacity: 1;
+  visibility: visible;
 }
 
-@keyframes paramount-orbit {
-  0% {
-    transform: rotateY(-42deg) rotateX(14deg) translateZ(180px) scale(1.65);
-  }
-  100% {
-    transform: rotateY(0deg) rotateX(0deg) translateZ(0) scale(1);
-  }
-}
-
-@keyframes tooth-symbol {
-  0% {
-    opacity: 0;
-    transform: translateX(28%) scale(2.55);
-  }
-  22% {
-    opacity: 1;
-    transform: translateX(26%) scale(2.45);
-  }
-  48% {
-    opacity: 1;
-    transform: translateX(24%) scale(2.35);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-@keyframes words-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.splash__mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash.is-ready .splash__stage,
-  .splash.is-ready .splash__tooth,
-  .splash.is-ready .splash__shell {
-    animation: none;
+  .splash__film {
+    display: none;
   }
 
-  .splash.is-ready .splash__stage {
-    transform: none;
-  }
-
-  .splash.is-ready .splash__shell,
-  .splash.is-ready .splash__tooth {
+  .splash__brand,
+  .splash__brand[hidden] {
     opacity: 1;
-    transform: none;
+    visibility: visible;
   }
 
   .nav__brand img {
@@ -248,53 +158,8 @@ html.no-splash .home .hero__figure {
   }
 }
 
-/* Mobile splash: show a full smile, not an extreme lip crop */
 @media (max-width: 767px) {
-  .splash__camera {
-    perspective: 900px;
-    perspective-origin: 50% 42%;
-  }
-
-  .splash__stage {
-    inset: -2%;
-    width: 104%;
-    height: 104%;
-    transform-origin: 52% 40%;
-    transform: rotateY(-14deg) rotateX(4deg) translateZ(24px) scale(1.06);
-  }
-
-  .splash.is-ready .splash__stage {
-    animation-name: paramount-orbit-mobile;
-    animation-duration: 1.85s;
-  }
-
-  .splash__smile {
-    object-position: 52% 38%;
-  }
-
   .splash__brand {
-    top: 50%;
-    width: min(360px, 86vw);
-    filter: drop-shadow(0 10px 24px rgb(0 0 0 / 0.28));
-  }
-
-  .splash.is-ready .splash__tooth {
-    animation-duration: 0.75s;
-  }
-}
-
-@keyframes paramount-orbit-mobile {
-  0% {
-    transform: rotateY(-14deg) rotateX(4deg) translateZ(24px) scale(1.06);
-  }
-  100% {
-    transform: rotateY(0deg) rotateX(0deg) translateZ(0) scale(1);
-  }
-}
-
-@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
-  .splash.is-ready .splash__stage {
-    animation: none;
-    transform: none;
+    width: min(260px, 58vw);
   }
 }
