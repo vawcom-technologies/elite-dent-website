@@ -1,0 +1,1283 @@
+00:00.527  blend            | Read blend: "/Users/mishi/elite-dent-website/blender/elitedent_splash.blend"
+00:00.544  render           | Rendering animation (frames 1..142)
+00:00.545  render           | Rendering frame 1
+00:00.545  render           | Start rendering: Scene, ViewLayer
+00:00.545  render           | Engine: EEVEE
+00:01.087  render           | Fra: 1 | Rendering 1 / 64 samples
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+00:01.100  render           | Fra: 1 | Rendering 25 / 64 samples
+00:01.113  render           | Fra: 1 | Rendering 50 / 64 samples
+00:01.345  render           | Fra: 1 | Rendering 64 / 64 samples
+00:01.614  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0001.png'
+00:01.614  render           | Time: 00:01.06 (Saving: 00:00.24)
+00:01.614  render           | Rendering frame 2
+00:01.614  render           | Start rendering: Scene, ViewLayer
+00:01.614  render           | Engine: EEVEE
+00:01.620  render           | Fra: 2 | Rendering 1 / 64 samples
+00:01.623  render           | Fra: 2 | Rendering 25 / 64 samples
+00:01.627  render           | Fra: 2 | Rendering 50 / 64 samples
+00:01.861  render           | Fra: 2 | Rendering 64 / 64 samples
+00:01.987  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0002.png'
+00:01.987  render           | Time: 00:00.37 (Saving: 00:00.12)
+00:01.987  render           | Rendering frame 3
+00:01.988  render           | Start rendering: Scene, ViewLayer
+00:01.988  render           | Engine: EEVEE
+00:01.995  render           | Fra: 3 | Rendering 1 / 64 samples
+00:01.998  render           | Fra: 3 | Rendering 25 / 64 samples
+00:02.000  render           | Fra: 3 | Rendering 50 / 64 samples
+00:02.133  render           | Fra: 3 | Rendering 64 / 64 samples
+00:02.229  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0003.png'
+00:02.229  render           | Time: 00:00.24 (Saving: 00:00.09)
+00:02.229  render           | Rendering frame 4
+00:02.229  render           | Start rendering: Scene, ViewLayer
+00:02.229  render           | Engine: EEVEE
+00:02.233  render           | Fra: 4 | Rendering 1 / 64 samples
+00:02.235  render           | Fra: 4 | Rendering 25 / 64 samples
+00:02.237  render           | Fra: 4 | Rendering 50 / 64 samples
+00:02.372  render           | Fra: 4 | Rendering 64 / 64 samples
+00:02.477  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0004.png'
+00:02.477  render           | Time: 00:00.24 (Saving: 00:00.09)
+00:02.477  render           | Rendering frame 5
+00:02.477  render           | Start rendering: Scene, ViewLayer
+00:02.477  render           | Engine: EEVEE
+00:02.480  render           | Fra: 5 | Rendering 1 / 64 samples
+00:02.482  render           | Fra: 5 | Rendering 25 / 64 samples
+00:02.484  render           | Fra: 5 | Rendering 50 / 64 samples
+00:02.621  render           | Fra: 5 | Rendering 64 / 64 samples
+00:02.725  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0005.png'
+00:02.725  render           | Time: 00:00.24 (Saving: 00:00.09)
+00:02.725  render           | Rendering frame 6
+00:02.725  render           | Start rendering: Scene, ViewLayer
+00:02.725  render           | Engine: EEVEE
+00:02.728  render           | Fra: 6 | Rendering 1 / 64 samples
+00:02.730  render           | Fra: 6 | Rendering 25 / 64 samples
+00:02.732  render           | Fra: 6 | Rendering 50 / 64 samples
+00:02.874  render           | Fra: 6 | Rendering 64 / 64 samples
+00:03.095  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0006.png'
+00:03.095  render           | Time: 00:00.37 (Saving: 00:00.21)
+00:03.095  render           | Rendering frame 7
+00:03.095  render           | Start rendering: Scene, ViewLayer
+00:03.095  render           | Engine: EEVEE
+00:03.099  render           | Fra: 7 | Rendering 1 / 64 samples
+00:03.101  render           | Fra: 7 | Rendering 25 / 64 samples
+00:03.103  render           | Fra: 7 | Rendering 50 / 64 samples
+00:03.231  render           | Fra: 7 | Rendering 64 / 64 samples
+00:03.342  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0007.png'
+00:03.342  render           | Time: 00:00.24 (Saving: 00:00.10)
+00:03.342  render           | Rendering frame 8
+00:03.343  render           | Start rendering: Scene, ViewLayer
+00:03.343  render           | Engine: EEVEE
+00:03.346  render           | Fra: 8 | Rendering 1 / 64 samples
+00:03.348  render           | Fra: 8 | Rendering 25 / 64 samples
+00:03.350  render           | Fra: 8 | Rendering 50 / 64 samples
+00:03.479  render           | Fra: 8 | Rendering 64 / 64 samples
+00:03.627  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0008.png'
+00:03.627  render           | Time: 00:00.28 (Saving: 00:00.14)
+00:03.627  render           | Rendering frame 9
+00:03.628  render           | Start rendering: Scene, ViewLayer
+00:03.628  render           | Engine: EEVEE
+00:03.631  render           | Fra: 9 | Rendering 1 / 64 samples
+00:03.633  render           | Fra: 9 | Rendering 25 / 64 samples
+00:03.635  render           | Fra: 9 | Rendering 50 / 64 samples
+00:03.765  render           | Fra: 9 | Rendering 64 / 64 samples
+00:04.002  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0009.png'
+00:04.002  render           | Time: 00:00.37 (Saving: 00:00.23)
+00:04.002  render           | Rendering frame 10
+00:04.002  render           | Start rendering: Scene, ViewLayer
+00:04.002  render           | Engine: EEVEE
+00:04.005  render           | Fra: 10 | Rendering 1 / 64 samples
+00:04.007  render           | Fra: 10 | Rendering 25 / 64 samples
+00:04.009  render           | Fra: 10 | Rendering 50 / 64 samples
+00:04.135  render           | Fra: 10 | Rendering 64 / 64 samples
+00:04.230  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0010.png'
+00:04.230  render           | Time: 00:00.22 (Saving: 00:00.08)
+00:04.230  render           | Rendering frame 11
+00:04.230  render           | Start rendering: Scene, ViewLayer
+00:04.230  render           | Engine: EEVEE
+00:04.233  render           | Fra: 11 | Rendering 1 / 64 samples
+00:04.235  render           | Fra: 11 | Rendering 25 / 64 samples
+00:04.237  render           | Fra: 11 | Rendering 50 / 64 samples
+00:04.370  render           | Fra: 11 | Rendering 64 / 64 samples
+00:04.464  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0011.png'
+00:04.464  render           | Time: 00:00.23 (Saving: 00:00.08)
+00:04.464  render           | Rendering frame 12
+00:04.464  render           | Start rendering: Scene, ViewLayer
+00:04.464  render           | Engine: EEVEE
+00:07.820  render           | Fra: 12 | Rendering 1 / 64 samples
+00:08.072  render           | Fra: 12 | Rendering 25 / 64 samples
+00:08.329  render           | Fra: 12 | Rendering 50 / 64 samples
+00:08.471  render           | Fra: 12 | Rendering 64 / 64 samples
+00:08.639  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0012.png'
+00:08.639  render           | Time: 00:04.17 (Saving: 00:00.10)
+00:08.639  render           | Rendering frame 13
+00:08.640  render           | Start rendering: Scene, ViewLayer
+00:08.640  render           | Engine: EEVEE
+00:08.786  render           | Fra: 13 | Rendering 1 / 64 samples
+00:09.223  render           | Fra: 13 | Rendering 25 / 64 samples
+00:09.639  render           | Fra: 13 | Rendering 50 / 64 samples
+00:09.872  render           | Fra: 13 | Rendering 64 / 64 samples
+00:10.011  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0013.png'
+00:10.011  render           | Time: 00:01.37 (Saving: 00:00.10)
+00:10.011  render           | Rendering frame 14
+00:10.011  render           | Start rendering: Scene, ViewLayer
+00:10.011  render           | Engine: EEVEE
+00:10.137  render           | Fra: 14 | Rendering 1 / 64 samples
+00:10.627  render           | Fra: 14 | Rendering 25 / 64 samples
+00:11.034  render           | Fra: 14 | Rendering 50 / 64 samples
+00:11.264  render           | Fra: 14 | Rendering 64 / 64 samples
+00:11.396  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0014.png'
+00:11.396  render           | Time: 00:01.38 (Saving: 00:00.10)
+00:11.396  render           | Rendering frame 15
+00:11.396  render           | Start rendering: Scene, ViewLayer
+00:11.396  render           | Engine: EEVEE
+00:11.485  render           | Fra: 15 | Rendering 1 / 64 samples
+00:11.904  render           | Fra: 15 | Rendering 25 / 64 samples
+00:12.301  render           | Fra: 15 | Rendering 50 / 64 samples
+00:12.531  render           | Fra: 15 | Rendering 64 / 64 samples
+00:12.683  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0015.png'
+00:12.683  render           | Time: 00:01.28 (Saving: 00:00.10)
+00:12.683  render           | Rendering frame 16
+00:12.683  render           | Start rendering: Scene, ViewLayer
+00:12.683  render           | Engine: EEVEE
+00:12.832  render           | Fra: 16 | Rendering 1 / 64 samples
+00:13.239  render           | Fra: 16 | Rendering 25 / 64 samples
+00:13.652  render           | Fra: 16 | Rendering 50 / 64 samples
+00:13.890  render           | Fra: 16 | Rendering 64 / 64 samples
+00:14.048  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0016.png'
+00:14.048  render           | Time: 00:01.36 (Saving: 00:00.12)
+00:14.048  render           | Rendering frame 17
+00:14.049  render           | Start rendering: Scene, ViewLayer
+00:14.049  render           | Engine: EEVEE
+00:14.203  render           | Fra: 17 | Rendering 1 / 64 samples
+00:14.638  render           | Fra: 17 | Rendering 25 / 64 samples
+00:15.063  render           | Fra: 17 | Rendering 50 / 64 samples
+00:15.308  render           | Fra: 17 | Rendering 64 / 64 samples
+00:15.917  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0017.png'
+00:15.917  render           | Time: 00:01.86 (Saving: 00:00.56)
+00:15.917  render           | Rendering frame 18
+00:15.918  render           | Start rendering: Scene, ViewLayer
+00:15.918  render           | Engine: EEVEE
+00:16.381  render           | Fra: 18 | Rendering 1 / 64 samples
+00:16.805  render           | Fra: 18 | Rendering 25 / 64 samples
+00:17.230  render           | Fra: 18 | Rendering 50 / 64 samples
+00:17.462  render           | Fra: 18 | Rendering 64 / 64 samples
+00:17.632  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0018.png'
+00:17.632  render           | Time: 00:01.71 (Saving: 00:00.11)
+00:17.632  render           | Rendering frame 19
+00:17.633  render           | Start rendering: Scene, ViewLayer
+00:17.633  render           | Engine: EEVEE
+00:17.784  render           | Fra: 19 | Rendering 1 / 64 samples
+00:18.214  render           | Fra: 19 | Rendering 25 / 64 samples
+00:18.639  render           | Fra: 19 | Rendering 50 / 64 samples
+00:18.877  render           | Fra: 19 | Rendering 64 / 64 samples
+00:19.132  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0019.png'
+00:19.132  render           | Time: 00:01.49 (Saving: 00:00.20)
+00:19.132  render           | Rendering frame 20
+00:19.132  render           | Start rendering: Scene, ViewLayer
+00:19.132  render           | Engine: EEVEE
+00:19.605  render           | Fra: 20 | Rendering 1 / 64 samples
+00:20.055  render           | Fra: 20 | Rendering 25 / 64 samples
+00:20.470  render           | Fra: 20 | Rendering 50 / 64 samples
+00:20.711  render           | Fra: 20 | Rendering 64 / 64 samples
+00:20.973  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0020.png'
+00:20.974  render           | Time: 00:01.84 (Saving: 00:00.18)
+00:20.974  render           | Rendering frame 21
+00:20.983  render           | Start rendering: Scene, ViewLayer
+00:20.983  render           | Engine: EEVEE
+00:21.303  render           | Fra: 21 | Rendering 1 / 64 samples
+00:21.721  render           | Fra: 21 | Rendering 25 / 64 samples
+00:22.139  render           | Fra: 21 | Rendering 50 / 64 samples
+00:22.372  render           | Fra: 21 | Rendering 64 / 64 samples
+00:22.657  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0021.png'
+00:22.659  render           | Time: 00:01.67 (Saving: 00:00.19)
+00:22.660  render           | Rendering frame 22
+00:22.699  render           | Start rendering: Scene, ViewLayer
+00:22.699  render           | Engine: EEVEE
+00:23.570  render           | Fra: 22 | Rendering 1 / 64 samples
+00:23.839  render           | Fra: 22 | Rendering 25 / 64 samples
+00:24.167  render           | Fra: 22 | Rendering 50 / 64 samples
+00:24.388  render           | Fra: 22 | Rendering 64 / 64 samples
+00:24.674  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0022.png'
+00:24.676  render           | Time: 00:01.97 (Saving: 00:00.19)
+00:24.677  render           | Rendering frame 23
+00:24.702  render           | Start rendering: Scene, ViewLayer
+00:24.702  render           | Engine: EEVEE
+00:25.010  render           | Fra: 23 | Rendering 1 / 64 samples
+00:25.424  render           | Fra: 23 | Rendering 25 / 64 samples
+00:25.860  render           | Fra: 23 | Rendering 50 / 64 samples
+00:26.114  render           | Fra: 23 | Rendering 64 / 64 samples
+00:26.350  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0023.png'
+00:26.350  render           | Time: 00:01.64 (Saving: 00:00.17)
+00:26.350  render           | Rendering frame 24
+00:26.351  render           | Start rendering: Scene, ViewLayer
+00:26.351  render           | Engine: EEVEE
+00:26.633  render           | Fra: 24 | Rendering 1 / 64 samples
+00:27.081  render           | Fra: 24 | Rendering 25 / 64 samples
+00:27.518  render           | Fra: 24 | Rendering 50 / 64 samples
+00:27.762  render           | Fra: 24 | Rendering 64 / 64 samples
+00:28.029  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0024.png'
+00:28.035  render           | Time: 00:01.67 (Saving: 00:00.18)
+00:28.038  render           | Rendering frame 25
+00:28.057  render           | Start rendering: Scene, ViewLayer
+00:28.057  render           | Engine: EEVEE
+00:28.435  render           | Fra: 25 | Rendering 1 / 64 samples
+00:28.866  render           | Fra: 25 | Rendering 25 / 64 samples
+00:29.297  render           | Fra: 25 | Rendering 50 / 64 samples
+00:29.539  render           | Fra: 25 | Rendering 64 / 64 samples
+00:29.865  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0025.png'
+00:29.869  render           | Time: 00:01.80 (Saving: 00:00.24)
+00:29.871  render           | Rendering frame 26
+00:29.889  render           | Start rendering: Scene, ViewLayer
+00:29.889  render           | Engine: EEVEE
+00:30.769  render           | Fra: 26 | Rendering 1 / 64 samples
+00:31.212  render           | Fra: 26 | Rendering 25 / 64 samples
+00:31.632  render           | Fra: 26 | Rendering 50 / 64 samples
+00:31.867  render           | Fra: 26 | Rendering 64 / 64 samples
+00:32.091  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0026.png'
+00:32.092  render           | Time: 00:02.20 (Saving: 00:00.15)
+00:32.093  render           | Rendering frame 27
+00:32.105  render           | Start rendering: Scene, ViewLayer
+00:32.105  render           | Engine: EEVEE
+00:32.492  render           | Fra: 27 | Rendering 1 / 64 samples
+00:32.938  render           | Fra: 27 | Rendering 25 / 64 samples
+00:33.364  render           | Fra: 27 | Rendering 50 / 64 samples
+00:33.610  render           | Fra: 27 | Rendering 64 / 64 samples
+00:33.890  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0027.png'
+00:33.892  render           | Time: 00:01.78 (Saving: 00:00.20)
+00:33.893  render           | Rendering frame 28
+00:33.918  render           | Start rendering: Scene, ViewLayer
+00:33.918  render           | Engine: EEVEE
+00:34.673  render           | Fra: 28 | Rendering 1 / 64 samples
+00:35.121  render           | Fra: 28 | Rendering 25 / 64 samples
+00:35.538  render           | Fra: 28 | Rendering 50 / 64 samples
+00:35.772  render           | Fra: 28 | Rendering 64 / 64 samples
+00:36.130  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0028.png'
+00:36.131  render           | Time: 00:02.21 (Saving: 00:00.26)
+00:36.131  render           | Rendering frame 29
+00:36.144  render           | Start rendering: Scene, ViewLayer
+00:36.144  render           | Engine: EEVEE
+00:36.627  render           | Fra: 29 | Rendering 1 / 64 samples
+00:37.096  render           | Fra: 29 | Rendering 25 / 64 samples
+00:37.528  render           | Fra: 29 | Rendering 50 / 64 samples
+00:37.769  render           | Fra: 29 | Rendering 64 / 64 samples
+00:38.032  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0029.png'
+00:38.033  render           | Time: 00:01.88 (Saving: 00:00.22)
+00:38.034  render           | Rendering frame 30
+00:38.062  render           | Start rendering: Scene, ViewLayer
+00:38.062  render           | Engine: EEVEE
+00:38.634  render           | Fra: 30 | Rendering 1 / 64 samples
+00:39.081  render           | Fra: 30 | Rendering 25 / 64 samples
+00:39.504  render           | Fra: 30 | Rendering 50 / 64 samples
+00:39.747  render           | Fra: 30 | Rendering 64 / 64 samples
+00:40.039  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0030.png'
+00:40.040  render           | Time: 00:01.97 (Saving: 00:00.22)
+00:40.041  render           | Rendering frame 31
+00:40.056  render           | Start rendering: Scene, ViewLayer
+00:40.056  render           | Engine: EEVEE
+00:40.291  render           | Fra: 31 | Rendering 1 / 64 samples
+00:40.865  render           | Fra: 31 | Rendering 25 / 64 samples
+00:41.447  render           | Fra: 31 | Rendering 50 / 64 samples
+00:41.767  render           | Fra: 31 | Rendering 64 / 64 samples
+00:42.020  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0031.png'
+00:42.022  render           | Time: 00:01.96 (Saving: 00:00.19)
+00:42.023  render           | Rendering frame 32
+00:42.064  render           | Start rendering: Scene, ViewLayer
+00:42.064  render           | Engine: EEVEE
+00:42.464  render           | Fra: 32 | Rendering 1 / 64 samples
+00:42.933  render           | Fra: 32 | Rendering 25 / 64 samples
+00:43.421  render           | Fra: 32 | Rendering 50 / 64 samples
+00:43.696  render           | Fra: 32 | Rendering 64 / 64 samples
+00:43.858  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0032.png'
+00:43.858  render           | Time: 00:01.79 (Saving: 00:00.12)
+00:43.858  render           | Rendering frame 33
+00:43.858  render           | Start rendering: Scene, ViewLayer
+00:43.858  render           | Engine: EEVEE
+00:44.114  render           | Fra: 33 | Rendering 1 / 64 samples
+00:44.615  render           | Fra: 33 | Rendering 25 / 64 samples
+00:45.116  render           | Fra: 33 | Rendering 50 / 64 samples
+00:45.402  render           | Fra: 33 | Rendering 64 / 64 samples
+00:45.715  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0033.png'
+00:45.717  render           | Time: 00:01.85 (Saving: 00:00.22)
+00:45.719  render           | Rendering frame 34
+00:45.738  render           | Start rendering: Scene, ViewLayer
+00:45.738  render           | Engine: EEVEE
+00:46.607  render           | Fra: 34 | Rendering 1 / 64 samples
+00:47.105  render           | Fra: 34 | Rendering 25 / 64 samples
+00:47.603  render           | Fra: 34 | Rendering 50 / 64 samples
+00:47.887  render           | Fra: 34 | Rendering 64 / 64 samples
+00:48.130  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0034.png'
+00:48.130  render           | Time: 00:02.39 (Saving: 00:00.17)
+00:48.130  render           | Rendering frame 35
+00:48.151  render           | Start rendering: Scene, ViewLayer
+00:48.151  render           | Engine: EEVEE
+00:48.543  render           | Fra: 35 | Rendering 1 / 64 samples
+00:48.992  render           | Fra: 35 | Rendering 25 / 64 samples
+00:49.436  render           | Fra: 35 | Rendering 50 / 64 samples
+00:49.685  render           | Fra: 35 | Rendering 64 / 64 samples
+00:49.848  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0035.png'
+00:49.848  render           | Time: 00:01.69 (Saving: 00:00.12)
+00:49.848  render           | Rendering frame 36
+00:49.849  render           | Start rendering: Scene, ViewLayer
+00:49.849  render           | Engine: EEVEE
+00:50.034  render           | Fra: 36 | Rendering 1 / 64 samples
+00:50.510  render           | Fra: 36 | Rendering 25 / 64 samples
+00:50.955  render           | Fra: 36 | Rendering 50 / 64 samples
+00:51.231  render           | Fra: 36 | Rendering 64 / 64 samples
+00:51.468  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0036.png'
+00:51.468  render           | Time: 00:01.61 (Saving: 00:00.15)
+00:51.468  render           | Rendering frame 37
+00:51.470  render           | Start rendering: Scene, ViewLayer
+00:51.470  render           | Engine: EEVEE
+00:51.729  render           | Fra: 37 | Rendering 1 / 64 samples
+00:52.209  render           | Fra: 37 | Rendering 25 / 64 samples
+00:52.699  render           | Fra: 37 | Rendering 50 / 64 samples
+00:52.980  render           | Fra: 37 | Rendering 64 / 64 samples
+00:53.232  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0037.png'
+00:53.233  render           | Time: 00:01.76 (Saving: 00:00.18)
+00:53.234  render           | Rendering frame 38
+00:53.248  render           | Start rendering: Scene, ViewLayer
+00:53.248  render           | Engine: EEVEE
+00:53.878  render           | Fra: 38 | Rendering 1 / 64 samples
+00:54.371  render           | Fra: 38 | Rendering 25 / 64 samples
+00:54.853  render           | Fra: 38 | Rendering 50 / 64 samples
+00:55.119  render           | Fra: 38 | Rendering 64 / 64 samples
+00:55.430  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0038.png'
+00:55.431  render           | Time: 00:02.18 (Saving: 00:00.24)
+00:55.431  render           | Rendering frame 39
+00:55.445  render           | Start rendering: Scene, ViewLayer
+00:55.445  render           | Engine: EEVEE
+00:55.939  render           | Fra: 39 | Rendering 1 / 64 samples
+00:56.551  render           | Fra: 39 | Rendering 25 / 64 samples
+00:57.177  render           | Fra: 39 | Rendering 50 / 64 samples
+00:57.517  render           | Fra: 39 | Rendering 64 / 64 samples
+00:57.802  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0039.png'
+00:57.803  render           | Time: 00:02.35 (Saving: 00:00.21)
+00:57.804  render           | Rendering frame 40
+00:57.814  render           | Start rendering: Scene, ViewLayer
+00:57.814  render           | Engine: EEVEE
+00:58.422  render           | Fra: 40 | Rendering 1 / 64 samples
+00:59.039  render           | Fra: 40 | Rendering 25 / 64 samples
+00:59.719  render           | Fra: 40 | Rendering 50 / 64 samples
+01:00.101  render           | Fra: 40 | Rendering 64 / 64 samples
+01:00.503  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0040.png'
+01:00.504  render           | Time: 00:02.68 (Saving: 00:00.29)
+01:00.504  render           | Rendering frame 41
+01:00.525  render           | Start rendering: Scene, ViewLayer
+01:00.525  render           | Engine: EEVEE
+01:01.436  render           | Fra: 41 | Rendering 1 / 64 samples
+01:02.535  render           | Fra: 41 | Rendering 25 / 64 samples
+01:03.623  render           | Fra: 41 | Rendering 50 / 64 samples
+01:04.232  render           | Fra: 41 | Rendering 64 / 64 samples
+01:04.577  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0041.png'
+01:04.579  render           | Time: 00:04.05 (Saving: 00:00.24)
+01:04.580  render           | Rendering frame 42
+01:04.596  render           | Start rendering: Scene, ViewLayer
+01:04.596  render           | Engine: EEVEE
+01:05.729  render           | Fra: 42 | Rendering 1 / 64 samples
+01:06.720  render           | Fra: 42 | Rendering 25 / 64 samples
+01:07.746  render           | Fra: 42 | Rendering 50 / 64 samples
+01:08.331  render           | Fra: 42 | Rendering 64 / 64 samples
+01:08.637  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0042.png'
+01:08.638  render           | Time: 00:04.04 (Saving: 00:00.18)
+01:08.638  render           | Rendering frame 43
+01:08.657  render           | Start rendering: Scene, ViewLayer
+01:08.657  render           | Engine: EEVEE
+01:09.290  render           | Fra: 43 | Rendering 1 / 64 samples
+01:10.304  render           | Fra: 43 | Rendering 25 / 64 samples
+01:11.386  render           | Fra: 43 | Rendering 50 / 64 samples
+01:11.954  render           | Fra: 43 | Rendering 64 / 64 samples
+01:12.605  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0043.png'
+01:12.605  render           | Time: 00:03.94 (Saving: 00:00.29)
+01:12.605  render           | Rendering frame 44
+01:12.625  render           | Start rendering: Scene, ViewLayer
+01:12.625  render           | Engine: EEVEE
+01:13.263  render           | Fra: 44 | Rendering 1 / 64 samples
+01:14.177  render           | Fra: 44 | Rendering 25 / 64 samples
+01:15.111  render           | Fra: 44 | Rendering 50 / 64 samples
+01:15.662  render           | Fra: 44 | Rendering 64 / 64 samples
+01:16.201  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0044.png'
+01:16.203  render           | Time: 00:03.57 (Saving: 00:00.34)
+01:16.204  render           | Rendering frame 45
+01:16.268  render           | Start rendering: Scene, ViewLayer
+01:16.268  render           | Engine: EEVEE
+01:17.270  render           | Fra: 45 | Rendering 1 / 64 samples
+01:18.227  render           | Fra: 45 | Rendering 25 / 64 samples
+01:19.205  render           | Fra: 45 | Rendering 50 / 64 samples
+01:19.747  render           | Fra: 45 | Rendering 64 / 64 samples
+01:20.191  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0045.png'
+01:20.197  render           | Time: 00:03.92 (Saving: 00:00.31)
+01:20.202  render           | Rendering frame 46
+01:20.265  render           | Start rendering: Scene, ViewLayer
+01:20.265  render           | Engine: EEVEE
+01:20.912  render           | Fra: 46 | Rendering 1 / 64 samples
+01:21.793  render           | Fra: 46 | Rendering 25 / 64 samples
+01:22.711  render           | Fra: 46 | Rendering 50 / 64 samples
+01:23.230  render           | Fra: 46 | Rendering 64 / 64 samples
+01:23.723  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0046.png'
+01:23.728  render           | Time: 00:03.45 (Saving: 00:00.35)
+01:23.731  render           | Rendering frame 47
+01:23.858  render           | Start rendering: Scene, ViewLayer
+01:23.858  render           | Engine: EEVEE
+01:24.758  render           | Fra: 47 | Rendering 1 / 64 samples
+01:25.949  render           | Fra: 47 | Rendering 25 / 64 samples
+01:27.040  render           | Fra: 47 | Rendering 50 / 64 samples
+01:27.651  render           | Fra: 47 | Rendering 64 / 64 samples
+01:28.182  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0047.png'
+01:28.186  render           | Time: 00:04.32 (Saving: 00:00.39)
+01:28.190  render           | Rendering frame 48
+01:28.249  render           | Start rendering: Scene, ViewLayer
+01:28.249  render           | Engine: EEVEE
+01:28.849  render           | Fra: 48 | Rendering 1 / 64 samples
+01:29.864  render           | Fra: 48 | Rendering 25 / 64 samples
+01:30.913  render           | Fra: 48 | Rendering 50 / 64 samples
+01:31.503  render           | Fra: 48 | Rendering 64 / 64 samples
+01:31.882  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0048.png'
+01:31.884  render           | Time: 00:03.63 (Saving: 00:00.26)
+01:31.885  render           | Rendering frame 49
+01:31.909  render           | Start rendering: Scene, ViewLayer
+01:31.909  render           | Engine: EEVEE
+01:34.379  render           | Fra: 49 | Rendering 1 / 64 samples
+01:35.203  render           | Fra: 49 | Rendering 25 / 64 samples
+01:35.995  render           | Fra: 49 | Rendering 50 / 64 samples
+01:36.433  render           | Fra: 49 | Rendering 64 / 64 samples
+01:36.892  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0049.png'
+01:36.894  render           | Time: 00:04.98 (Saving: 00:00.19)
+01:36.895  render           | Rendering frame 50
+01:36.920  render           | Start rendering: Scene, ViewLayer
+01:36.920  render           | Engine: EEVEE
+01:37.996  render           | Fra: 50 | Rendering 1 / 64 samples
+01:38.865  render           | Fra: 50 | Rendering 25 / 64 samples
+01:39.760  render           | Fra: 50 | Rendering 50 / 64 samples
+01:40.246  render           | Fra: 50 | Rendering 64 / 64 samples
+01:40.479  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0050.png'
+01:40.480  render           | Time: 00:03.55 (Saving: 00:00.15)
+01:40.481  render           | Rendering frame 51
+01:40.496  render           | Start rendering: Scene, ViewLayer
+01:40.496  render           | Engine: EEVEE
+01:40.855  render           | Fra: 51 | Rendering 1 / 64 samples
+01:41.648  render           | Fra: 51 | Rendering 25 / 64 samples
+01:42.465  render           | Fra: 51 | Rendering 50 / 64 samples
+01:42.914  render           | Fra: 51 | Rendering 64 / 64 samples
+01:43.208  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0051.png'
+01:43.209  render           | Time: 00:02.71 (Saving: 00:00.22)
+01:43.209  render           | Rendering frame 52
+01:43.245  render           | Start rendering: Scene, ViewLayer
+01:43.245  render           | Engine: EEVEE
+01:43.749  render           | Fra: 52 | Rendering 1 / 64 samples
+01:44.516  render           | Fra: 52 | Rendering 25 / 64 samples
+01:45.299  render           | Fra: 52 | Rendering 50 / 64 samples
+01:45.737  render           | Fra: 52 | Rendering 64 / 64 samples
+01:46.099  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0052.png'
+01:46.101  render           | Time: 00:02.85 (Saving: 00:00.27)
+01:46.103  render           | Rendering frame 53
+01:46.129  render           | Start rendering: Scene, ViewLayer
+01:46.129  render           | Engine: EEVEE
+01:46.536  render           | Fra: 53 | Rendering 1 / 64 samples
+01:47.269  render           | Fra: 53 | Rendering 25 / 64 samples
+01:48.053  render           | Fra: 53 | Rendering 50 / 64 samples
+01:48.501  render           | Fra: 53 | Rendering 64 / 64 samples
+01:48.789  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0053.png'
+01:48.790  render           | Time: 00:02.65 (Saving: 00:00.20)
+01:48.790  render           | Rendering frame 54
+01:48.814  render           | Start rendering: Scene, ViewLayer
+01:48.814  render           | Engine: EEVEE
+01:49.262  render           | Fra: 54 | Rendering 1 / 64 samples
+01:50.011  render           | Fra: 54 | Rendering 25 / 64 samples
+01:50.783  render           | Fra: 54 | Rendering 50 / 64 samples
+01:51.215  render           | Fra: 54 | Rendering 64 / 64 samples
+01:51.382  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0054.png'
+01:51.383  render           | Time: 00:02.56 (Saving: 00:00.12)
+01:51.383  render           | Rendering frame 55
+01:51.408  render           | Start rendering: Scene, ViewLayer
+01:51.408  render           | Engine: EEVEE
+01:51.821  render           | Fra: 55 | Rendering 1 / 64 samples
+01:52.620  render           | Fra: 55 | Rendering 25 / 64 samples
+01:53.430  render           | Fra: 55 | Rendering 50 / 64 samples
+01:53.885  render           | Fra: 55 | Rendering 64 / 64 samples
+01:54.265  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0055.png'
+01:54.267  render           | Time: 00:02.85 (Saving: 00:00.29)
+01:54.268  render           | Rendering frame 56
+01:54.304  render           | Start rendering: Scene, ViewLayer
+01:54.304  render           | Engine: EEVEE
+01:54.756  render           | Fra: 56 | Rendering 1 / 64 samples
+01:55.591  render           | Fra: 56 | Rendering 25 / 64 samples
+01:56.454  render           | Fra: 56 | Rendering 50 / 64 samples
+01:56.922  render           | Fra: 56 | Rendering 64 / 64 samples
+01:57.315  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0056.png'
+01:57.316  render           | Time: 00:03.01 (Saving: 00:00.31)
+01:57.319  render           | Rendering frame 57
+01:57.346  render           | Start rendering: Scene, ViewLayer
+01:57.346  render           | Engine: EEVEE
+01:57.918  render           | Fra: 57 | Rendering 1 / 64 samples
+01:58.789  render           | Fra: 57 | Rendering 25 / 64 samples
+01:59.664  render           | Fra: 57 | Rendering 50 / 64 samples
+02:00.165  render           | Fra: 57 | Rendering 64 / 64 samples
+02:00.487  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0057.png'
+02:00.488  render           | Time: 00:03.14 (Saving: 00:00.21)
+02:00.489  render           | Rendering frame 58
+02:00.509  render           | Start rendering: Scene, ViewLayer
+02:00.509  render           | Engine: EEVEE
+02:00.937  render           | Fra: 58 | Rendering 1 / 64 samples
+02:01.742  render           | Fra: 58 | Rendering 25 / 64 samples
+02:02.604  render           | Fra: 58 | Rendering 50 / 64 samples
+02:03.070  render           | Fra: 58 | Rendering 64 / 64 samples
+02:03.383  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0058.png'
+02:03.385  render           | Time: 00:02.87 (Saving: 00:00.23)
+02:03.386  render           | Rendering frame 59
+02:03.410  render           | Start rendering: Scene, ViewLayer
+02:03.410  render           | Engine: EEVEE
+02:03.878  render           | Fra: 59 | Rendering 1 / 64 samples
+02:04.615  render           | Fra: 59 | Rendering 25 / 64 samples
+02:05.370  render           | Fra: 59 | Rendering 50 / 64 samples
+02:05.777  render           | Fra: 59 | Rendering 64 / 64 samples
+02:06.087  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0059.png'
+02:06.088  render           | Time: 00:02.67 (Saving: 00:00.22)
+02:06.088  render           | Rendering frame 60
+02:06.102  render           | Start rendering: Scene, ViewLayer
+02:06.102  render           | Engine: EEVEE
+02:06.541  render           | Fra: 60 | Rendering 1 / 64 samples
+02:07.206  render           | Fra: 60 | Rendering 25 / 64 samples
+02:07.913  render           | Fra: 60 | Rendering 50 / 64 samples
+02:08.312  render           | Fra: 60 | Rendering 64 / 64 samples
+02:08.592  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0060.png'
+02:08.594  render           | Time: 00:02.49 (Saving: 00:00.19)
+02:08.595  render           | Rendering frame 61
+02:08.613  render           | Start rendering: Scene, ViewLayer
+02:08.613  render           | Engine: EEVEE
+02:09.160  render           | Fra: 61 | Rendering 1 / 64 samples
+02:09.920  render           | Fra: 61 | Rendering 25 / 64 samples
+02:10.738  render           | Fra: 61 | Rendering 50 / 64 samples
+02:11.195  render           | Fra: 61 | Rendering 64 / 64 samples
+02:11.693  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0061.png'
+02:11.694  render           | Time: 00:03.08 (Saving: 00:00.38)
+02:11.694  render           | Rendering frame 62
+02:11.710  render           | Start rendering: Scene, ViewLayer
+02:11.710  render           | Engine: EEVEE
+02:12.308  render           | Fra: 62 | Rendering 1 / 64 samples
+02:13.138  render           | Fra: 62 | Rendering 25 / 64 samples
+02:13.933  render           | Fra: 62 | Rendering 50 / 64 samples
+02:14.349  render           | Fra: 62 | Rendering 64 / 64 samples
+02:14.737  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0062.png'
+02:14.738  render           | Time: 00:03.02 (Saving: 00:00.25)
+02:14.739  render           | Rendering frame 63
+02:14.755  render           | Start rendering: Scene, ViewLayer
+02:14.755  render           | Engine: EEVEE
+02:15.237  render           | Fra: 63 | Rendering 1 / 64 samples
+02:16.010  render           | Fra: 63 | Rendering 25 / 64 samples
+02:16.811  render           | Fra: 63 | Rendering 50 / 64 samples
+02:17.325  render           | Fra: 63 | Rendering 64 / 64 samples
+02:17.754  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0063.png'
+02:17.756  render           | Time: 00:02.99 (Saving: 00:00.30)
+02:17.757  render           | Rendering frame 64
+02:17.785  render           | Start rendering: Scene, ViewLayer
+02:17.785  render           | Engine: EEVEE
+02:18.919  render           | Fra: 64 | Rendering 1 / 64 samples
+02:19.756  render           | Fra: 64 | Rendering 25 / 64 samples
+02:20.590  render           | Fra: 64 | Rendering 50 / 64 samples
+02:21.059  render           | Fra: 64 | Rendering 64 / 64 samples
+02:21.834  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0064.png'
+02:21.834  render           | Time: 00:04.04 (Saving: 00:00.38)
+02:21.835  render           | Rendering frame 65
+02:21.858  render           | Start rendering: Scene, ViewLayer
+02:21.858  render           | Engine: EEVEE
+02:22.840  render           | Fra: 65 | Rendering 1 / 64 samples
+02:23.628  render           | Fra: 65 | Rendering 25 / 64 samples
+02:24.348  render           | Fra: 65 | Rendering 50 / 64 samples
+02:24.749  render           | Fra: 65 | Rendering 64 / 64 samples
+02:25.444  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0065.png'
+02:25.444  render           | Time: 00:03.58 (Saving: 00:00.48)
+02:25.448  render           | Rendering frame 66
+02:25.529  render           | Start rendering: Scene, ViewLayer
+02:25.529  render           | Engine: EEVEE
+02:27.014  render           | Fra: 66 | Rendering 1 / 64 samples
+02:27.813  render           | Fra: 66 | Rendering 25 / 64 samples
+02:28.634  render           | Fra: 66 | Rendering 50 / 64 samples
+02:29.104  render           | Fra: 66 | Rendering 64 / 64 samples
+02:29.766  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0066.png'
+02:29.771  render           | Time: 00:04.24 (Saving: 00:00.45)
+02:29.775  render           | Rendering frame 67
+02:29.857  render           | Start rendering: Scene, ViewLayer
+02:29.857  render           | Engine: EEVEE
+02:31.020  render           | Fra: 67 | Rendering 1 / 64 samples
+02:31.836  render           | Fra: 67 | Rendering 25 / 64 samples
+02:32.628  render           | Fra: 67 | Rendering 50 / 64 samples
+02:33.086  render           | Fra: 67 | Rendering 64 / 64 samples
+02:33.984  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0067.png'
+02:33.988  render           | Time: 00:04.12 (Saving: 00:00.70)
+02:33.992  render           | Rendering frame 68
+02:34.070  render           | Start rendering: Scene, ViewLayer
+02:34.070  render           | Engine: EEVEE
+02:34.882  render           | Fra: 68 | Rendering 1 / 64 samples
+02:35.609  render           | Fra: 68 | Rendering 25 / 64 samples
+02:36.364  render           | Fra: 68 | Rendering 50 / 64 samples
+02:36.857  render           | Fra: 68 | Rendering 64 / 64 samples
+02:39.671  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0068.png'
+02:39.672  render           | Time: 00:05.60 (Saving: 00:02.56)
+02:39.673  render           | Rendering frame 69
+02:39.692  render           | Start rendering: Scene, ViewLayer
+02:39.692  render           | Engine: EEVEE
+02:40.632  render           | Fra: 69 | Rendering 1 / 64 samples
+02:41.419  render           | Fra: 69 | Rendering 25 / 64 samples
+02:42.201  render           | Fra: 69 | Rendering 50 / 64 samples
+02:42.637  render           | Fra: 69 | Rendering 64 / 64 samples
+02:42.995  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0069.png'
+02:42.997  render           | Time: 00:03.30 (Saving: 00:00.29)
+02:42.998  render           | Rendering frame 70
+02:43.025  render           | Start rendering: Scene, ViewLayer
+02:43.025  render           | Engine: EEVEE
+02:43.610  render           | Fra: 70 | Rendering 1 / 64 samples
+02:44.440  render           | Fra: 70 | Rendering 25 / 64 samples
+02:45.239  render           | Fra: 70 | Rendering 50 / 64 samples
+02:45.683  render           | Fra: 70 | Rendering 64 / 64 samples
+02:46.069  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0070.png'
+02:46.071  render           | Time: 00:03.04 (Saving: 00:00.25)
+02:46.071  render           | Rendering frame 71
+02:46.106  render           | Start rendering: Scene, ViewLayer
+02:46.106  render           | Engine: EEVEE
+02:46.607  render           | Fra: 71 | Rendering 1 / 64 samples
+02:47.382  render           | Fra: 71 | Rendering 25 / 64 samples
+02:48.186  render           | Fra: 71 | Rendering 50 / 64 samples
+02:48.619  render           | Fra: 71 | Rendering 64 / 64 samples
+02:48.953  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0071.png'
+02:48.954  render           | Time: 00:02.84 (Saving: 00:00.21)
+02:48.954  render           | Rendering frame 72
+02:48.978  render           | Start rendering: Scene, ViewLayer
+02:48.978  render           | Engine: EEVEE
+02:49.570  render           | Fra: 72 | Rendering 1 / 64 samples
+02:50.374  render           | Fra: 72 | Rendering 25 / 64 samples
+02:51.206  render           | Fra: 72 | Rendering 50 / 64 samples
+02:51.672  render           | Fra: 72 | Rendering 64 / 64 samples
+02:51.899  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0072.png'
+02:51.899  render           | Time: 00:02.92 (Saving: 00:00.17)
+02:51.899  render           | Rendering frame 73
+02:51.899  render           | Start rendering: Scene, ViewLayer
+02:51.899  render           | Engine: EEVEE
+02:52.344  render           | Fra: 73 | Rendering 1 / 64 samples
+02:53.171  render           | Fra: 73 | Rendering 25 / 64 samples
+02:54.006  render           | Fra: 73 | Rendering 50 / 64 samples
+02:54.472  render           | Fra: 73 | Rendering 64 / 64 samples
+02:54.800  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0073.png'
+02:54.802  render           | Time: 00:02.90 (Saving: 00:00.24)
+02:54.803  render           | Rendering frame 74
+02:54.970  render           | Start rendering: Scene, ViewLayer
+02:54.970  render           | Engine: EEVEE
+02:55.943  render           | Fra: 74 | Rendering 1 / 64 samples
+02:56.806  render           | Fra: 74 | Rendering 25 / 64 samples
+02:57.694  render           | Fra: 74 | Rendering 50 / 64 samples
+02:58.189  render           | Fra: 74 | Rendering 64 / 64 samples
+02:58.899  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0074.png'
+02:58.905  render           | Time: 00:03.93 (Saving: 00:00.57)
+02:58.905  render           | Rendering frame 75
+02:58.959  render           | Start rendering: Scene, ViewLayer
+02:58.959  render           | Engine: EEVEE
+02:59.655  render           | Fra: 75 | Rendering 1 / 64 samples
+03:00.500  render           | Fra: 75 | Rendering 25 / 64 samples
+03:01.373  render           | Fra: 75 | Rendering 50 / 64 samples
+03:01.856  render           | Fra: 75 | Rendering 64 / 64 samples
+03:02.413  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0075.png'
+03:02.416  render           | Time: 00:03.45 (Saving: 00:00.36)
+03:02.420  render           | Rendering frame 76
+03:02.480  render           | Start rendering: Scene, ViewLayer
+03:02.480  render           | Engine: EEVEE
+03:03.251  render           | Fra: 76 | Rendering 1 / 64 samples
+03:04.072  render           | Fra: 76 | Rendering 25 / 64 samples
+03:04.939  render           | Fra: 76 | Rendering 50 / 64 samples
+03:05.415  render           | Fra: 76 | Rendering 64 / 64 samples
+03:05.734  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0076.png'
+03:05.735  render           | Time: 00:03.25 (Saving: 00:00.19)
+03:05.736  render           | Rendering frame 77
+03:05.766  render           | Start rendering: Scene, ViewLayer
+03:05.766  render           | Engine: EEVEE
+03:06.321  render           | Fra: 77 | Rendering 1 / 64 samples
+03:07.190  render           | Fra: 77 | Rendering 25 / 64 samples
+03:08.072  render           | Fra: 77 | Rendering 50 / 64 samples
+03:08.581  render           | Fra: 77 | Rendering 64 / 64 samples
+03:08.984  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0077.png'
+03:08.985  render           | Time: 00:03.21 (Saving: 00:00.28)
+03:08.985  render           | Rendering frame 78
+03:09.010  render           | Start rendering: Scene, ViewLayer
+03:09.010  render           | Engine: EEVEE
+03:09.847  render           | Fra: 78 | Rendering 1 / 64 samples
+03:10.701  render           | Fra: 78 | Rendering 25 / 64 samples
+03:11.550  render           | Fra: 78 | Rendering 50 / 64 samples
+03:12.002  render           | Fra: 78 | Rendering 64 / 64 samples
+03:13.366  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0078.png'
+03:13.369  render           | Time: 00:04.35 (Saving: 00:00.76)
+03:13.372  render           | Rendering frame 79
+03:13.498  render           | Start rendering: Scene, ViewLayer
+03:13.498  render           | Engine: EEVEE
+03:14.934  render           | Fra: 79 | Rendering 1 / 64 samples
+03:15.754  render           | Fra: 79 | Rendering 25 / 64 samples
+03:16.645  render           | Fra: 79 | Rendering 50 / 64 samples
+03:17.153  render           | Fra: 79 | Rendering 64 / 64 samples
+03:17.574  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0079.png'
+03:17.575  render           | Time: 00:04.07 (Saving: 00:00.25)
+03:17.576  render           | Rendering frame 80
+03:17.603  render           | Start rendering: Scene, ViewLayer
+03:17.603  render           | Engine: EEVEE
+03:18.178  render           | Fra: 80 | Rendering 1 / 64 samples
+03:18.951  render           | Fra: 80 | Rendering 25 / 64 samples
+03:19.749  render           | Fra: 80 | Rendering 50 / 64 samples
+03:20.173  render           | Fra: 80 | Rendering 64 / 64 samples
+03:20.497  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0080.png'
+03:20.499  render           | Time: 00:02.89 (Saving: 00:00.22)
+03:20.499  render           | Rendering frame 81
+03:20.526  render           | Start rendering: Scene, ViewLayer
+03:20.526  render           | Engine: EEVEE
+03:21.021  render           | Fra: 81 | Rendering 1 / 64 samples
+03:21.829  render           | Fra: 81 | Rendering 25 / 64 samples
+03:22.691  render           | Fra: 81 | Rendering 50 / 64 samples
+03:23.170  render           | Fra: 81 | Rendering 64 / 64 samples
+03:23.518  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0081.png'
+03:23.522  render           | Time: 00:02.99 (Saving: 00:00.23)
+03:23.524  render           | Rendering frame 82
+03:23.547  render           | Start rendering: Scene, ViewLayer
+03:23.547  render           | Engine: EEVEE
+03:24.008  render           | Fra: 82 | Rendering 1 / 64 samples
+03:24.916  render           | Fra: 82 | Rendering 25 / 64 samples
+03:25.822  render           | Fra: 82 | Rendering 50 / 64 samples
+03:26.334  render           | Fra: 82 | Rendering 64 / 64 samples
+03:26.556  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0082.png'
+03:26.557  render           | Time: 00:03.00 (Saving: 00:00.15)
+03:26.558  render           | Rendering frame 83
+03:26.582  render           | Start rendering: Scene, ViewLayer
+03:26.582  render           | Engine: EEVEE
+03:27.100  render           | Fra: 83 | Rendering 1 / 64 samples
+03:28.032  render           | Fra: 83 | Rendering 25 / 64 samples
+03:28.978  render           | Fra: 83 | Rendering 50 / 64 samples
+03:29.505  render           | Fra: 83 | Rendering 64 / 64 samples
+03:29.880  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0083.png'
+03:29.880  render           | Time: 00:03.29 (Saving: 00:00.25)
+03:29.881  render           | Rendering frame 84
+03:29.908  render           | Start rendering: Scene, ViewLayer
+03:29.908  render           | Engine: EEVEE
+03:30.454  render           | Fra: 84 | Rendering 1 / 64 samples
+03:31.402  render           | Fra: 84 | Rendering 25 / 64 samples
+03:32.397  render           | Fra: 84 | Rendering 50 / 64 samples
+03:32.946  render           | Fra: 84 | Rendering 64 / 64 samples
+03:33.388  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0084.png'
+03:33.390  render           | Time: 00:03.48 (Saving: 00:00.33)
+03:33.390  render           | Rendering frame 85
+03:33.421  render           | Start rendering: Scene, ViewLayer
+03:33.421  render           | Engine: EEVEE
+03:34.265  render           | Fra: 85 | Rendering 1 / 64 samples
+03:35.221  render           | Fra: 85 | Rendering 25 / 64 samples
+03:36.226  render           | Fra: 85 | Rendering 50 / 64 samples
+03:36.785  render           | Fra: 85 | Rendering 64 / 64 samples
+03:37.108  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0085.png'
+03:37.109  render           | Time: 00:03.68 (Saving: 00:00.22)
+03:37.110  render           | Rendering frame 86
+03:37.130  render           | Start rendering: Scene, ViewLayer
+03:37.130  render           | Engine: EEVEE
+03:37.698  render           | Fra: 86 | Rendering 1 / 64 samples
+03:38.569  render           | Fra: 86 | Rendering 25 / 64 samples
+03:39.548  render           | Fra: 86 | Rendering 50 / 64 samples
+03:40.100  render           | Fra: 86 | Rendering 64 / 64 samples
+03:40.657  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0086.png'
+03:40.659  render           | Time: 00:03.52 (Saving: 00:00.37)
+03:40.661  render           | Rendering frame 87
+03:40.688  render           | Start rendering: Scene, ViewLayer
+03:40.688  render           | Engine: EEVEE
+03:41.533  render           | Fra: 87 | Rendering 1 / 64 samples
+03:42.538  render           | Fra: 87 | Rendering 25 / 64 samples
+03:43.539  render           | Fra: 87 | Rendering 50 / 64 samples
+03:44.114  render           | Fra: 87 | Rendering 64 / 64 samples
+03:44.518  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0087.png'
+03:44.520  render           | Time: 00:03.82 (Saving: 00:00.28)
+03:44.521  render           | Rendering frame 88
+03:44.541  render           | Start rendering: Scene, ViewLayer
+03:44.541  render           | Engine: EEVEE
+03:45.046  render           | Fra: 88 | Rendering 1 / 64 samples
+03:45.950  render           | Fra: 88 | Rendering 25 / 64 samples
+03:46.887  render           | Fra: 88 | Rendering 50 / 64 samples
+03:47.400  render           | Fra: 88 | Rendering 64 / 64 samples
+03:47.715  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0088.png'
+03:47.716  render           | Time: 00:03.17 (Saving: 00:00.23)
+03:47.717  render           | Rendering frame 89
+03:47.738  render           | Start rendering: Scene, ViewLayer
+03:47.738  render           | Engine: EEVEE
+03:48.215  render           | Fra: 89 | Rendering 1 / 64 samples
+03:49.128  render           | Fra: 89 | Rendering 25 / 64 samples
+03:50.089  render           | Fra: 89 | Rendering 50 / 64 samples
+03:50.612  render           | Fra: 89 | Rendering 64 / 64 samples
+03:50.948  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0089.png'
+03:50.949  render           | Time: 00:03.20 (Saving: 00:00.23)
+03:50.950  render           | Rendering frame 90
+03:50.973  render           | Start rendering: Scene, ViewLayer
+03:50.973  render           | Engine: EEVEE
+03:51.362  render           | Fra: 90 | Rendering 1 / 64 samples
+03:52.265  render           | Fra: 90 | Rendering 25 / 64 samples
+03:53.198  render           | Fra: 90 | Rendering 50 / 64 samples
+03:53.721  render           | Fra: 90 | Rendering 64 / 64 samples
+03:54.156  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0090.png'
+03:54.158  render           | Time: 00:03.18 (Saving: 00:00.30)
+03:54.159  render           | Rendering frame 91
+03:54.196  render           | Start rendering: Scene, ViewLayer
+03:54.196  render           | Engine: EEVEE
+03:54.496  render           | Fra: 91 | Rendering 1 / 64 samples
+03:55.412  render           | Fra: 91 | Rendering 25 / 64 samples
+03:56.350  render           | Fra: 91 | Rendering 50 / 64 samples
+03:56.869  render           | Fra: 91 | Rendering 64 / 64 samples
+03:57.256  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0091.png'
+03:57.260  render           | Time: 00:03.06 (Saving: 00:00.28)
+03:57.261  render           | Rendering frame 92
+03:57.291  render           | Start rendering: Scene, ViewLayer
+03:57.291  render           | Engine: EEVEE
+03:57.694  render           | Fra: 92 | Rendering 1 / 64 samples
+03:58.608  render           | Fra: 92 | Rendering 25 / 64 samples
+03:59.519  render           | Fra: 92 | Rendering 50 / 64 samples
+04:00.046  render           | Fra: 92 | Rendering 64 / 64 samples
+04:00.267  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0092.png'
+04:00.267  render           | Time: 00:02.97 (Saving: 00:00.17)
+04:00.267  render           | Rendering frame 93
+04:00.267  render           | Start rendering: Scene, ViewLayer
+04:00.267  render           | Engine: EEVEE
+04:00.503  render           | Fra: 93 | Rendering 1 / 64 samples
+04:01.444  render           | Fra: 93 | Rendering 25 / 64 samples
+04:02.406  render           | Fra: 93 | Rendering 50 / 64 samples
+04:02.934  render           | Fra: 93 | Rendering 64 / 64 samples
+04:03.216  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0093.png'
+04:03.221  render           | Time: 00:02.94 (Saving: 00:00.22)
+04:03.222  render           | Rendering frame 94
+04:03.259  render           | Start rendering: Scene, ViewLayer
+04:03.259  render           | Engine: EEVEE
+04:03.794  render           | Fra: 94 | Rendering 1 / 64 samples
+04:04.731  render           | Fra: 94 | Rendering 25 / 64 samples
+04:05.699  render           | Fra: 94 | Rendering 50 / 64 samples
+04:06.225  render           | Fra: 94 | Rendering 64 / 64 samples
+04:06.553  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0094.png'
+04:06.557  render           | Time: 00:03.29 (Saving: 00:00.25)
+04:06.558  render           | Rendering frame 95
+04:06.603  render           | Start rendering: Scene, ViewLayer
+04:06.603  render           | Engine: EEVEE
+04:07.057  render           | Fra: 95 | Rendering 1 / 64 samples
+04:07.991  render           | Fra: 95 | Rendering 25 / 64 samples
+04:08.950  render           | Fra: 95 | Rendering 50 / 64 samples
+04:09.469  render           | Fra: 95 | Rendering 64 / 64 samples
+04:09.804  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0095.png'
+04:09.806  render           | Time: 00:03.20 (Saving: 00:00.25)
+04:09.806  render           | Rendering frame 96
+04:09.824  render           | Start rendering: Scene, ViewLayer
+04:09.824  render           | Engine: EEVEE
+04:10.154  render           | Fra: 96 | Rendering 1 / 64 samples
+04:11.020  render           | Fra: 96 | Rendering 25 / 64 samples
+04:11.895  render           | Fra: 96 | Rendering 50 / 64 samples
+04:12.402  render           | Fra: 96 | Rendering 64 / 64 samples
+04:12.772  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0096.png'
+04:12.776  render           | Time: 00:02.94 (Saving: 00:00.29)
+04:12.777  render           | Rendering frame 97
+04:12.806  render           | Start rendering: Scene, ViewLayer
+04:12.806  render           | Engine: EEVEE
+04:13.215  render           | Fra: 97 | Rendering 1 / 64 samples
+04:14.065  render           | Fra: 97 | Rendering 25 / 64 samples
+04:14.936  render           | Fra: 97 | Rendering 50 / 64 samples
+04:15.428  render           | Fra: 97 | Rendering 64 / 64 samples
+04:15.758  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0097.png'
+04:15.759  render           | Time: 00:02.95 (Saving: 00:00.25)
+04:15.762  render           | Rendering frame 98
+04:15.794  render           | Start rendering: Scene, ViewLayer
+04:15.794  render           | Engine: EEVEE
+04:16.152  render           | Fra: 98 | Rendering 1 / 64 samples
+04:16.980  render           | Fra: 98 | Rendering 25 / 64 samples
+04:17.822  render           | Fra: 98 | Rendering 50 / 64 samples
+04:18.297  render           | Fra: 98 | Rendering 64 / 64 samples
+04:18.607  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0098.png'
+04:18.609  render           | Time: 00:02.81 (Saving: 00:00.22)
+04:18.609  render           | Rendering frame 99
+04:18.633  render           | Start rendering: Scene, ViewLayer
+04:18.633  render           | Engine: EEVEE
+04:18.865  render           | Fra: 99 | Rendering 1 / 64 samples
+04:19.672  render           | Fra: 99 | Rendering 25 / 64 samples
+04:20.530  render           | Fra: 99 | Rendering 50 / 64 samples
+04:21.009  render           | Fra: 99 | Rendering 64 / 64 samples
+04:21.326  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0099.png'
+04:21.327  render           | Time: 00:02.69 (Saving: 00:00.23)
+04:21.328  render           | Rendering frame 100
+04:21.354  render           | Start rendering: Scene, ViewLayer
+04:21.354  render           | Engine: EEVEE
+04:21.746  render           | Fra: 100 | Rendering 1 / 64 samples
+04:22.597  render           | Fra: 100 | Rendering 25 / 64 samples
+04:23.463  render           | Fra: 100 | Rendering 50 / 64 samples
+04:23.944  render           | Fra: 100 | Rendering 64 / 64 samples
+04:24.270  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0100.png'
+04:24.271  render           | Time: 00:02.91 (Saving: 00:00.24)
+04:24.272  render           | Rendering frame 101
+04:24.305  render           | Start rendering: Scene, ViewLayer
+04:24.305  render           | Engine: EEVEE
+04:24.708  render           | Fra: 101 | Rendering 1 / 64 samples
+04:25.557  render           | Fra: 101 | Rendering 25 / 64 samples
+04:26.413  render           | Fra: 101 | Rendering 50 / 64 samples
+04:26.880  render           | Fra: 101 | Rendering 64 / 64 samples
+04:27.223  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0101.png'
+04:27.225  render           | Time: 00:02.91 (Saving: 00:00.25)
+04:27.225  render           | Rendering frame 102
+04:27.248  render           | Start rendering: Scene, ViewLayer
+04:27.248  render           | Engine: EEVEE
+04:27.650  render           | Fra: 102 | Rendering 1 / 64 samples
+04:28.480  render           | Fra: 102 | Rendering 25 / 64 samples
+04:29.331  render           | Fra: 102 | Rendering 50 / 64 samples
+04:29.795  render           | Fra: 102 | Rendering 64 / 64 samples
+04:30.137  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0102.png'
+04:30.142  render           | Time: 00:02.88 (Saving: 00:00.27)
+04:30.142  render           | Rendering frame 103
+04:30.182  render           | Start rendering: Scene, ViewLayer
+04:30.182  render           | Engine: EEVEE
+04:30.622  render           | Fra: 103 | Rendering 1 / 64 samples
+04:31.487  render           | Fra: 103 | Rendering 25 / 64 samples
+04:32.361  render           | Fra: 103 | Rendering 50 / 64 samples
+04:32.839  render           | Fra: 103 | Rendering 64 / 64 samples
+04:33.231  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0103.png'
+04:33.236  render           | Time: 00:03.04 (Saving: 00:00.28)
+04:33.237  render           | Rendering frame 104
+04:33.274  render           | Start rendering: Scene, ViewLayer
+04:33.274  render           | Engine: EEVEE
+04:33.796  render           | Fra: 104 | Rendering 1 / 64 samples
+04:34.655  render           | Fra: 104 | Rendering 25 / 64 samples
+04:35.538  render           | Fra: 104 | Rendering 50 / 64 samples
+04:36.032  render           | Fra: 104 | Rendering 64 / 64 samples
+04:36.456  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0104.png'
+04:36.457  render           | Time: 00:03.18 (Saving: 00:00.29)
+04:36.457  render           | Rendering frame 105
+04:36.472  render           | Start rendering: Scene, ViewLayer
+04:36.472  render           | Engine: EEVEE
+04:37.085  render           | Fra: 105 | Rendering 1 / 64 samples
+04:37.935  render           | Fra: 105 | Rendering 25 / 64 samples
+04:38.779  render           | Fra: 105 | Rendering 50 / 64 samples
+04:39.242  render           | Fra: 105 | Rendering 64 / 64 samples
+04:39.663  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0105.png'
+04:39.665  render           | Time: 00:03.19 (Saving: 00:00.28)
+04:39.665  render           | Rendering frame 106
+04:39.691  render           | Start rendering: Scene, ViewLayer
+04:39.691  render           | Engine: EEVEE
+04:40.338  render           | Fra: 106 | Rendering 1 / 64 samples
+04:41.132  render           | Fra: 106 | Rendering 25 / 64 samples
+04:41.899  render           | Fra: 106 | Rendering 50 / 64 samples
+04:42.338  render           | Fra: 106 | Rendering 64 / 64 samples
+04:42.726  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0106.png'
+04:42.726  render           | Time: 00:03.03 (Saving: 00:00.28)
+04:42.727  render           | Rendering frame 107
+04:42.746  render           | Start rendering: Scene, ViewLayer
+04:42.746  render           | Engine: EEVEE
+04:43.269  render           | Fra: 107 | Rendering 1 / 64 samples
+04:44.015  render           | Fra: 107 | Rendering 25 / 64 samples
+04:44.809  render           | Fra: 107 | Rendering 50 / 64 samples
+04:45.232  render           | Fra: 107 | Rendering 64 / 64 samples
+04:45.570  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0107.png'
+04:45.573  render           | Time: 00:02.82 (Saving: 00:00.25)
+04:45.574  render           | Rendering frame 108
+04:45.600  render           | Start rendering: Scene, ViewLayer
+04:45.600  render           | Engine: EEVEE
+04:46.063  render           | Fra: 108 | Rendering 1 / 64 samples
+04:46.855  render           | Fra: 108 | Rendering 25 / 64 samples
+04:47.622  render           | Fra: 108 | Rendering 50 / 64 samples
+04:48.040  render           | Fra: 108 | Rendering 64 / 64 samples
+04:48.494  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0108.png'
+04:48.495  render           | Time: 00:02.89 (Saving: 00:00.28)
+04:48.495  render           | Rendering frame 109
+04:48.525  render           | Start rendering: Scene, ViewLayer
+04:48.525  render           | Engine: EEVEE
+04:48.954  render           | Fra: 109 | Rendering 1 / 64 samples
+04:49.652  render           | Fra: 109 | Rendering 25 / 64 samples
+04:50.377  render           | Fra: 109 | Rendering 50 / 64 samples
+04:50.781  render           | Fra: 109 | Rendering 64 / 64 samples
+04:51.082  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0109.png'
+04:51.085  render           | Time: 00:02.55 (Saving: 00:00.23)
+04:51.085  render           | Rendering frame 110
+04:51.116  render           | Start rendering: Scene, ViewLayer
+04:51.116  render           | Engine: EEVEE
+04:51.595  render           | Fra: 110 | Rendering 1 / 64 samples
+04:52.279  render           | Fra: 110 | Rendering 25 / 64 samples
+04:52.971  render           | Fra: 110 | Rendering 50 / 64 samples
+04:53.353  render           | Fra: 110 | Rendering 64 / 64 samples
+04:53.674  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0110.png'
+04:53.674  render           | Time: 00:02.55 (Saving: 00:00.29)
+04:53.674  render           | Rendering frame 111
+04:53.674  render           | Start rendering: Scene, ViewLayer
+04:53.674  render           | Engine: EEVEE
+04:53.925  render           | Fra: 111 | Rendering 1 / 64 samples
+04:54.576  render           | Fra: 111 | Rendering 25 / 64 samples
+04:55.268  render           | Fra: 111 | Rendering 50 / 64 samples
+04:55.666  render           | Fra: 111 | Rendering 64 / 64 samples
+04:55.930  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0111.png'
+04:55.930  render           | Time: 00:02.25 (Saving: 00:00.23)
+04:55.930  render           | Rendering frame 112
+04:55.930  render           | Start rendering: Scene, ViewLayer
+04:55.930  render           | Engine: EEVEE
+04:56.004  render           | Fra: 112 | Rendering 1 / 64 samples
+04:56.421  render           | Fra: 112 | Rendering 25 / 64 samples
+04:56.798  render           | Fra: 112 | Rendering 50 / 64 samples
+04:57.009  render           | Fra: 112 | Rendering 64 / 64 samples
+04:57.254  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0112.png'
+04:57.254  render           | Time: 00:01.32 (Saving: 00:00.19)
+04:57.255  render           | Rendering frame 113
+04:57.255  render           | Start rendering: Scene, ViewLayer
+04:57.255  render           | Engine: EEVEE
+04:57.355  render           | Fra: 113 | Rendering 1 / 64 samples
+04:57.746  render           | Fra: 113 | Rendering 25 / 64 samples
+04:58.117  render           | Fra: 113 | Rendering 50 / 64 samples
+04:58.326  render           | Fra: 113 | Rendering 64 / 64 samples
+04:58.531  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0113.png'
+04:58.531  render           | Time: 00:01.27 (Saving: 00:00.15)
+04:58.531  render           | Rendering frame 114
+04:58.531  render           | Start rendering: Scene, ViewLayer
+04:58.531  render           | Engine: EEVEE
+04:58.648  render           | Fra: 114 | Rendering 1 / 64 samples
+04:59.039  render           | Fra: 114 | Rendering 25 / 64 samples
+04:59.421  render           | Fra: 114 | Rendering 50 / 64 samples
+04:59.647  render           | Fra: 114 | Rendering 64 / 64 samples
+04:59.866  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0114.png'
+04:59.867  render           | Time: 00:01.33 (Saving: 00:00.17)
+04:59.868  render           | Rendering frame 115
+04:59.880  render           | Start rendering: Scene, ViewLayer
+04:59.880  render           | Engine: EEVEE
+05:00.114  render           | Fra: 115 | Rendering 1 / 64 samples
+05:00.524  render           | Fra: 115 | Rendering 25 / 64 samples
+05:00.905  render           | Fra: 115 | Rendering 50 / 64 samples
+05:01.116  render           | Fra: 115 | Rendering 64 / 64 samples
+05:01.418  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0115.png'
+05:01.421  render           | Time: 00:01.53 (Saving: 00:00.26)
+05:01.425  render           | Rendering frame 116
+05:01.465  render           | Start rendering: Scene, ViewLayer
+05:01.465  render           | Engine: EEVEE
+05:01.803  render           | Fra: 116 | Rendering 1 / 64 samples
+05:02.202  render           | Fra: 116 | Rendering 25 / 64 samples
+05:02.592  render           | Fra: 116 | Rendering 50 / 64 samples
+05:02.809  render           | Fra: 116 | Rendering 64 / 64 samples
+05:03.050  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0116.png'
+05:03.050  render           | Time: 00:01.58 (Saving: 00:00.19)
+05:03.051  render           | Rendering frame 117
+05:03.090  render           | Start rendering: Scene, ViewLayer
+05:03.090  render           | Engine: EEVEE
+05:03.305  render           | Fra: 117 | Rendering 1 / 64 samples
+05:03.692  render           | Fra: 117 | Rendering 25 / 64 samples
+05:04.063  render           | Fra: 117 | Rendering 50 / 64 samples
+05:04.269  render           | Fra: 117 | Rendering 64 / 64 samples
+05:04.468  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0117.png'
+05:04.468  render           | Time: 00:01.37 (Saving: 00:00.16)
+05:04.468  render           | Rendering frame 118
+05:04.468  render           | Start rendering: Scene, ViewLayer
+05:04.468  render           | Engine: EEVEE
+05:04.528  render           | Fra: 118 | Rendering 1 / 64 samples
+05:04.955  render           | Fra: 118 | Rendering 25 / 64 samples
+05:05.333  render           | Fra: 118 | Rendering 50 / 64 samples
+05:05.552  render           | Fra: 118 | Rendering 64 / 64 samples
+05:05.748  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0118.png'
+05:05.748  render           | Time: 00:01.28 (Saving: 00:00.15)
+05:05.748  render           | Rendering frame 119
+05:05.749  render           | Start rendering: Scene, ViewLayer
+05:05.749  render           | Engine: EEVEE
+05:05.821  render           | Fra: 119 | Rendering 1 / 64 samples
+05:06.297  render           | Fra: 119 | Rendering 25 / 64 samples
+05:06.704  render           | Fra: 119 | Rendering 50 / 64 samples
+05:06.918  render           | Fra: 119 | Rendering 64 / 64 samples
+05:07.163  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0119.png'
+05:07.165  render           | Time: 00:01.41 (Saving: 00:00.19)
+05:07.166  render           | Rendering frame 120
+05:07.186  render           | Start rendering: Scene, ViewLayer
+05:07.186  render           | Engine: EEVEE
+05:07.431  render           | Fra: 120 | Rendering 1 / 64 samples
+05:07.803  render           | Fra: 120 | Rendering 25 / 64 samples
+05:08.184  render           | Fra: 120 | Rendering 50 / 64 samples
+05:08.401  render           | Fra: 120 | Rendering 64 / 64 samples
+05:08.649  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0120.png'
+05:08.650  render           | Time: 00:01.46 (Saving: 00:00.17)
+05:08.651  render           | Rendering frame 121
+05:08.675  render           | Start rendering: Scene, ViewLayer
+05:08.675  render           | Engine: EEVEE
+05:08.868  render           | Fra: 121 | Rendering 1 / 64 samples
+05:09.267  render           | Fra: 121 | Rendering 25 / 64 samples
+05:09.636  render           | Fra: 121 | Rendering 50 / 64 samples
+05:09.845  render           | Fra: 121 | Rendering 64 / 64 samples
+05:10.242  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0121.png'
+05:10.249  render           | Time: 00:01.56 (Saving: 00:00.28)
+05:10.249  render           | Rendering frame 122
+05:10.265  render           | Start rendering: Scene, ViewLayer
+05:10.265  render           | Engine: EEVEE
+05:10.473  render           | Fra: 122 | Rendering 1 / 64 samples
+05:10.876  render           | Fra: 122 | Rendering 25 / 64 samples
+05:11.252  render           | Fra: 122 | Rendering 50 / 64 samples
+05:11.461  render           | Fra: 122 | Rendering 64 / 64 samples
+05:11.770  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0122.png'
+05:11.772  render           | Time: 00:01.50 (Saving: 00:00.20)
+05:11.772  render           | Rendering frame 123
+05:11.798  render           | Start rendering: Scene, ViewLayer
+05:11.798  render           | Engine: EEVEE
+05:11.906  render           | Fra: 123 | Rendering 1 / 64 samples
+05:12.282  render           | Fra: 123 | Rendering 25 / 64 samples
+05:12.646  render           | Fra: 123 | Rendering 50 / 64 samples
+05:12.851  render           | Fra: 123 | Rendering 64 / 64 samples
+05:13.068  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0123.png'
+05:13.068  render           | Time: 00:01.26 (Saving: 00:00.18)
+05:13.068  render           | Rendering frame 124
+05:13.068  render           | Start rendering: Scene, ViewLayer
+05:13.068  render           | Engine: EEVEE
+05:13.119  render           | Fra: 124 | Rendering 1 / 64 samples
+05:13.504  render           | Fra: 124 | Rendering 25 / 64 samples
+05:13.883  render           | Fra: 124 | Rendering 50 / 64 samples
+05:14.092  render           | Fra: 124 | Rendering 64 / 64 samples
+05:14.310  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0124.png'
+05:14.310  render           | Time: 00:01.24 (Saving: 00:00.17)
+05:14.310  render           | Rendering frame 125
+05:14.310  render           | Start rendering: Scene, ViewLayer
+05:14.310  render           | Engine: EEVEE
+05:14.370  render           | Fra: 125 | Rendering 1 / 64 samples
+05:14.776  render           | Fra: 125 | Rendering 25 / 64 samples
+05:15.143  render           | Fra: 125 | Rendering 50 / 64 samples
+05:15.349  render           | Fra: 125 | Rendering 64 / 64 samples
+05:15.579  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0125.png'
+05:15.579  render           | Time: 00:01.26 (Saving: 00:00.19)
+05:15.579  render           | Rendering frame 126
+05:15.579  render           | Start rendering: Scene, ViewLayer
+05:15.579  render           | Engine: EEVEE
+05:15.652  render           | Fra: 126 | Rendering 1 / 64 samples
+05:16.065  render           | Fra: 126 | Rendering 25 / 64 samples
+05:16.450  render           | Fra: 126 | Rendering 50 / 64 samples
+05:16.669  render           | Fra: 126 | Rendering 64 / 64 samples
+05:16.930  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0126.png'
+05:16.930  render           | Time: 00:01.35 (Saving: 00:00.20)
+05:16.930  render           | Rendering frame 127
+05:16.930  render           | Start rendering: Scene, ViewLayer
+05:16.930  render           | Engine: EEVEE
+05:17.102  render           | Fra: 127 | Rendering 1 / 64 samples
+05:17.509  render           | Fra: 127 | Rendering 25 / 64 samples
+05:17.897  render           | Fra: 127 | Rendering 50 / 64 samples
+05:18.104  render           | Fra: 127 | Rendering 64 / 64 samples
+05:18.379  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0127.png'
+05:18.379  render           | Time: 00:01.44 (Saving: 00:00.22)
+05:18.379  render           | Rendering frame 128
+05:18.380  render           | Start rendering: Scene, ViewLayer
+05:18.380  render           | Engine: EEVEE
+05:18.633  render           | Fra: 128 | Rendering 1 / 64 samples
+05:18.998  render           | Fra: 128 | Rendering 25 / 64 samples
+05:19.367  render           | Fra: 128 | Rendering 50 / 64 samples
+05:19.566  render           | Fra: 128 | Rendering 64 / 64 samples
+05:19.842  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0128.png'
+05:19.842  render           | Time: 00:01.46 (Saving: 00:00.22)
+05:19.842  render           | Rendering frame 129
+05:19.842  render           | Start rendering: Scene, ViewLayer
+05:19.842  render           | Engine: EEVEE
+05:19.996  render           | Fra: 129 | Rendering 1 / 64 samples
+05:20.365  render           | Fra: 129 | Rendering 25 / 64 samples
+05:20.730  render           | Fra: 129 | Rendering 50 / 64 samples
+05:20.928  render           | Fra: 129 | Rendering 64 / 64 samples
+05:21.119  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0129.png'
+05:21.119  render           | Time: 00:01.27 (Saving: 00:00.14)
+05:21.119  render           | Rendering frame 130
+05:21.123  render           | Start rendering: Scene, ViewLayer
+05:21.123  render           | Engine: EEVEE
+05:21.190  render           | Fra: 130 | Rendering 1 / 64 samples
+05:21.592  render           | Fra: 130 | Rendering 25 / 64 samples
+05:21.993  render           | Fra: 130 | Rendering 50 / 64 samples
+05:22.214  render           | Fra: 130 | Rendering 64 / 64 samples
+05:22.436  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0130.png'
+05:22.436  render           | Time: 00:01.31 (Saving: 00:00.18)
+05:22.436  render           | Rendering frame 131
+05:22.436  render           | Start rendering: Scene, ViewLayer
+05:22.436  render           | Engine: EEVEE
+05:22.546  render           | Fra: 131 | Rendering 1 / 64 samples
+05:22.955  render           | Fra: 131 | Rendering 25 / 64 samples
+05:23.331  render           | Fra: 131 | Rendering 50 / 64 samples
+05:23.535  render           | Fra: 131 | Rendering 64 / 64 samples
+05:23.726  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0131.png'
+05:23.726  render           | Time: 00:01.28 (Saving: 00:00.14)
+05:23.726  render           | Rendering frame 132
+05:23.727  render           | Start rendering: Scene, ViewLayer
+05:23.727  render           | Engine: EEVEE
+05:23.812  render           | Fra: 132 | Rendering 1 / 64 samples
+05:24.211  render           | Fra: 132 | Rendering 25 / 64 samples
+05:24.593  render           | Fra: 132 | Rendering 50 / 64 samples
+05:24.802  render           | Fra: 132 | Rendering 64 / 64 samples
+05:25.071  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0132.png'
+05:25.071  render           | Time: 00:01.34 (Saving: 00:00.21)
+05:25.071  render           | Rendering frame 133
+05:25.071  render           | Start rendering: Scene, ViewLayer
+05:25.071  render           | Engine: EEVEE
+05:25.182  render           | Fra: 133 | Rendering 1 / 64 samples
+05:25.566  render           | Fra: 133 | Rendering 25 / 64 samples
+05:25.932  render           | Fra: 133 | Rendering 50 / 64 samples
+05:26.136  render           | Fra: 133 | Rendering 64 / 64 samples
+05:26.337  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0133.png'
+05:26.337  render           | Time: 00:01.26 (Saving: 00:00.15)
+05:26.337  render           | Rendering frame 134
+05:26.337  render           | Start rendering: Scene, ViewLayer
+05:26.337  render           | Engine: EEVEE
+05:26.401  render           | Fra: 134 | Rendering 1 / 64 samples
+05:26.795  render           | Fra: 134 | Rendering 25 / 64 samples
+05:27.167  render           | Fra: 134 | Rendering 50 / 64 samples
+05:27.379  render           | Fra: 134 | Rendering 64 / 64 samples
+05:27.611  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0134.png'
+05:27.611  render           | Time: 00:01.27 (Saving: 00:00.18)
+05:27.611  render           | Rendering frame 135
+05:27.612  render           | Start rendering: Scene, ViewLayer
+05:27.612  render           | Engine: EEVEE
+05:27.685  render           | Fra: 135 | Rendering 1 / 64 samples
+05:28.095  render           | Fra: 135 | Rendering 25 / 64 samples
+05:28.464  render           | Fra: 135 | Rendering 50 / 64 samples
+05:28.668  render           | Fra: 135 | Rendering 64 / 64 samples
+05:28.868  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0135.png'
+05:28.868  render           | Time: 00:01.25 (Saving: 00:00.15)
+05:28.868  render           | Rendering frame 136
+05:28.869  render           | Start rendering: Scene, ViewLayer
+05:28.869  render           | Engine: EEVEE
+05:28.920  render           | Fra: 136 | Rendering 1 / 64 samples
+05:29.283  render           | Fra: 136 | Rendering 25 / 64 samples
+05:29.668  render           | Fra: 136 | Rendering 50 / 64 samples
+05:29.885  render           | Fra: 136 | Rendering 64 / 64 samples
+05:30.125  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0136.png'
+05:30.125  render           | Time: 00:01.25 (Saving: 00:00.20)
+05:30.125  render           | Rendering frame 137
+05:30.126  render           | Start rendering: Scene, ViewLayer
+05:30.126  render           | Engine: EEVEE
+05:30.221  render           | Fra: 137 | Rendering 1 / 64 samples
+05:30.613  render           | Fra: 137 | Rendering 25 / 64 samples
+05:30.974  render           | Fra: 137 | Rendering 50 / 64 samples
+05:31.175  render           | Fra: 137 | Rendering 64 / 64 samples
+05:31.473  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0137.png'
+05:31.473  render           | Time: 00:01.34 (Saving: 00:00.26)
+05:31.473  render           | Rendering frame 138
+05:31.474  render           | Start rendering: Scene, ViewLayer
+05:31.474  render           | Engine: EEVEE
+05:31.534  render           | Fra: 138 | Rendering 1 / 64 samples
+05:31.945  render           | Fra: 138 | Rendering 25 / 64 samples
+05:32.310  render           | Fra: 138 | Rendering 50 / 64 samples
+05:32.527  render           | Fra: 138 | Rendering 64 / 64 samples
+05:32.836  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0138.png'
+05:32.836  render           | Time: 00:01.36 (Saving: 00:00.25)
+05:32.836  render           | Rendering frame 139
+05:32.836  render           | Start rendering: Scene, ViewLayer
+05:32.836  render           | Engine: EEVEE
+05:32.974  render           | Fra: 139 | Rendering 1 / 64 samples
+05:33.377  render           | Fra: 139 | Rendering 25 / 64 samples
+05:33.760  render           | Fra: 139 | Rendering 50 / 64 samples
+05:33.960  render           | Fra: 139 | Rendering 64 / 64 samples
+05:34.232  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0139.png'
+05:34.232  render           | Time: 00:01.39 (Saving: 00:00.22)
+05:34.232  render           | Rendering frame 140
+05:34.232  render           | Start rendering: Scene, ViewLayer
+05:34.232  render           | Engine: EEVEE
+05:34.303  render           | Fra: 140 | Rendering 1 / 64 samples
+05:34.681  render           | Fra: 140 | Rendering 25 / 64 samples
+05:35.049  render           | Fra: 140 | Rendering 50 / 64 samples
+05:35.263  render           | Fra: 140 | Rendering 64 / 64 samples
+05:35.494  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0140.png'
+05:35.494  render           | Time: 00:01.26 (Saving: 00:00.19)
+05:35.494  render           | Rendering frame 141
+05:35.494  render           | Start rendering: Scene, ViewLayer
+05:35.494  render           | Engine: EEVEE
+05:35.576  render           | Fra: 141 | Rendering 1 / 64 samples
+05:35.986  render           | Fra: 141 | Rendering 25 / 64 samples
+05:36.383  render           | Fra: 141 | Rendering 50 / 64 samples
+05:36.600  render           | Fra: 141 | Rendering 64 / 64 samples
+05:36.883  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0141.png'
+05:36.883  render           | Time: 00:01.38 (Saving: 00:00.20)
+05:36.883  render           | Rendering frame 142
+05:36.884  render           | Start rendering: Scene, ViewLayer
+05:36.884  render           | Engine: EEVEE
+05:37.041  render           | Fra: 142 | Rendering 1 / 64 samples
+05:37.436  render           | Fra: 142 | Rendering 25 / 64 samples
+05:37.835  render           | Fra: 142 | Rendering 50 / 64 samples
+05:38.049  render           | Fra: 142 | Rendering 64 / 64 samples
+05:38.298  render           | Saved: '/Users/mishi/elite-dent-website/blender/renders/splash_0142.png'
+05:38.301  render           | Time: 00:01.41 (Saving: 00:00.17)
+
+Blender quit

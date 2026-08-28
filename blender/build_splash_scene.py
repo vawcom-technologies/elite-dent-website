@@ -3,7 +3,7 @@ EliteDent splash — Paramount-style tooth fly-through (Blender 5.x)
 
 Beats:
   Slow tunnel: camera banks through multiple angles as teeth rise from below.
-  Teeth are 3D renders in flight, then crossfade into 2D logo PNGs as they seat.
+  Thick 3D molars fly in, then crossfade into the real logo-arch PNGs as they seat.
   Wordmark fills the page, camera eases to a small centered lockup.
 
 Rebuild:
@@ -169,12 +169,10 @@ def make_enamel_rim_mat(name: str):
     return mat
 
 
-def make_morph_tooth(name: str, path_3d: Path, path_2d: Path, size: float = 1.4):
-    """Tooth-shaped mesh (alpha-cut) with thickness; lit while flying, morphs to 2D."""
+def make_morph_tooth(name: str, path_3d: Path, size: float = 1.4):
+    """Thick 3D molar (alpha-cut). Fade value 0=opaque in flight, 1=gone so logo PNG can take over."""
     img3 = bpy.data.images.load(str(path_3d))
     img3.pack()
-    img2 = bpy.data.images.load(str(path_2d))
-    img2.pack()
 
     mat = bpy.data.materials.new(name=f"Mat_{name}")
     if hasattr(mat, "use_nodes"):
@@ -221,22 +219,10 @@ def make_morph_tooth(name: str, path_3d: Path, path_2d: Path, size: float = 1.4)
     if "Normal" in bsdf.inputs:
         nt.links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
 
-    tex2 = nt.nodes.new("ShaderNodeTexImage")
-    tex2.image = img2
-    tex2.interpolation = "Linear"
-    emit2 = nt.nodes.new("ShaderNodeEmission")
-    emit2.inputs["Strength"].default_value = 1.7
-    nt.links.new(tex2.outputs["Color"], emit2.inputs["Color"])
-
     morph = nt.nodes.new("ShaderNodeValue")
     morph.name = "Morph3Dto2D"
     morph.label = "Morph3Dto2D"
     morph.outputs[0].default_value = 0.0
-
-    mix_surf = nt.nodes.new("ShaderNodeMixShader")
-    nt.links.new(morph.outputs[0], mix_surf.inputs["Fac"])
-    nt.links.new(bsdf.outputs["BSDF"], mix_surf.inputs[1])
-    nt.links.new(emit2.outputs["Emission"], mix_surf.inputs[2])
 
     one_minus = nt.nodes.new("ShaderNodeMath")
     one_minus.operation = "SUBTRACT"
@@ -246,19 +232,11 @@ def make_morph_tooth(name: str, path_3d: Path, path_2d: Path, size: float = 1.4)
     a3.operation = "MULTIPLY"
     nt.links.new(tex3.outputs["Alpha"], a3.inputs[0])
     nt.links.new(one_minus.outputs[0], a3.inputs[1])
-    a2 = nt.nodes.new("ShaderNodeMath")
-    a2.operation = "MULTIPLY"
-    nt.links.new(tex2.outputs["Alpha"], a2.inputs[0])
-    nt.links.new(morph.outputs[0], a2.inputs[1])
-    a_sum = nt.nodes.new("ShaderNodeMath")
-    a_sum.operation = "ADD"
-    nt.links.new(a3.outputs[0], a_sum.inputs[0])
-    nt.links.new(a2.outputs[0], a_sum.inputs[1])
 
     mix_tr = nt.nodes.new("ShaderNodeMixShader")
-    nt.links.new(a_sum.outputs[0], mix_tr.inputs["Fac"])
+    nt.links.new(a3.outputs[0], mix_tr.inputs["Fac"])
     nt.links.new(transparent.outputs["BSDF"], mix_tr.inputs[1])
-    nt.links.new(mix_surf.outputs["Shader"], mix_tr.inputs[2])
+    nt.links.new(bsdf.outputs["BSDF"], mix_tr.inputs[2])
     nt.links.new(mix_tr.outputs["Shader"], out.inputs["Surface"])
 
     rim = make_enamel_rim_mat(f"Rim_{name}")
@@ -448,10 +426,11 @@ for p in TOOTH_2D_PATHS:
 if not SHELL_PATH.exists():
     raise FileNotFoundError(SHELL_PATH)
 
-# --- teeth (3D↔2D morph planes) ---
+# --- teeth: thick 3D flyers + flat logo-arch PNGs that take over on seat ---
 teeth = []
 morphs = []
-base_sizes = []
+logo_teeth = []
+logo_emits = []
 count = len(ARCH_UV)
 cam_start = Vector((0.25, -10.0, 7.0))
 half_x, half_z, shell_aspect = shell_half_extents(SHELL_PATH)
@@ -459,12 +438,18 @@ half_x, half_z, shell_aspect = shell_half_extents(SHELL_PATH)
 for i in range(count):
     path_2d = TOOTH_2D_PATHS[i % len(TOOTH_2D_PATHS)]
     size = 1.55 if i == 0 else 1.35
-    obj, morph, _ = make_morph_tooth(f"Tooth_{i:02d}", TOOTH_3D_PATH, path_2d, size=size)
+    obj, morph, _ = make_morph_tooth(f"Tooth_{i:02d}", TOOTH_3D_PATH, size=size)
     obj.location = curve_point(i, count)
     look_at(obj, cam_start, track="Z", up="Y")
     teeth.append(obj)
     morphs.append(morph)
-    base_sizes.append(Vector(obj.scale))
+
+    logo, logo_emit, _ = make_image_plane(
+        f"LogoTooth_{i:02d}", path_2d, size=1.0, emit_strength=0.0, blend="CLIP"
+    )
+    logo.rotation_euler = Euler((math.radians(90), 0, 0), "XYZ")
+    logo_teeth.append(logo)
+    logo_emits.append(logo_emit)
 
 rig_rest = SHELL_LOC.copy()
 rig_rest_s = 1.0
@@ -599,8 +584,11 @@ base_tooth_w = logo_width * 0.034
 
 for i, obj in enumerate(teeth):
     morph = morphs[i]
+    logo = logo_teeth[i]
+    logo_emit = logo_emits[i]
     seat, _ = seat_world(i, rig_rest, rig_rest_s, half_x, half_z)
     scale = (base_tooth_w * rig_rest_s) / max(obj.dimensions.x, 1e-3)
+    logo_s = (base_tooth_w * rig_rest_s) / max(logo.dimensions.x, 1e-3)
     side = -1.0 if i % 2 == 0 else 1.0
 
     if i in FLYIN:
@@ -609,7 +597,7 @@ for i, obj in enumerate(teeth):
         rise_f = start_f + 20
         tumble_f = start_f + int(FLYIN_FLIGHT * 0.42)
         mid_f = start_f + int(FLYIN_FLIGHT * 0.62)
-        fade_f = start_f + int(FLYIN_FLIGHT * 0.78)
+        fade_f = start_f + int(FLYIN_FLIGHT * 0.72)
         land_f = start_f + FLYIN_FLIGHT
     else:
         di = DEPTH.index(i)
@@ -617,7 +605,7 @@ for i, obj in enumerate(teeth):
         rise_f = start_f + 18
         tumble_f = start_f + int(DEPTH_FLIGHT * 0.4)
         mid_f = start_f + int(DEPTH_FLIGHT * 0.6)
-        fade_f = start_f + int(DEPTH_FLIGHT * 0.78)
+        fade_f = start_f + int(DEPTH_FLIGHT * 0.72)
         land_f = start_f + DEPTH_FLIGHT
         fi = di
         side = -1.0 if di % 2 == 0 else 1.0
@@ -629,17 +617,61 @@ for i, obj in enumerate(teeth):
     tumble = Vector((seat.x * 0.7 + side * 1.1, -2.2, seat.z * 0.2 + side * 0.6))
     mid = Vector((seat.x * 0.88, -0.6, seat.z * 0.5))
 
-    for f, hidden in ((1, True), (start_f - 1, True), (start_f, False)):
+    for f, hidden in ((1, True), (start_f - 1, True), (start_f, False), (land_f - 1, False), (land_f, True)):
         obj.hide_viewport = hidden
         obj.hide_render = hidden
         obj.keyframe_insert("hide_viewport", frame=f)
         obj.keyframe_insert("hide_render", frame=f)
 
-    # 3D look while flying
+    # Park logo PNG at the seat; reveal only during the land crossfade
+    logo.location = seat
+    logo.rotation_euler = Euler((math.radians(90), 0, 0), "XYZ")
+    logo.scale = Vector((logo_s, logo_s, logo_s))
+    for f in (1, fade_f - 1, fade_f, land_f, FRAME_END):
+        logo.location = seat
+        logo.scale = Vector((logo_s, logo_s, logo_s))
+        logo.keyframe_insert("location", frame=f)
+        logo.keyframe_insert("scale", frame=f)
+        logo.keyframe_insert("rotation_euler", frame=f)
+    for f, hidden in ((1, True), (fade_f - 1, True), (fade_f, False), (FRAME_END, False)):
+        logo.hide_viewport = hidden
+        logo.hide_render = hidden
+        logo.keyframe_insert("hide_viewport", frame=f)
+        logo.keyframe_insert("hide_render", frame=f)
+
+    # Collapse extrusion so rim walls don't ghost through the fade
+    solid = obj.modifiers.get("ToothThick")
+    bevel = obj.modifiers.get("ToothBevel")
+    if solid:
+        solid.thickness = 0.24
+        solid.keyframe_insert("thickness", frame=start_f)
+        solid.keyframe_insert("thickness", frame=mid_f)
+        solid.thickness = 0.08
+        solid.keyframe_insert("thickness", frame=fade_f)
+        solid.thickness = 0.0
+        solid.keyframe_insert("thickness", frame=land_f)
+    if bevel:
+        bevel.width = 0.035
+        bevel.keyframe_insert("width", frame=start_f)
+        bevel.keyframe_insert("width", frame=mid_f)
+        bevel.width = 0.0
+        bevel.keyframe_insert("width", frame=land_f)
+
+    # 3D flyer fades out as logo PNG fades in
     key_morph(morph, start_f, 0.0)
-    key_morph(morph, fade_f, 0.15)
+    key_morph(morph, mid_f, 0.0)
+    key_morph(morph, fade_f, 0.25)
     key_morph(morph, land_f, 1.0)
     key_morph(morph, FRAME_END, 1.0)
+
+    logo_emit.inputs["Strength"].default_value = 0.0
+    logo_emit.inputs["Strength"].keyframe_insert("default_value", frame=1)
+    logo_emit.inputs["Strength"].keyframe_insert("default_value", frame=fade_f - 1)
+    logo_emit.inputs["Strength"].default_value = 0.35
+    logo_emit.inputs["Strength"].keyframe_insert("default_value", frame=fade_f)
+    logo_emit.inputs["Strength"].default_value = 1.7
+    logo_emit.inputs["Strength"].keyframe_insert("default_value", frame=land_f)
+    logo_emit.inputs["Strength"].keyframe_insert("default_value", frame=FRAME_END)
 
     obj.location = bottom
     look_at(obj, rise, track="Z", up="Y")
@@ -665,7 +697,7 @@ for i, obj in enumerate(teeth):
     obj.scale = Vector((scale * 1.15, scale * 1.15, scale * 1.15))
     kf_loc_rot_scale(obj, mid_f)
 
-    # Seat as flat 2D logo tooth
+    # Arrive at seat while dissolving into the logo tooth
     obj.location = seat
     obj.rotation_euler = Euler((math.radians(90), 0, 0), "XYZ")
     obj.scale = Vector((scale, scale, scale))
@@ -674,6 +706,7 @@ for i, obj in enumerate(teeth):
 
     set_linear_loc(obj)
     soften(morph.id_data.animation_data.action if morph.id_data.animation_data else None)
+    soften(logo_emit.id_data.animation_data.action if logo_emit.id_data.animation_data else None)
 
 # Pass-by streak (stays 3D, with thickness)
 obj, _, pass_mat = make_image_plane("PassBy_00", TOOTH_3D_PATH, size=1.2, blend="BLEND")
@@ -774,6 +807,6 @@ OUT_BLEND.parent.mkdir(parents=True, exist_ok=True)
 (ROOT / "blender/renders").mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT_BLEND))
 print(f"Saved {OUT_BLEND}")
-print(f"Frames 1–{FRAME_END}: multi-angle tunnel → 3D→2D morph → logo @{LOGO_IN_START}–{LOGO_IN_END}")
+print(f"Frames 1–{FRAME_END}: multi-angle tunnel → 3D flyers → logo PNG crossfade @{LOGO_IN_START}–{LOGO_IN_END}")
 print(f"Fly-ins from @{FLYIN_GATE}; last tooth land @{last_land}")
 print(f"Rest seat0 {seat_world(0, rig_rest, rig_rest_s, half_x, half_z)[0][:]}")
