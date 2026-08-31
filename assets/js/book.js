@@ -9,6 +9,14 @@
   const phone = document.getElementById("phone");
   const phoneError = document.getElementById("phone-error");
   const API_URL = "/api/book";
+  const ASSESS_KEY = "elitedent-assess-message";
+
+  try {
+    const assessMsg = sessionStorage.getItem(ASSESS_KEY);
+    if (assessMsg && form.message && !form.message.value.trim()) {
+      form.message.value = assessMsg;
+    }
+  } catch (_) {}
 
   function normalizePhone(value) {
     return String(value || "").replace(/[\s()-]/g, "");
@@ -61,7 +69,7 @@
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = "Sending…";
+      submitBtn.textContent = "Wird gesendet…";
     }
 
     try {
@@ -72,23 +80,27 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.error || "Something went wrong. Please try again.");
+        throw new Error(data.error || "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.");
       }
 
       if (bookRef && data.refId) {
-        bookRef.textContent = `Reference: ${data.refId}`;
+        bookRef.textContent = `Referenz: ${data.refId}`;
         bookRef.hidden = false;
       }
+
+      try {
+        sessionStorage.removeItem(ASSESS_KEY);
+      } catch (_) {}
 
       form.hidden = true;
       success.hidden = false;
       success.focus?.();
       success.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (err) {
-      setFormError(err.message || "Could not send. Please try again.");
+      setFormError(err.message || "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.");
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Request consultation";
+        submitBtn.textContent = "Beratung anfragen";
       }
     }
   });

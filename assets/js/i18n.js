@@ -1,13 +1,32 @@
 (() => {
   const KEY = "elitedent-ui-lang";
-  const SOURCE = "en";
+  const SOURCE = "de";
+  const DEFAULT = "de";
+  const READY = "elitedent:ready";
+
+  const STRINGS = {
+    home: { de: "Startseite", en: "Home" },
+    services: { de: "Leistungen", en: "Services" },
+    about: { de: "Über uns", en: "About" },
+    consult: { de: "Jetzt beraten", en: "Consult now" },
+    book: { de: "Beratung buchen", en: "Book a consultation" },
+    whitening: { de: "Bleaching", en: "Whitening" },
+    aligners: { de: "Aligner", en: "Aligners" },
+    veneers: { de: "Veneers", en: "Veneers" },
+    implants: { de: "Implantate", en: "Implants" },
+    preventive: { de: "Prophylaxe", en: "Preventive" },
+    restorative: { de: "Zahnerhaltung", en: "Restorative" },
+    "nav-label": { de: "Hauptnavigation", en: "Main navigation" },
+    "footer-label": { de: "Fußzeile", en: "Footer" },
+    "lang-label": { de: "Sprache", en: "Language" },
+  };
 
   function storedLang() {
     try {
       const v = localStorage.getItem(KEY);
       if (v === "de" || v === "en") return v;
     } catch (_) {}
-    return SOURCE;
+    return DEFAULT;
   }
 
   function setStored(lang) {
@@ -19,18 +38,34 @@
   function setGoogTransCookie(lang) {
     const host = location.hostname;
     const clear = "Thu, 01 Jan 1970 00:00:00 GMT";
-    // Clear any previous value (host + leading-dot domain)
     document.cookie = `googtrans=; expires=${clear}; path=/`;
     document.cookie = `googtrans=; expires=${clear}; path=/; domain=${host}`;
     if (host !== "localhost" && host !== "127.0.0.1") {
       document.cookie = `googtrans=; expires=${clear}; path=/; domain=.${host}`;
     }
-    if (lang === "de") {
-      document.cookie = "googtrans=/en/de; path=/";
+    // Only EN needs Google (DE is the authored source)
+    if (lang === "en") {
+      document.cookie = "googtrans=/de/en; path=/";
       if (host !== "localhost" && host !== "127.0.0.1") {
-        document.cookie = `googtrans=/en/de; path=/; domain=.${host}`;
+        document.cookie = `googtrans=/de/en; path=/; domain=.${host}`;
       }
     }
+  }
+
+  function applyUiStrings(lang) {
+    const L = lang === "en" ? "en" : "de";
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      const entry = STRINGS[key];
+      if (!entry) return;
+      el.textContent = entry[L];
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      const entry = STRINGS[key];
+      if (!entry) return;
+      el.setAttribute("aria-label", entry[L]);
+    });
   }
 
   function syncButtons(lang) {
@@ -38,6 +73,7 @@
       btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
     });
     document.documentElement.lang = lang === "de" ? "de" : "en";
+    applyUiStrings(lang);
   }
 
   function loadGoogleTranslator() {
@@ -62,27 +98,43 @@
     document.head.appendChild(script);
   }
 
+  function signalReady() {
+    document.documentElement.classList.remove("is-translating");
+    document.documentElement.dataset.uiReady = "1";
+    document.dispatchEvent(new Event(READY));
+  }
+
   const lang = storedLang();
   setGoogTransCookie(lang);
 
-  // Only pull in Google when German is active (keeps EN pages fast)
-  if (lang === "de") {
+  if (!localStorage.getItem(KEY)) {
+    try {
+      localStorage.setItem(KEY, DEFAULT);
+    } catch (_) {}
+  }
+
+  // DE is native HTML — instant. Google only when viewing in English.
+  if (lang === "en") {
     document.documentElement.classList.add("is-translating");
     loadGoogleTranslator();
 
+    let settled = false;
     const done = () => {
-      document.documentElement.classList.remove("is-translating");
+      if (settled) return;
+      settled = true;
+      signalReady();
     };
 
-    // Google marks <html> with translated-ltr when finished
     const obs = new MutationObserver(() => {
       if (document.documentElement.classList.contains("translated-ltr")) {
         obs.disconnect();
-        done();
+        requestAnimationFrame(() => requestAnimationFrame(done));
       }
     });
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     window.setTimeout(done, 4000);
+  } else {
+    signalReady();
   }
 
   function onReady(fn) {
@@ -105,7 +157,6 @@
       if (next !== "en" && next !== "de") return;
       if (next === storedLang()) return;
 
-      // Instant switch: cookie + reload (no waiting for Google's combo box)
       setStored(next);
       setGoogTransCookie(next);
       syncButtons(next);
