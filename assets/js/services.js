@@ -68,7 +68,10 @@
         .filter(([id]) => id)
     );
 
+    let currentId = "";
     const setActive = (id) => {
+      if (id === currentId) return;
+      currentId = id;
       links.forEach((a) => {
         const on = a.getAttribute("href") === `#${id}`;
         a.classList.toggle("is-active", on);

@@ -91,7 +91,6 @@
         settled = true;
         brand.removeEventListener("transitionend", land);
 
-        navMark.src = "assets/images/elitedentlogo.png?v=21";
         app.classList.add("is-splash-landed");
         app.classList.remove("is-splash-handoff");
         brand.style.transition = "none";

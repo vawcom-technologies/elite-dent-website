@@ -18,10 +18,6 @@ body {
   background: var(--surface);
 }
 
-body {
-  overflow-x: hidden;
-}
-
 .splash {
   position: fixed;
   inset: 0;
