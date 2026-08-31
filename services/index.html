@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1D3557" />
-  <title>Services · EliteDent</title>
+  <title>Leistungen · EliteDent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://translate.google.com" />
@@ -13,12 +13,12 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="../assets/css/home.css?v=33" />
-  <link rel="stylesheet" href="../assets/css/services.css?v=5" />
-  <script src="../assets/js/i18n.js"></script>
+  <link rel="stylesheet" href="../assets/css/home.css?v=64" />
+  <link rel="stylesheet" href="../assets/css/services.css?v=22" />
+  <script src="../assets/js/i18n.js?v=4"></script>
 </head>
 <body class="page page--services">
-  <header class="nav nav--static">
+  <header class="nav nav--static notranslate" translate="no">
     <a class="nav__brand notranslate" href="../" translate="no">
       <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
     </a>
@@ -27,40 +27,40 @@
       class="nav__toggle"
       aria-expanded="false"
       aria-controls="nav-panel"
-      aria-label="Open menu"
+      aria-label="Menü öffnen"
     >
       <span class="nav__toggle-bars" aria-hidden="true"></span>
     </button>
     <div class="nav__panel" id="nav-panel">
-      <nav class="nav__links" aria-label="Main navigation">
-        <a href="../">Home</a>
+      <nav class="nav__links" aria-label="Hauptnavigation" data-i18n-aria="nav-label">
+        <a href="../" data-i18n="home">Startseite</a>
         <div class="nav__services">
           <div class="nav__services-head">
-            <a href="./" aria-current="page">Services</a>
+            <a href="./" data-i18n="services" aria-current="page">Leistungen</a>
             <button
               type="button"
               class="nav__services-toggle"
               aria-expanded="false"
-              aria-label="Show services"
+              aria-label="Leistungen anzeigen"
             ></button>
           </div>
           <div class="nav__tabs">
-            <a href="#whitening">Whitening</a>
-            <a href="#aligners">Aligners</a>
-            <a href="#veneers">Veneers</a>
-            <a href="#implants">Implants</a>
-            <a href="#preventive">Preventive</a>
-            <a href="#restorative">Restorative</a>
+            <a href="./#whitening" data-i18n="whitening">Bleaching</a>
+            <a href="./#aligners" data-i18n="aligners">Aligner</a>
+            <a href="./#veneers" data-i18n="veneers">Veneers</a>
+            <a href="./#implants" data-i18n="implants">Implantate</a>
+            <a href="./#preventive" data-i18n="preventive">Prophylaxe</a>
+            <a href="./#restorative" data-i18n="restorative">Zahnerhaltung</a>
           </div>
         </div>
-        <a href="../about/">About</a>
+        <a href="../about/" data-i18n="about">Über uns</a>
       </nav>
       <div class="nav__end">
-        <div class="lang-toggle notranslate" role="group" aria-label="Language" translate="no">
-          <button type="button" data-lang="en" aria-pressed="true">EN</button>
-          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        <div class="lang-toggle notranslate" role="group" aria-label="Sprache" data-i18n-aria="lang-label" translate="no">
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
         </div>
-        <a class="nav__cta" href="../book/">Consult now</a>
+        <a class="nav__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
       </div>
     </div>
   </header>
@@ -68,74 +68,82 @@
   <div id="google_translate_element" aria-hidden="true"></div>
 
   <main class="services-page">
-    <header class="page-hero">
-      <div class="page-hero__orb" aria-hidden="true"></div>
-      <div class="page-hero__inner">
-        <h1 class="page-hero__title">
-          <span class="line"><span class="title-word" style="--i: 0">Treatments</span></span>
-          <span class="line"><span class="title-word title-word--accent" style="--i: 1">that fit your smile.</span></span>
-        </h1>
-        <p class="page-hero__lede">
-          From a brighter shade to a missing tooth, here is how each treatment works, what a visit includes, and when it makes sense.
-        </p>
-      </div>
-    </header>
+    <div class="services-hero-stage">
+      <header class="page-hero">
+        <div class="page-hero__orb" aria-hidden="true"></div>
+        <div class="page-hero__lottie" id="services-hero-lottie" aria-hidden="true"></div>
+        <div class="page-hero__inner">
+          <h1 class="page-hero__title">
+            <span class="line"><span class="title-word" style="--i: 0">Behandlungen,</span></span>
+            <span class="line"><span class="title-word title-word--accent" style="--i: 1">die zu Ihrem Lächeln passen.</span></span>
+          </h1>
+          <p class="page-hero__lede">
+            Von einer helleren Farbe bis zu einem fehlenden Zahn: so funktioniert jede Behandlung, was ein Termin umfasst und wann sie sinnvoll ist.
+          </p>
+          <p class="page-hero__prompt">
+            Nicht sicher, welche Behandlung zu Ihnen passt? Der kurze Lächel-Check hilft Ihnen, einen ruhigen Einstieg zu finden.
+          </p>
+          <a class="page-hero__cta" href="../assess/" data-assess-expand>Lächel-Check starten</a>
+        </div>
+      </header>
+    </div>
 
-    <nav class="service-jump" aria-label="Jump to treatment">
+    <nav class="service-jump" aria-label="Zur Behandlung springen">
       <div class="service-jump__inner">
-        <a href="#whitening">Whitening</a>
-        <a href="#aligners">Aligners</a>
+        <a href="#whitening">Bleaching</a>
+        <a href="#aligners">Aligner</a>
         <a href="#veneers">Veneers</a>
-        <a href="#implants">Implants</a>
-        <a href="#preventive">Preventive</a>
-        <a href="#restorative">Restorative</a>
+        <a href="#implants">Implantate</a>
+        <a href="#preventive">Prophylaxe</a>
+        <a href="#restorative">Zahnerhaltung</a>
       </div>
     </nav>
 
     <div class="service-feed">
-      <article id="whitening" class="service-article reveal" data-reveal>
+      <article id="whitening" class="service-article">
         <div class="service-article__copy">
-          <h2>Teeth whitening</h2>
+          <h2>Bleaching</h2>
           <p>
-            Coffee, tea, and years of wear leave stains that home kits rarely lift evenly. In-clinic whitening uses
-            controlled gels so enamel stays protected while shade improves in a single, supervised session.
+            Kaffee, Tee und jahrelange Abnutzung hinterlassen Verfärbungen, die Heimkits selten gleichmäßig entfernen.
+            In der Praxis arbeiten wir mit kontrollierten Gelen, damit der Zahnschmelz geschützt bleibt und die Farbe
+            in einer begleiteten Sitzung heller wird.
           </p>
           <p>
-            We start with a shade check, agree on a realistic target, then guide you through aftercare so the result
-            stays even, not blotchy a week later.
+            Wir beginnen mit einer Farbbestimmung, vereinbaren ein realistisches Ziel und begleiten Sie bei der
+            Nachsorge, damit das Ergebnis gleichmäßig bleibt – nicht fleckig eine Woche später.
           </p>
           <ul>
-            <li>Shade assessment before treatment</li>
-            <li>Enamel-safe professional whitening gels</li>
-            <li>Clear home-care instructions</li>
+            <li>Farbbestimmung vor der Behandlung</li>
+            <li>Schmelzschonende professionelle Bleaching-Gele</li>
+            <li>Klare Hinweise für die Pflege zu Hause</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/display/perfectsmile.jpg" alt="A bright, even smile" width="1600" height="1066" loading="lazy" decoding="async" />
+          <img src="../assets/images/display/perfectsmile.jpg" alt="Ein helles, ebenmäßiges Lächeln" width="1600" height="1066" loading="lazy" decoding="async" />
         </figure>
       </article>
 
       <article id="aligners" class="service-article reveal" data-reveal>
         <div class="service-article__copy">
-          <h2>Clear aligners</h2>
+          <h2>Aligner</h2>
           <p>
-            Crowding and small gaps can be corrected without metal braces. A digital scan builds a step-by-step plan
-            you can preview before the first tray arrives.
+            Engstände und kleine Lücken lassen sich ohne Metallbrackets korrigieren. Ein digitaler Scan erstellt einen
+            Schritt-für-Schritt-Plan, den Sie vor der ersten Schiene sehen können.
           </p>
           <p>
-            Trays are removable for meals and brushing, so daily life stays simple. We check progress at comfortable
-            intervals and adjust the series if your bite needs a finer finish.
+            Die Schienen sind zum Essen und Zähneputzen herausnehmbar – der Alltag bleibt einfach. Wir prüfen den
+            Fortschritt in angenehmen Abständen und passen die Serie an, wenn der Biss noch feiner werden soll.
           </p>
           <ul>
-            <li>Digital scan and treatment preview</li>
-            <li>Series of precisely fitted trays</li>
-            <li>Progress checks along the way</li>
+            <li>Digitaler Scan und Behandlungsvorschau</li>
+            <li>Serie präzise angepasster Schienen</li>
+            <li>Fortschrittskontrollen unterwegs</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/heroimg.png" alt="Hands holding dental care products" width="591" height="422" loading="lazy" decoding="async" />
+          <img src="../assets/images/heroimg.png" alt="Hände halten Zahnpflegeprodukte" width="591" height="422" loading="lazy" decoding="async" />
         </figure>
       </article>
 
@@ -143,98 +151,99 @@
         <div class="service-article__copy">
           <h2>Veneers</h2>
           <p>
-            Chips, gaps, and uneven color can make a smile feel unfinished. Thin ceramic veneers refine shape and shade
-            so the result looks like your teeth, only calmer and more even.
+            Absplitterungen, Lücken und ungleichmäßige Farbe können ein Lächeln unfertig wirken lassen. Dünne
+            Keramik-Veneers verfeinern Form und Farbe, sodass das Ergebnis wie Ihre Zähne wirkt – nur ruhiger und ebenmäßiger.
           </p>
           <p>
-            We plan proportions against your face, not a stock template. Where possible we keep preparation light, then
-            bond ceramics chosen for strength and stain resistance.
+            Wir planen die Proportionen zu Ihrem Gesicht, nicht nach einer Standardvorlage. Wo möglich bleibt die
+            Präparation schonend; danach kleben wir Keramik, die für Stabilität und Resistenz gegen Verfärbungen gewählt ist.
           </p>
           <ul>
-            <li>Mock-up and shade matching</li>
-            <li>Conservative preparation where possible</li>
-            <li>Durable, stain-resistant ceramics</li>
+            <li>Mock-up und Farbabstimmung</li>
+            <li>Schonende Präparation, wo möglich</li>
+            <li>Langlebige, verfärbungsresistente Keramik</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/display/teeth.jpg" alt="Close view of a natural-looking smile" width="1066" height="1600" loading="lazy" decoding="async" />
+          <img src="../assets/images/display/teeth.jpg" alt="Nahaufnahme eines natürlich wirkenden Lächelns" width="1066" height="1600" loading="lazy" decoding="async" />
         </figure>
       </article>
 
       <article id="implants" class="service-article reveal" data-reveal>
         <div class="service-article__copy">
-          <h2>Dental implants</h2>
+          <h2>Implantate</h2>
           <p>
-            A missing tooth affects chewing, speech, and the teeth around it. An implant places a titanium foundation
-            in the bone, then a custom crown that feels secure when you eat and speak.
+            Ein fehlender Zahn beeinflusst Kauen, Sprechen und die Nachbarzähne. Ein Implantat setzt eine Titanwurzel
+            im Knochen, darauf eine individuelle Krone, die sich beim Essen und Sprechen sicher anfühlt.
           </p>
           <p>
-            Planning covers bone, bite, and neighboring teeth so the restoration lasts. Healing guidance and a matched
-            crown finish the process.
+            Die Planung berücksichtigt Knochen, Biss und Nachbarzähne, damit die Versorgung hält. Hinweise zur Heilung
+            und eine farblich angepasste Krone schließen den Prozess ab.
           </p>
           <ul>
-            <li>Clinical and imaging review</li>
-            <li>Precise placement and healing guidance</li>
-            <li>Crown matched to neighboring teeth</li>
+            <li>Klinische und bildgebende Untersuchung</li>
+            <li>Präzise Setzung und Begleitung der Heilung</li>
+            <li>Krone abgestimmt auf die Nachbarzähne</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/display/perfectsmile2.jpg" alt="A full, confident smile" width="1066" height="1600" loading="lazy" decoding="async" />
+          <img src="../assets/images/display/perfectsmile2.jpg" alt="Ein volles, selbstbewusstes Lächeln" width="1066" height="1600" loading="lazy" decoding="async" />
         </figure>
       </article>
 
       <article id="preventive" class="service-article reveal" data-reveal>
         <div class="service-article__copy">
-          <h2>Preventive care</h2>
+          <h2>Prophylaxe</h2>
           <p>
-            Most problems are quieter, and cheaper, when caught early. Regular exams and cleanings keep gums and
-            enamel healthy and give us a clear baseline for your smile over time.
+            Die meisten Probleme sind leiser – und günstiger –, wenn man sie früh erkennt. Regelmäßige Kontrollen und
+            Reinigungen halten Zahnfleisch und Schmelz gesund und geben uns eine klare Ausgangslage für Ihr Lächeln über die Zeit.
           </p>
           <p>
-            Visits stay calm and practical: a full check, a professional clean, and advice you can actually follow at home.
+            Die Termine bleiben ruhig und praktisch: eine gründliche Untersuchung, eine professionelle Reinigung und
+            Tipps, die Sie zu Hause wirklich umsetzen können.
           </p>
           <ul>
-            <li>Comprehensive oral examination</li>
-            <li>Professional cleaning and polish</li>
-            <li>Personal home-care advice</li>
+            <li>Umfassende Munduntersuchung</li>
+            <li>Professionelle Reinigung und Politur</li>
+            <li>Persönliche Tipps für die Pflege zu Hause</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/display/perfectsmile.jpg" alt="Healthy teeth after routine care" width="1600" height="1066" loading="lazy" decoding="async" style="object-position: 70% 45%" />
+          <img src="../assets/images/display/perfectsmile.jpg" alt="Gesunde Zähne nach der Prophylaxe" width="1600" height="1066" loading="lazy" decoding="async" style="object-position: 70% 45%" />
         </figure>
       </article>
 
       <article id="restorative" class="service-article reveal" data-reveal>
         <div class="service-article__copy">
-          <h2>Restorative dentistry</h2>
+          <h2>Zahnerhaltung</h2>
           <p>
-            Decay, chips, and worn edges take comfort and confidence with them. Tooth-colored fillings and crowns
-            rebuild strength so you can chew normally again.
+            Karies, Absplitterungen und abgenutzte Kanten nehmen Komfort und Sicherheit. Zahnfarbene Füllungen und
+            Kronen stellen die Stabilität wieder her, damit Sie wieder normal kauen können.
           </p>
           <p>
-            Materials and shade are chosen to blend with your natural teeth. We repair what is needed and leave healthy
-            structure alone.
+            Materialien und Farbe werden so gewählt, dass sie zu Ihren natürlichen Zähnen passen. Wir reparieren, was
+            nötig ist, und lassen gesunde Substanz unberührt.
           </p>
           <ul>
-            <li>Tooth-colored restorations</li>
-            <li>Crowns for strength and longevity</li>
-            <li>Repair of chips and worn edges</li>
+            <li>Zahnfarbene Versorgungen</li>
+            <li>Kronen für Stabilität und Langlebigkeit</li>
+            <li>Reparatur von Absplitterungen und abgenutzten Kanten</li>
           </ul>
-          <a class="service-article__cta" href="../book/">Book a consultation</a>
+          <a class="service-article__cta" href="../book/">Beratung buchen</a>
         </div>
         <figure class="service-article__media">
-          <img src="../assets/images/display/teeth.jpg" alt="Restored teeth in a natural smile" width="1066" height="1600" loading="lazy" decoding="async" style="object-position: 50% 55%" />
+          <img src="../assets/images/display/teeth.jpg" alt="Wiederhergestellte Zähne in einem natürlichen Lächeln" width="1066" height="1600" loading="lazy" decoding="async" style="object-position: 50% 55%" />
         </figure>
       </article>
     </div>
 
     <section class="cta-band reveal" data-reveal>
-      <h2>Not sure where to start?</h2>
-      <p>Answer three quick questions and we will suggest a calm starting point for your consultation.</p>
-      <a class="cta-band__btn" href="../assess/">Try the smile assessment</a>
+      <h2>Nicht sicher, wo Sie anfangen sollen?</h2>
+      <p>Beantworten Sie drei kurze Fragen – wir schlagen einen ruhigen Einstieg für Ihre Beratung vor.</p>
+      <a class="cta-band__btn" href="../assess/">Lächel-Check starten</a>
     </section>
   </main>
 
@@ -243,16 +252,19 @@
       <a class="site-footer__brand" href="../">
         <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
       </a>
-      <nav class="site-footer__nav" aria-label="Footer">
-        <a href="../">Home</a>
-        <a href="./">Services</a>
-        <a href="../about/">About</a>
-        <a class="site-footer__cta" href="../book/">Book a consultation</a>
+      <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+        <a href="../" data-i18n="home">Startseite</a>
+        <a href="./" data-i18n="services">Leistungen</a>
+        <a href="../about/" data-i18n="about">Über uns</a>
+        <a class="site-footer__cta" href="../book/" data-i18n="book">Beratung buchen</a>
       </nav>
     </div>
   </footer>
 
-  <script src="../assets/js/nav.js" defer></script>
-  <script src="../assets/js/services.js?v=10" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+  <script src="../assets/js/nav.js?v=13" defer></script>
+  <script src="../assets/js/services.js?v=12" defer></script>
+  <script src="../assets/js/services-hero.js?v=4" defer></script>
+  <script src="../assets/js/assess-expand.js?v=2" defer></script>
 </body>
 </html>

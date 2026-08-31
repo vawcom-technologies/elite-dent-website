@@ -17,11 +17,39 @@
 
 html {
   overflow-x: clip;
+  background: var(--surface);
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
 }
 
 @supports not (overflow: clip) {
   html {
     overflow-x: hidden;
+  }
+}
+
+/* Hold previous page paint during MPA navigations (Chromium / Safari 18.2+) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 140ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Keep chrome continuous across pages */
+  .nav {
+    view-transition-name: site-nav;
+  }
+
+  ::view-transition-group(site-nav) {
+    animation-duration: 140ms;
   }
 }
 
@@ -83,8 +111,13 @@ html {
 }
 
 .nav__links > a {
-  display: inline-block;
-  padding: 0.65rem 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0 0.95rem;
+  position: relative;
+  z-index: 1;
 }
 
 .nav__links > a:hover,
@@ -97,8 +130,42 @@ html {
 
 .nav__links > a[aria-current="page"],
 .nav__services > a[aria-current="page"],
-.nav__services-head > a[aria-current="page"] {
+.nav__services-head > a[aria-current="page"],
+.nav__links > a[aria-current="page"]:hover,
+.nav__services-head > a[aria-current="page"]:hover,
+.nav__cta[aria-current="page"] {
   color: var(--navy);
+}
+
+.nav__services-head > a {
+  position: relative;
+  z-index: 1;
+}
+
+/* Active nav capsule — orb light blue (matches hero semicircle) */
+.nav__pill {
+  --pill-h: 2.35rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 0;
+  height: var(--pill-h);
+  border-radius: 999px;
+  background: var(--orb);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 4px 14px rgb(74 144 226 / 0.2);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transform-origin: left center;
+  will-change: transform;
+  contain: layout style;
+}
+
+.nav__pill.is-ready {
+  opacity: 1;
 }
 
 .nav__services {
@@ -110,8 +177,11 @@ html {
 
 .nav__services > a,
 .nav__services-head > a {
-  display: inline-block;
-  padding: 0.35rem 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0 0.95rem;
 }
 
 .nav__services-head {
@@ -139,6 +209,7 @@ html {
     min-width: 0;
     margin: 0;
     padding: 0.65rem 0.85rem;
+    border-radius: 1.15rem;
     background: var(--white);
     border: 1px solid rgb(29 53 87 / 0.08);
     box-shadow: 0 16px 40px rgb(29 53 87 / 0.12);
@@ -189,11 +260,21 @@ html {
 }
 
 .nav__cta {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.7rem 1.05rem;
-  background: var(--navy);
+  min-height: 2.35rem;
+  padding: 0 1.15rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      155deg,
+      #2f5078 0%,
+      var(--navy) 48%,
+      #152841 100%
+    );
   color: var(--white);
   text-decoration: none;
   font-size: 0.72rem;
@@ -201,13 +282,42 @@ html {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: background 0.2s ease;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 8px 20px rgb(29 53 87 / 0.16);
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .nav__cta:hover,
 .nav__cta:focus-visible {
-  background: #152841;
+  background:
+    linear-gradient(
+      155deg,
+      #3a5f8a 0%,
+      #243f63 50%,
+      #122238 100%
+    );
   color: var(--white);
+  outline: none;
+}
+
+.nav__cta[aria-current="page"] {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--navy);
+}
+
+.nav__cta[aria-current="page"]:hover,
+.nav__cta[aria-current="page"]:focus-visible {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: #2a6bb5;
   outline: none;
 }
 
@@ -281,9 +391,9 @@ font {
   box-shadow: none !important;
 }
 
-/* Brief soft state while Google applies DE on load */
+/* Hide EN flash while Google applies DE — pill measures only after this clears */
 html.is-translating body {
-  opacity: 0.72;
+  opacity: 0;
 }
 
 html:not(.is-translating) body {
@@ -430,7 +540,7 @@ html:not(.is-translating) body {
 
   .nav__links > a[aria-current="page"],
   .nav__services-head > a[aria-current="page"] {
-    color: var(--dental-blue);
+    color: var(--navy);
   }
 
   .nav__services {
@@ -628,10 +738,61 @@ html:not(.is-translating) body {
   width: min(120vw, 920px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--orb);
   opacity: 0;
   transform: translate(-50%, var(--orb-y)) scale(0.55);
   transform-origin: 50% 50%;
+  container-type: size;
+}
+
+.hero__orb-disk {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 50%;
+  background: var(--orb);
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.hero__tools {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+/* Center on orb, rotate, then slide along the radius.
+   Cropped assets are tall; 50cqw ≈ rim, hover just past that. */
+.hero__tool {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7cqw;
+  margin: 0;
+  transform: translate(-50%, -50%) rotate(var(--a)) translateY(-38cqw);
+  opacity: 0;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+    opacity 0.35s ease var(--d, 0s);
+}
+
+.hero__tool img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero__stage:hover .hero__orb-disk {
+    transform: scale(1.06);
+  }
+
+  .hero__stage:hover .hero__tool {
+    transform: translate(-50%, -50%) rotate(var(--a)) translateY(-56cqw);
+    opacity: 1;
+  }
 }
 
 .home.is-ready .hero__orb {
@@ -674,6 +835,7 @@ html:not(.is-translating) body {
   min-width: min(280px, 80vw);
   min-height: 3.15rem;
   padding: 0.9rem 1.75rem;
+  border-radius: 999px;
   background: var(--white);
   color: var(--navy);
   text-decoration: none;
@@ -750,6 +912,7 @@ html:not(.is-translating) body {
   display: grid;
   grid-template-columns: 1fr;
   overflow: hidden;
+  border-radius: 1.35rem;
   color: var(--navy);
   text-decoration: none;
   background: var(--surface);
@@ -1041,7 +1204,7 @@ html:not(.is-translating) body {
 .page-hero {
   position: relative;
   overflow: hidden;
-  padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 3.25rem;
+  padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 4rem;
 }
 
 .page-hero__orb {
@@ -1053,13 +1216,45 @@ html:not(.is-translating) body {
   background: var(--orb);
   right: -16%;
   top: -38%;
-  opacity: 0;
-  transform: scale(0.62);
+  opacity: 1;
+  transform: scale(1);
   transform-origin: 50% 50%;
+  pointer-events: none;
 }
 
 .page.is-ready .page-hero__orb {
-  animation: page-orb 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) 0.02s forwards;
+  animation: none;
+}
+
+.page-hero__lottie {
+  --hero-copy-end: calc(40rem + clamp(1.25rem, 4vw, 3rem));
+  position: absolute;
+  z-index: 0;
+  width: min(34vw, 400px);
+  max-width: calc(100% - var(--hero-copy-end) - 2rem);
+  aspect-ratio: 1;
+  left: calc(var(--hero-copy-end) + (100% - var(--hero-copy-end)) / 2);
+  right: auto;
+  top: 50%;
+  transform: translate(-50%, -48%);
+  pointer-events: none;
+}
+
+.page-hero__lottie svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .page-hero__lottie {
+    left: auto;
+    right: 4%;
+    top: 12%;
+    width: min(48vw, 260px);
+    max-width: none;
+    transform: none;
+  }
 }
 
 .page-hero__inner {
@@ -1085,17 +1280,12 @@ html:not(.is-translating) body {
 
 .title-word {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(110%);
+  opacity: 1;
+  transform: none;
 }
 
 .title-word--accent {
   color: var(--dental-blue);
-}
-
-.page.is-ready .page-hero .title-word {
-  animation: title-rise 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-  animation-delay: calc(0.06s + var(--i, 0) * 0.06s);
 }
 
 .page-hero__lede {
@@ -1104,25 +1294,19 @@ html:not(.is-translating) body {
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.6;
-  opacity: 0;
-  transform: translateY(14px);
+  opacity: 1;
+  transform: none;
 }
 
-.page.is-ready .page-hero .page-hero__lede {
-  animation: fade-up 0.4s ease 0.2s forwards;
-}
-
+/* Visible on first paint — no blank MPA flash waiting for JS */
 .reveal {
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 1;
+  transform: none;
 }
 
 .reveal.is-in {
   opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.35s ease calc(var(--i, 0) * 40ms),
-    transform 0.35s ease calc(var(--i, 0) * 40ms);
+  transform: none;
 }
 
 .cta-band {
@@ -1221,6 +1405,11 @@ html:not(.is-translating) body {
 
   .hero__orb {
     transform: translate(-50%, var(--orb-y));
+  }
+
+  .hero__orb-disk,
+  .hero__tool {
+    transition: none !important;
   }
 
   .hero__figure {

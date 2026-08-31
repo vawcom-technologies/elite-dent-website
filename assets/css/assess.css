@@ -8,6 +8,61 @@
   background: var(--surface);
 }
 
+/* Arrival from services CTA expand */
+.assess-expand-veil {
+  position: fixed;
+  z-index: 10000;
+  border-radius: 999px;
+  background: var(--navy);
+  pointer-events: none;
+}
+
+.assess-expand-veil--arrive {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  opacity: 1;
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    clip-path 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  clip-path: circle(150% at 50% 42%);
+}
+
+.assess-expand-veil--arrive.is-revealing {
+  opacity: 0;
+  clip-path: circle(0% at 50% 42%);
+}
+
+html.assess-reveal .page--assess .nav,
+html.assess-reveal .page--assess .assess-page,
+html.assess-reveal .page--assess .site-footer {
+  opacity: 0;
+}
+
+html.assess-reveal-ready .page--assess .nav,
+html.assess-reveal-ready .page--assess .assess-page,
+html.assess-reveal-ready .page--assess .site-footer {
+  opacity: 1;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assess-expand-veil--arrive,
+  .assess-expand-veil--arrive.is-revealing,
+  html.assess-reveal-ready .page--assess .nav,
+  html.assess-reveal-ready .page--assess .assess-page,
+  html.assess-reveal-ready .page--assess .site-footer {
+    transition: none;
+  }
+
+  html.assess-reveal .page--assess .nav,
+  html.assess-reveal .page--assess .assess-page,
+  html.assess-reveal .page--assess .site-footer {
+    opacity: 1;
+  }
+}
+
 .assess-panel {
   width: min(100%, 32rem);
 }

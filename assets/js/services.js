@@ -54,7 +54,10 @@
   const other = [...document.querySelectorAll("[data-reveal]")].filter(
     (el) => !(el.classList.contains("service-card") && el.closest(".home"))
   );
-  observe(other, { threshold: 0.08, rootMargin: "0px 0px 18% 0px" });
+  observe(other, {
+    threshold: 0.25,
+    rootMargin: "0px 0px -12% 0px",
+  });
 
   function bindServiceJump() {
     const jump = document.querySelector(".service-jump");

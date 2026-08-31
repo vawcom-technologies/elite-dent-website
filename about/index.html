@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1D3557" />
-  <title>About · EliteDent</title>
+  <title>Über uns · EliteDent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://translate.google.com" />
@@ -13,12 +13,12 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="../assets/css/home.css?v=33" />
-  <link rel="stylesheet" href="../assets/css/about.css?v=5" />
-  <script src="../assets/js/i18n.js"></script>
+  <link rel="stylesheet" href="../assets/css/home.css?v=64" />
+  <link rel="stylesheet" href="../assets/css/about.css?v=7" />
+  <script src="../assets/js/i18n.js?v=4"></script>
 </head>
 <body class="page page--about">
-  <header class="nav nav--static">
+  <header class="nav nav--static notranslate" translate="no">
     <a class="nav__brand notranslate" href="../" translate="no">
       <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
     </a>
@@ -27,40 +27,40 @@
       class="nav__toggle"
       aria-expanded="false"
       aria-controls="nav-panel"
-      aria-label="Open menu"
+      aria-label="Menü öffnen"
     >
       <span class="nav__toggle-bars" aria-hidden="true"></span>
     </button>
     <div class="nav__panel" id="nav-panel">
-      <nav class="nav__links" aria-label="Main navigation">
-        <a href="../">Home</a>
+      <nav class="nav__links" aria-label="Hauptnavigation" data-i18n-aria="nav-label">
+        <a href="../" data-i18n="home">Startseite</a>
         <div class="nav__services">
           <div class="nav__services-head">
-            <a href="../services/">Services</a>
+            <a href="../services/" data-i18n="services">Leistungen</a>
             <button
               type="button"
               class="nav__services-toggle"
               aria-expanded="false"
-              aria-label="Show services"
+              aria-label="Leistungen anzeigen"
             ></button>
           </div>
           <div class="nav__tabs">
-            <a href="../services/#whitening">Whitening</a>
-            <a href="../services/#aligners">Aligners</a>
-            <a href="../services/#veneers">Veneers</a>
-            <a href="../services/#implants">Implants</a>
-            <a href="../services/#preventive">Preventive</a>
-            <a href="../services/#restorative">Restorative</a>
+            <a href="../services/#whitening" data-i18n="whitening">Bleaching</a>
+            <a href="../services/#aligners" data-i18n="aligners">Aligner</a>
+            <a href="../services/#veneers" data-i18n="veneers">Veneers</a>
+            <a href="../services/#implants" data-i18n="implants">Implantate</a>
+            <a href="../services/#preventive" data-i18n="preventive">Prophylaxe</a>
+            <a href="../services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
           </div>
         </div>
-        <a href="./" aria-current="page">About</a>
+        <a href="./" data-i18n="about" aria-current="page">Über uns</a>
       </nav>
       <div class="nav__end">
-        <div class="lang-toggle notranslate" role="group" aria-label="Language" translate="no">
-          <button type="button" data-lang="en" aria-pressed="true">EN</button>
-          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        <div class="lang-toggle notranslate" role="group" aria-label="Sprache" data-i18n-aria="lang-label" translate="no">
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
         </div>
-        <a class="nav__cta" href="../book/">Consult now</a>
+        <a class="nav__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
       </div>
     </div>
   </header>
@@ -70,21 +70,21 @@
   <main class="about-page">
     <article class="about-essay">
       <header class="about-essay__header">
-        <p class="about-essay__meta">About the practice</p>
+        <p class="about-essay__meta">Über die Praxis</p>
         <h1>
-          <span class="about-essay__title-line"><span>We opened <span class="notranslate" translate="no">EliteDent</span> for the patients</span></span>
-          <span class="about-essay__title-line"><span>who leave other chairs feeling rushed.</span></span>
+          <span class="about-essay__title-line"><span>Wir haben <span class="notranslate" translate="no">EliteDent</span> für Patientinnen und Patienten geöffnet,</span></span>
+          <span class="about-essay__title-line"><span>die anderswo das Gefühl haben, abgefertigt zu werden.</span></span>
         </h1>
         <p class="about-essay__deck">
-          This is not a brochure version of us. It is how we actually work: slower than a production line,
-          clearer than a sales pitch, and careful with the teeth you already have.
+          Das ist keine Broschürenversion von uns. So arbeiten wir wirklich: ruhiger als am Fließband,
+          klarer als ein Verkaufsgespräch und behutsam mit den Zähnen, die Sie bereits haben.
         </p>
       </header>
 
       <figure class="about-essay__figure">
         <img
           src="../assets/images/display/perfectsmile2.jpg"
-          alt="A natural, relaxed smile in soft light"
+          alt="Ein natürliches, entspanntes Lächeln im weichen Licht"
           width="1066"
           height="1600"
           loading="eager"
@@ -92,73 +92,75 @@
           fetchpriority="high"
         />
         <figcaption>
-          The result we aim for is quiet: a smile that looks like you on a good day, not a template.
+          Das Ergebnis, das wir anstreben, ist unaufdringlich: ein Lächeln, das wie Sie an einem guten Tag wirkt – nicht wie eine Vorlage.
         </figcaption>
       </figure>
 
       <div class="about-essay__body">
         <p class="about-essay__lead reveal" data-reveal>
-          Most people who find us are not chasing a “Hollywood” look. They are tired of appointments that end
-          with a quote and little explanation. They want someone to sit with the photo, the scan, and the worry.
-          then say what is necessary, what can wait, and what we would do for our own family.
+          Die meisten Menschen, die zu uns finden, jagen keinem „Hollywood“-Look hinterher. Sie sind müde von Terminen,
+          die mit einem Kostenvoranschlag enden und wenig Erklärung. Sie möchten, dass jemand sich Zeit nimmt für das Foto,
+          den Scan und die Sorge – und dann sagt, was nötig ist, was warten kann und was wir bei unserer eigenen Familie tun würden.
         </p>
 
         <p class="reveal" data-reveal>
-          EliteDent started as a small studio with that filter. We keep consultations unhurried on purpose.
-          If you need time to think, we write the plan down and send you home with it. No pressure to decide
-          in the chair while the light is still in your eyes.
+          <span class="notranslate" translate="no">EliteDent</span> begann als kleines Studio mit genau diesem Anspruch. Beratungen halten wir bewusst ohne Zeitdruck.
+          Wenn Sie nachdenken möchten, schreiben wir den Plan auf und Sie gehen damit nach Hause. Kein Druck, im Stuhl
+          zu entscheiden, solange das Licht noch in den Augen steht.
         </p>
 
-        <h2 class="reveal about-essay__span" data-reveal>What a first visit usually feels like</h2>
+        <h2 class="reveal about-essay__span" data-reveal>Wie sich ein Erstgespräch meist anfühlt</h2>
         <p class="reveal" data-reveal>
-          You talk first. We ask what bothers you day to day: a chip you catch with your tongue, a shade that
-          photographs colder than you feel, a gap that has widened over years. Then we look together: mirrors,
-          photos, and imaging on screen so you are not guessing what we see.
+          Zuerst sprechen Sie. Wir fragen, was Sie im Alltag stört: eine Absplitterung, an der die Zunge hängen bleibt,
+          eine Farbe, die auf Fotos kühler wirkt als Sie sich fühlen, eine Lücke, die über Jahre größer geworden ist.
+          Dann schauen wir gemeinsam: Spiegel, Fotos und Bildgebung auf dem Bildschirm, damit Sie nicht raten müssen, was wir sehen.
         </p>
         <p class="reveal" data-reveal>
-          Only after that do we talk options. Sometimes the kindest answer is a clean, a night guard, or waiting.
-          Sometimes it is whitening, aligners, a veneer, or an implant. We will tell you which path is gentle,
-          which is durable, and which we would skip if it were our mouth.
+          Erst danach sprechen wir über Möglichkeiten. Manchmal ist die freundlichste Antwort eine Reinigung, eine
+          Aufbissschiene oder Abwarten. Manchmal Bleaching, Aligner, ein Veneer oder ein Implantat. Wir sagen Ihnen,
+          welcher Weg schonend ist, welcher langlebig – und welchen wir bei unserem eigenen Mund lassen würden.
         </p>
 
         <figure class="about-essay__inline reveal" data-reveal>
           <img
             src="../assets/images/display/perfectsmile.jpg"
-            alt="Close detail of healthy, even teeth"
+            alt="Nahaufnahme gesunder, ebenmäßiger Zähne"
             width="1600"
             height="1066"
             loading="lazy"
             decoding="async"
           />
-          <figcaption>We prefer to preserve healthy enamel and reach for ceramics only when a smaller repair will not hold.</figcaption>
+          <figcaption>Wir erhalten gesunden Zahnschmelz möglichst und greifen zu Keramik erst, wenn eine kleinere Reparatur nicht hält.</figcaption>
         </figure>
 
-        <h2 class="reveal about-essay__span" data-reveal>How we decide what to treat</h2>
+        <h2 class="reveal about-essay__span" data-reveal>Wie wir entscheiden, was behandelt wird</h2>
         <p class="reveal" data-reveal>
-          Conservatism is not a slogan for us. It is the default. Healthy structure stays. We use tooth-colored
-          restorations, aligners, or implants when they earn their place: strength, comfort, or a result that still
-          looks like you.
+          Zurückhaltung ist bei uns kein Slogan. Sie ist der Ausgangspunkt. Gesunde Substanz bleibt. Zahnfarbene
+          Versorgungen, Aligner oder Implantate setzen wir ein, wenn sie ihren Platz verdienen: Stabilität, Komfort
+          oder ein Ergebnis, das weiterhin nach Ihnen aussieht.
         </p>
         <p class="reveal" data-reveal>
-          Every plan is written in plain language. If a term is unavoidable, we translate it. You should leave
-          knowing the next step, the timing, and the trade-offs, not a stack of product names.
+          Jeder Plan ist in klarer Sprache geschrieben. Wenn ein Fachbegriff unvermeidbar ist, erklären wir ihn.
+          Sie sollten wissen, was der nächste Schritt ist, wie der Zeitrahmen aussieht und welche Abwägungen es gibt –
+          nicht nur eine Liste von Produktnamen.
         </p>
 
-        <h2 class="reveal about-essay__span" data-reveal>Who we are here for</h2>
+        <h2 class="reveal about-essay__span" data-reveal>Für wen wir da sind</h2>
         <p class="reveal" data-reveal>
-          People who want calm dentistry. Parents scheduling around school. Adults who delayed care and feel
-          nervous walking back in. Anyone who would rather understand the scan than nod through it.
+          Für Menschen, die ruhige Zahnmedizin möchten. Eltern, die Termine um die Schule herum legen. Erwachsene,
+          die die Behandlung lange aufgeschoben haben und nervös wiederkommen. Alle, die den Scan lieber verstehen,
+          als nur mitzunicken.
         </p>
         <p class="reveal" data-reveal>
-          If that sounds like you, come in for a conversation. Bring old x-rays, a photo of a smile you like,
-          or simply the question you have been carrying. We will answer it without rushing you toward a treatment
-          you did not ask for.
+          Wenn das nach Ihnen klingt, kommen Sie zum Gespräch. Bringen Sie alte Röntgenbilder mit, ein Foto eines
+          Lächelns, das Ihnen gefällt – oder einfach die Frage, die Sie schon länger mit sich tragen. Wir beantworten
+          sie, ohne Sie in eine Behandlung zu drängen, die Sie nicht gewünscht haben.
         </p>
       </div>
 
       <footer class="about-essay__footer reveal" data-reveal>
-        <p>Ready when you are.</p>
-        <a class="about-essay__cta" href="../book/">Book a consultation</a>
+        <p>Wann immer Sie bereit sind.</p>
+        <a class="about-essay__cta" href="../book/">Beratung buchen</a>
       </footer>
     </article>
   </main>
@@ -168,16 +170,16 @@
       <a class="site-footer__brand" href="../">
         <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
       </a>
-      <nav class="site-footer__nav" aria-label="Footer">
-        <a href="../">Home</a>
-        <a href="../services/">Services</a>
-        <a href="./">About</a>
-        <a class="site-footer__cta" href="../book/">Book a consultation</a>
+      <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+        <a href="../" data-i18n="home">Startseite</a>
+        <a href="../services/" data-i18n="services">Leistungen</a>
+        <a href="./" data-i18n="about">Über uns</a>
+        <a class="site-footer__cta" href="../book/" data-i18n="book">Beratung buchen</a>
       </nav>
     </div>
   </footer>
 
-  <script src="../assets/js/nav.js" defer></script>
-  <script src="../assets/js/services.js?v=10" defer></script>
+  <script src="../assets/js/nav.js?v=13" defer></script>
+  <script src="../assets/js/services.js?v=11" defer></script>
 </body>
 </html>

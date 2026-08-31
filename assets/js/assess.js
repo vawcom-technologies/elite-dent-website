@@ -4,85 +4,85 @@
   const QUESTIONS = [
     {
       id: "concern",
-      title: "What bothers you most right now?",
+      title: "Was stört Sie derzeit am meisten?",
       options: [
-        { value: "color", label: "Shade or staining" },
-        { value: "alignment", label: "Crowding or spacing" },
-        { value: "shape", label: "Chips, gaps, or uneven edges" },
-        { value: "missing", label: "A missing tooth" },
-        { value: "checkup", label: "Just a general check-up" },
+        { value: "color", label: "Farbe oder Verfärbungen" },
+        { value: "alignment", label: "Engstand oder Lücken" },
+        { value: "shape", label: "Absplitterungen, Lücken oder ungleichmäßige Kanten" },
+        { value: "missing", label: "Ein fehlender Zahn" },
+        { value: "checkup", label: "Einfach eine allgemeine Kontrolle" },
       ],
     },
     {
       id: "timeline",
-      title: "How soon do you want to see a change?",
+      title: "Wie bald möchten Sie eine Veränderung sehen?",
       options: [
-        { value: "soon", label: "As soon as it makes sense" },
-        { value: "gradual", label: "Happy with a gradual pace" },
-        { value: "exploring", label: "Just exploring options" },
+        { value: "soon", label: "Sobald es sinnvoll ist" },
+        { value: "gradual", label: "Gerne in einem ruhigen Tempo" },
+        { value: "exploring", label: "Ich informiere mich erst" },
       ],
     },
     {
       id: "approach",
-      title: "What kind of first step feels right?",
+      title: "Welcher erste Schritt fühlt sich richtig an?",
       options: [
-        { value: "gentle", label: "As gentle and non-invasive as possible" },
-        { value: "involved", label: "Open to a more involved treatment if it lasts" },
-        { value: "unsure", label: "Not sure - I want advice" },
+        { value: "gentle", label: "So schonend und wenig invasiv wie möglich" },
+        { value: "involved", label: "Offen für eine aufwendigere Behandlung, wenn sie hält" },
+        { value: "unsure", label: "Unsicher – ich möchte eine Empfehlung" },
       ],
     },
   ];
 
   const CONCERN_LABEL = {
-    color: "shade or staining",
-    alignment: "crowding or spacing",
-    shape: "chips, gaps, or uneven edges",
-    missing: "a missing tooth",
-    checkup: "a general check-up",
+    color: "Farbe oder Verfärbungen",
+    alignment: "Engstand oder Lücken",
+    shape: "Absplitterungen, Lücken oder ungleichmäßige Kanten",
+    missing: "ein fehlender Zahn",
+    checkup: "eine allgemeine Kontrolle",
   };
 
   const TIMELINE_LABEL = {
-    soon: "hoping for a change soon",
-    gradual: "fine with a gradual pace",
-    exploring: "still exploring options",
+    soon: "möchten bald eine Veränderung sehen",
+    gradual: "sind mit einem ruhigen Tempo einverstanden",
+    exploring: "informieren sich noch über die Möglichkeiten",
   };
 
   const APPROACH_LABEL = {
-    gentle: "prefers the gentlest first step",
-    involved: "open to a more involved option if it lasts",
-    unsure: "wants clear advice on next steps",
+    gentle: "bevorzugen den schonendsten ersten Schritt",
+    involved: "sind offen für eine aufwendigere Option, wenn sie hält",
+    unsure: "wünschen sich eine klare Empfehlung für die nächsten Schritte",
   };
 
   const SERVICES = {
     whitening: {
-      name: "Teeth whitening",
+      name: "Bleaching",
       href: "../services/#whitening",
-      blurb: "A controlled brightening option when color is the main concern.",
+      blurb: "Eine kontrollierte Aufhellung, wenn die Farbe im Vordergrund steht.",
     },
     aligners: {
-      name: "Clear aligners",
+      name: "Aligner",
       href: "../services/#aligners",
-      blurb: "Discreet trays for crowding and spacing over time.",
+      blurb: "Unauffällige Schienen bei Engstand und Lücken über die Zeit.",
     },
     veneers: {
       name: "Veneers",
       href: "../services/#veneers",
-      blurb: "Thin ceramics that refine shape, chips, and shade together.",
+      blurb: "Dünne Keramik, die Form, Absplitterungen und Farbe gemeinsam verfeinert.",
     },
     implants: {
-      name: "Dental implants",
+      name: "Implantate",
       href: "../services/#implants",
-      blurb: "A stable way to replace a missing tooth.",
+      blurb: "Eine stabile Möglichkeit, einen fehlenden Zahn zu ersetzen.",
     },
     preventive: {
-      name: "Preventive care",
+      name: "Prophylaxe",
       href: "../services/#preventive",
-      blurb: "A calm check-up and cleaning to set a clear baseline.",
+      blurb: "Eine ruhige Kontrolle und Reinigung für eine klare Ausgangslage.",
     },
     restorative: {
-      name: "Restorative care",
+      name: "Zahnerhaltung",
       href: "../services/#restorative",
-      blurb: "Repairs that restore comfort and worn or chipped edges.",
+      blurb: "Reparaturen, die Komfort sowie abgenutzte oder abgesplitterte Kanten wiederherstellen.",
     },
   };
 
@@ -124,11 +124,11 @@
   function buildMessage(a, services) {
     const names = services.map((s) => s.name).join(" / ");
     return [
-      "Smile assessment summary:",
-      `Concern: ${CONCERN_LABEL[a.concern]}`,
-      `Timeline: ${TIMELINE_LABEL[a.timeline]}`,
-      `Preference: ${APPROACH_LABEL[a.approach]}`,
-      `Worth discussing: ${names}`,
+      "Zusammenfassung Lächel-Check:",
+      `Anliegen: ${CONCERN_LABEL[a.concern]}`,
+      `Zeitrahmen: ${TIMELINE_LABEL[a.timeline]}`,
+      `Wunsch: ${APPROACH_LABEL[a.approach]}`,
+      `Zum Besprechen: ${names}`,
     ].join("\n");
   }
 
@@ -136,7 +136,7 @@
     const services = suggestServices(answers);
     const message = buildMessage(answers, services);
 
-    summaryEl.textContent = `You’re most concerned about ${CONCERN_LABEL[answers.concern]}, ${TIMELINE_LABEL[answers.timeline]}, and ${APPROACH_LABEL[answers.approach]}.`;
+    summaryEl.textContent = `Ihr Schwerpunkt: ${CONCERN_LABEL[answers.concern]}. Sie ${TIMELINE_LABEL[answers.timeline]} und ${APPROACH_LABEL[answers.approach]}.`;
 
     servicesEl.innerHTML = "";
     services.forEach((s) => {
@@ -161,7 +161,7 @@
 
   function renderStep() {
     const q = QUESTIONS[index];
-    progressEl.textContent = `Question ${index + 1} of ${QUESTIONS.length}`;
+    progressEl.textContent = `Frage ${index + 1} von ${QUESTIONS.length}`;
 
     const title = document.createElement("h2");
     title.id = "assess-question";
