@@ -26,10 +26,9 @@
     return;
   }
 
-  const smile = splash.querySelector(".splash__smile");
-  const shell = splash.querySelector(".splash__shell");
-  const tooth = splash.querySelector(".splash__tooth");
+  const film = document.getElementById("splash-film");
   const brand = document.getElementById("splash-brand");
+  const mark = brand?.querySelector(".splash__mark");
 
   function markSeen() {
     try {
@@ -54,17 +53,14 @@
       return;
     }
 
-    // Keep shell + tooth visible for the whoosh (no full-logo black plate)
-    if (shell) {
-      shell.style.animation = "none";
-      shell.style.opacity = "1";
-    }
-    if (tooth) {
-      tooth.style.animation = "none";
-      tooth.style.opacity = "1";
-      tooth.style.transform = "none";
+    if (film) {
+      try {
+        film.pause();
+      } catch (_) {}
     }
 
+    brand.hidden = false;
+    splash.classList.add("is-handoff");
     revealHome();
     app.classList.add("is-splash-handoff");
 
@@ -95,8 +91,6 @@
         settled = true;
         brand.removeEventListener("transitionend", land);
 
-        // Navbar keeps the original full mark only
-        navMark.src = "assets/images/elitedentlogo.png?v=21";
         app.classList.add("is-splash-landed");
         app.classList.remove("is-splash-handoff");
         brand.style.transition = "none";
@@ -113,21 +107,39 @@
     });
   }
 
-  function ready(img) {
-    if (!img) return Promise.resolve();
-    if (img.complete && img.naturalWidth) {
-      return img.decode?.().catch(() => {}) ?? Promise.resolve();
+  function readyMark() {
+    if (!mark) return Promise.resolve();
+    if (mark.complete) {
+      return mark.decode?.().catch(() => {}) ?? Promise.resolve();
     }
     return new Promise((res) => {
-      img.addEventListener("load", res, { once: true });
-      img.addEventListener("error", res, { once: true });
-    }).then(() => img.decode?.().catch(() => {}));
+      mark.addEventListener("load", res, { once: true });
+      mark.addEventListener("error", res, { once: true });
+    }).then(() => mark.decode?.().catch(() => {}));
   }
 
-  Promise.all([ready(shell), ready(tooth), ready(smile)]).then(() => {
+  function readyFilm() {
+    if (!film) return Promise.resolve(false);
+    if (film.readyState >= 2) return Promise.resolve(true);
+    return new Promise((res) => {
+      const ok = () => res(true);
+      const fail = () => res(false);
+      film.addEventListener("loadeddata", ok, { once: true });
+      film.addEventListener("error", fail, { once: true });
+      // Safari sometimes needs an explicit load()
+      try {
+        film.load();
+      } catch (_) {}
+      setTimeout(() => res(film.readyState >= 2), 4000);
+    });
+  }
+
+  Promise.all([readyFilm(), readyMark()]).then(([filmOk]) => {
     splash.classList.add("is-ready");
 
     if (reduced) {
+      brand.hidden = false;
+      splash.classList.add("is-handoff");
       setTimeout(() => {
         revealHome();
         finish();
@@ -135,6 +147,40 @@
       return;
     }
 
-    setTimeout(whooshToNav, 900);
+    if (!film || !filmOk) {
+      // Fallback: static mark → nav if video failed
+      brand.hidden = false;
+      splash.classList.add("is-handoff");
+      setTimeout(whooshToNav, 600);
+      return;
+    }
+
+    let handedOff = false;
+    const handoff = () => {
+      if (handedOff) return;
+      handedOff = true;
+      whooshToNav();
+    };
+
+    film.addEventListener("ended", handoff, { once: true });
+    // Safety if ended never fires
+    film.addEventListener(
+      "timeupdate",
+      () => {
+        if (film.duration && film.currentTime >= film.duration - 0.08) handoff();
+      },
+      { passive: true }
+    );
+
+    const play = film.play();
+    if (play && typeof play.catch === "function") {
+      play.catch(() => {
+        // Autoplay blocked — jump to handoff
+        handoff();
+      });
+    }
+
+    // Absolute fallback (~5s film + buffer after slower timing)
+    setTimeout(handoff, 7500);
   });
 })();

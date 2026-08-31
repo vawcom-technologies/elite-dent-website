@@ -15,12 +15,21 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html {
+    overflow-x: hidden;
+  }
+}
+
 .home {
   min-height: 100vh;
   background: var(--surface);
   color: var(--navy);
   font-family: var(--font-ui);
-  overflow-x: hidden;
 }
 
 .home[hidden] {
@@ -275,20 +284,13 @@ font {
 /* Brief soft state while Google applies DE on load */
 html.is-translating body {
   opacity: 0.72;
-  transition: opacity 0.25s ease;
 }
 
 html:not(.is-translating) body {
   opacity: 1;
-  transition: opacity 0.25s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.is-translating body,
-  html:not(.is-translating) body {
-    transition: none;
-  }
-
   .nav__toggle-bars,
   .nav__toggle-bars::before,
   .nav__toggle-bars::after,
@@ -739,6 +741,7 @@ html:not(.is-translating) body {
   color: var(--navy);
   text-decoration: none;
   background: var(--surface);
+  contain: layout;
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -791,7 +794,6 @@ html:not(.is-translating) body {
   height: 220px;
   object-fit: cover;
   object-position: 50% 42%;
-  transform: scale(1.02);
   transition: transform 0.45s ease;
 }
 
@@ -1016,7 +1018,6 @@ html:not(.is-translating) body {
   background: var(--surface);
   color: var(--navy);
   font-family: var(--font-ui);
-  overflow-x: hidden;
 }
 
 .nav--static {

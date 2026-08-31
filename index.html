@@ -13,8 +13,8 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="assets/css/splash.css?v=23" />
-  <link rel="stylesheet" href="assets/css/home.css?v=32" />
+  <link rel="stylesheet" href="assets/css/splash.css?v=35" />
+  <link rel="stylesheet" href="assets/css/home.css?v=33" />
   <script src="assets/js/i18n.js"></script>
   <script>
     try {
@@ -25,17 +25,17 @@
       if (sessionStorage.getItem("elitedent-splash")) {
         document.documentElement.classList.add("no-splash");
       } else {
-        for (const href of [
-          "assets/images/perfectsmile.jpg",
-          "assets/images/elitedentlogo.png",
-          "assets/images/elitedentlogo-shell.png",
-          "assets/images/singletooth.png",
+        for (const [as, href] of [
+          ["video", "assets/video/splash.webm?v=44"],
+          ["video", "assets/video/splash.mp4?v=44"],
+          ["image", "assets/images/elitedentlogo.png"],
         ]) {
           const link = document.createElement("link");
           link.rel = "preload";
-          link.as = "image";
+          link.as = as;
           link.href = href;
           link.fetchPriority = "high";
+          if (as === "video") link.type = href.endsWith(".webm") ? "video/webm" : "video/mp4";
           document.head.appendChild(link);
         }
       }
@@ -46,7 +46,7 @@
   <main id="app" class="home" hidden>
     <header class="nav">
       <a class="nav__brand notranslate" href="/" translate="no">
-        <img src="assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
+        <img src="assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
       </a>
       <button
         type="button"
@@ -105,9 +105,10 @@
           <img
             src="assets/images/heroimg.png"
             alt="Hands holding dental care products"
-            width="3408"
-            height="2434"
+            width="591"
+            height="422"
             decoding="async"
+            fetchpriority="high"
           />
         </div>
       </div>
@@ -124,7 +125,7 @@
       <div class="services__grid">
         <a class="service-card" href="services/#whitening" data-reveal style="--i: 0">
           <div class="service-card__media">
-            <img src="assets/images/perfectsmile.jpg" alt="A bright, even smile" width="6000" height="4000" loading="lazy" />
+            <img src="assets/images/display/perfectsmile.jpg" alt="A bright, even smile" width="1600" height="1066" loading="lazy" decoding="async" sizes="(min-width: 720px) 480px, 92vw" />
           </div>
           <div class="service-card__body">
             <h3>Teeth whitening</h3>
@@ -135,7 +136,7 @@
 
         <a class="service-card" href="services/#aligners" data-reveal style="--i: 1">
           <div class="service-card__media">
-            <img src="assets/images/heroimg.png" alt="Hands holding dental care products" width="3408" height="2434" loading="lazy" />
+            <img src="assets/images/heroimg.png" alt="Hands holding dental care products" width="591" height="422" loading="lazy" decoding="async" />
           </div>
           <div class="service-card__body">
             <h3>Clear aligners</h3>
@@ -146,7 +147,7 @@
 
         <a class="service-card" href="services/#veneers" data-reveal style="--i: 2">
           <div class="service-card__media">
-            <img src="assets/images/teeth.jpg" alt="Close view of a natural-looking smile" width="2400" height="1600" loading="lazy" />
+            <img src="assets/images/display/teeth.jpg" alt="Close view of a natural-looking smile" width="1066" height="1600" loading="lazy" decoding="async" sizes="(min-width: 720px) 480px, 92vw" />
           </div>
           <div class="service-card__body">
             <h3>Veneers</h3>
@@ -157,7 +158,7 @@
 
         <a class="service-card" href="services/#implants" data-reveal style="--i: 3">
           <div class="service-card__media">
-            <img src="assets/images/perfectsmile2.jpg" alt="A full, confident smile" width="6000" height="4000" loading="lazy" />
+            <img src="assets/images/display/perfectsmile2.jpg" alt="A full, confident smile" width="1066" height="1600" loading="lazy" decoding="async" sizes="(min-width: 720px) 480px, 92vw" />
           </div>
           <div class="service-card__body">
             <h3>Dental implants</h3>
@@ -168,7 +169,7 @@
 
         <a class="service-card" href="services/#preventive" data-reveal style="--i: 4">
           <div class="service-card__media">
-            <img src="assets/images/perfectsmile.jpg" alt="Healthy teeth after routine care" width="6000" height="4000" loading="lazy" style="object-position: 70% 45%" />
+            <img src="assets/images/display/perfectsmile.jpg" alt="Healthy teeth after routine care" width="1600" height="1066" loading="lazy" decoding="async" sizes="(min-width: 720px) 480px, 92vw" style="object-position: 70% 45%" />
           </div>
           <div class="service-card__body">
             <h3>Preventive care</h3>
@@ -179,7 +180,7 @@
 
         <a class="service-card" href="services/#restorative" data-reveal style="--i: 5">
           <div class="service-card__media">
-            <img src="assets/images/teeth.jpg" alt="Restored teeth in a natural smile" width="2400" height="1600" loading="lazy" style="object-position: 50% 55%" />
+            <img src="assets/images/display/teeth.jpg" alt="Restored teeth in a natural smile" width="1066" height="1600" loading="lazy" decoding="async" sizes="(min-width: 720px) 480px, 92vw" style="object-position: 50% 55%" />
           </div>
           <div class="service-card__body">
             <h3>Restorative dentistry</h3>
@@ -201,14 +202,14 @@
       </div>
       <div class="about-preview__stage">
         <div class="about-preview__orb" aria-hidden="true"></div>
-        <img src="assets/images/equipment.jpg" alt="" width="2000" height="2000" loading="lazy" />
+        <img src="assets/images/display/equipment.jpg" alt="" width="720" height="480" loading="lazy" decoding="async" />
       </div>
     </section>
 
     <footer class="site-footer">
       <div class="site-footer__inner">
         <a class="site-footer__brand" href="/">
-          <img src="assets/images/elitedentlogo.png?v=21" alt="EliteDent" width="512" height="512" />
+          <img src="assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
         </a>
         <nav class="site-footer__nav" aria-label="Footer">
           <a href="/">Home</a>
@@ -221,39 +222,25 @@
   </main>
 
   <div id="splash" class="splash" role="presentation">
-    <div class="splash__field" aria-hidden="true">
-      <div class="splash__viewport">
-        <div class="splash__camera">
-          <div class="splash__stage">
-            <img
-              class="splash__smile"
-              src="assets/images/perfectsmile.jpg"
-              alt=""
-              width="6000"
-              height="4000"
-              decoding="async"
-              fetchpriority="high"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="splash__brand" id="splash-brand">
+    <video
+      class="splash__film"
+      id="splash-film"
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="assets/video/splash.webm?v=44" type="video/webm" />
+      <source src="assets/video/splash.mp4?v=44" type="video/mp4" />
+    </video>
+    <!-- Full mark used only for the whoosh-to-nav handoff after the film -->
+    <div class="splash__brand" id="splash-brand" hidden>
       <img
-        class="splash__shell"
-        src="assets/images/elitedentlogo-shell.png?v=21"
+        class="splash__mark"
+        src="assets/images/elitedentlogo.png?v=21"
         alt=""
         width="3248"
         height="1800"
-        decoding="async"
-        fetchpriority="high"
-      />
-      <img
-        class="splash__tooth"
-        src="assets/images/singletooth.png?v=21"
-        alt=""
-        width="288"
-        height="568"
         decoding="async"
         fetchpriority="high"
       />
@@ -261,7 +248,7 @@
   </div>
 
   <script src="assets/js/nav.js" defer></script>
-  <script src="assets/js/splash.js?v=22" defer></script>
-  <script src="assets/js/services.js?v=9" defer></script>
+  <script src="assets/js/splash.js?v=33" defer></script>
+  <script src="assets/js/services.js?v=10" defer></script>
 </body>
 </html>
