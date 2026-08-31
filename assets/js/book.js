@@ -9,6 +9,14 @@
   const phone = document.getElementById("phone");
   const phoneError = document.getElementById("phone-error");
   const API_URL = "/api/book";
+  const ASSESS_KEY = "elitedent-assess-message";
+
+  try {
+    const assessMsg = sessionStorage.getItem(ASSESS_KEY);
+    if (assessMsg && form.message && !form.message.value.trim()) {
+      form.message.value = assessMsg;
+    }
+  } catch (_) {}
 
   function normalizePhone(value) {
     return String(value || "").replace(/[\s()-]/g, "");
@@ -79,6 +87,10 @@
         bookRef.textContent = `Reference: ${data.refId}`;
         bookRef.hidden = false;
       }
+
+      try {
+        sessionStorage.removeItem(ASSESS_KEY);
+      } catch (_) {}
 
       form.hidden = true;
       success.hidden = false;

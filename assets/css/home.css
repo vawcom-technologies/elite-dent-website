@@ -725,6 +725,18 @@ html:not(.is-translating) body {
   line-height: 1.55;
 }
 
+.services__intro a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(29 53 87 / 0.28);
+}
+
+.services__intro a:hover {
+  color: var(--dental-blue);
+  border-bottom-color: var(--dental-blue);
+}
+
 .services__grid {
   display: grid;
   grid-template-columns: 1fr;
