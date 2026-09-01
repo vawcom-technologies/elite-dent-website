@@ -24,6 +24,36 @@
     els.forEach((el) => io.observe(el));
   }
 
+  function bindHeroMobile() {
+    const stage = document.querySelector(".hero__stage");
+    if (!stage || window.matchMedia("(hover: hover)").matches) return;
+
+    const SCROLL_GATE = 72;
+    let active = false;
+
+    const setActive = (on) => {
+      if (active === on) return;
+      active = on;
+      stage.classList.toggle("is-active", on);
+    };
+
+    const sync = () => {
+      if (window.scrollY < SCROLL_GATE) {
+        setActive(false);
+        return;
+      }
+      const rect = stage.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight * 0.92 && rect.bottom > window.innerHeight * 0.22;
+      setActive(inView);
+    };
+
+    if (reduced) return;
+
+    window.addEventListener("scroll", sync, { passive: true });
+  }
+
+  bindHeroMobile();
+
   function bindHomeServicesWave() {
     const home = document.querySelector(".home");
     const cards = [...document.querySelectorAll(".home .service-card[data-reveal]")];
