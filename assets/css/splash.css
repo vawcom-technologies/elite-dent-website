@@ -101,7 +101,7 @@ html.no-splash .home .hero__figure {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   background: #4a90e2;
   opacity: 0;
   transition: opacity 0.25s ease;
