@@ -688,6 +688,15 @@
     spillFromStored();
   }
 
+  function whenLayoutStable(fn) {
+    const run = () => requestAnimationFrame(() => requestAnimationFrame(fn));
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(run).catch(run);
+    } else {
+      run();
+    }
+  }
+
   function whenUiReady(fn) {
     let ran = false;
     const run = () => {
@@ -708,6 +717,10 @@
     window.setTimeout(run, 4200);
   }
 
+  function settleNavPill() {
+    whenUiReady(() => whenLayoutStable(spillWithPending));
+  }
+
   function bootMobileDock() {
     buildDock();
     cacheToggleLabels();
@@ -716,7 +729,12 @@
 
   function bootDesktopNav() {
     cacheToggleLabels();
-    whenUiReady(() => requestAnimationFrame(spillWithPending));
+    const homeEl = document.querySelector(".home");
+    if (homeEl && !homeEl.classList.contains("is-splash-complete")) {
+      document.addEventListener("elitedent:splash-complete", settleNavPill, { once: true });
+      return;
+    }
+    settleNavPill();
   }
 
   const start = () => {
@@ -726,8 +744,13 @@
 
   document.addEventListener("elitedent:ready", () => {
     cacheToggleLabels();
-    if (mq.matches) requestAnimationFrame(() => placeDockPill(true));
-    else requestAnimationFrame(placePill);
+    if (mq.matches) whenLayoutStable(() => placeDockPill(true));
+    else whenLayoutStable(placePill);
+  });
+
+  document.addEventListener("elitedent:splash-complete", () => {
+    if (mq.matches) whenLayoutStable(() => placeDockPill(true));
+    else settleNavPill();
   });
 
   const home = document.querySelector(".home");

@@ -12,10 +12,16 @@
     requestAnimationFrame(() => app.classList.add("is-ready"));
   }
 
+  function markSplashComplete() {
+    app.classList.add("is-splash-complete");
+    document.dispatchEvent(new CustomEvent("elitedent:splash-complete"));
+  }
+
   try {
     if (sessionStorage.getItem(KEY)) {
       splash?.remove();
       revealHome();
+      markSplashComplete();
       return;
     }
   } catch (_) {
@@ -24,6 +30,7 @@
 
   if (!splash) {
     revealHome();
+    markSplashComplete();
     return;
   }
 
@@ -50,6 +57,7 @@
     const navMark = app.querySelector(".nav__brand img");
     if (!brand || !navMark || reduced) {
       revealHome();
+      markSplashComplete();
       finish();
       return;
     }
@@ -77,6 +85,7 @@
       const to = navMark.getBoundingClientRect();
       if (!to.width || !from.width) {
         app.classList.remove("is-splash-handoff");
+        markSplashComplete();
         finish();
         return;
       }
@@ -99,11 +108,13 @@
         settled = true;
         brand.removeEventListener("transitionend", land);
 
-        app.classList.add("is-splash-landed");
+        app.classList.add("is-splash-landed", "is-splash-complete");
         app.classList.remove("is-splash-handoff");
         brand.style.transition = "none";
         brand.style.opacity = "0";
         brand.style.visibility = "hidden";
+
+        document.dispatchEvent(new CustomEvent("elitedent:splash-complete"));
 
         requestAnimationFrame(() => {
           requestAnimationFrame(finish);
@@ -153,6 +164,7 @@
       splash.classList.add("is-handoff");
       setTimeout(() => {
         revealHome();
+        markSplashComplete();
         finish();
       }, 200);
       return;

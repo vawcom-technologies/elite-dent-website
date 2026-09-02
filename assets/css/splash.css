@@ -77,9 +77,11 @@ html.no-splash .home .hero__figure {
 }
 
 .home.is-splash-handoff .nav,
-.home.is-splash-landed .nav {
+.home.is-splash-landed .nav,
+.home.is-splash-complete .nav {
   opacity: 1;
   transform: none;
+  animation: none;
 }
 
 .home.is-splash-landed .nav__brand {
