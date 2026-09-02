@@ -1,0 +1,17 @@
+/* First-paint shell — linked before other stylesheets on every page */
+html {
+  background: #f4f8fc;
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f4f8fc;
+}
+
+.nav--static,
+html.no-splash .home .nav {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}

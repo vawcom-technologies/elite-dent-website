@@ -118,7 +118,7 @@ html.assess-reveal-ready .page--assess .site-footer {
   margin: 0;
   padding: 1rem 1.1rem;
   border: 1px solid rgb(29 53 87 / 0.16);
-  border-radius: 0;
+  border-radius: 0.75rem;
   background: var(--white);
   color: var(--navy);
   font: inherit;
@@ -162,6 +162,7 @@ html.assess-reveal-ready .page--assess .site-footer {
   padding: 1.15rem 1.2rem;
   background: var(--white);
   border: 1px solid rgb(29 53 87 / 0.1);
+  border-radius: 1.35rem;
 }
 
 .assess-result__suggest h3 {
@@ -222,6 +223,7 @@ html.assess-reveal-ready .page--assess .site-footer {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  border-radius: 999px;
   transition: background 0.2s ease;
 }
 

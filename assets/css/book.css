@@ -67,7 +67,7 @@
   margin: 0;
   padding: 0.85rem 0.95rem;
   border: 1px solid rgb(29 53 87 / 0.16);
-  border-radius: 0;
+  border-radius: 0.75rem;
   background: var(--white);
   color: var(--navy);
   font: inherit;
@@ -81,7 +81,7 @@
   margin: 0;
   padding: 0.85rem 0.95rem;
   border: 1px solid rgb(29 53 87 / 0.16);
-  border-radius: 0;
+  border-radius: 0.75rem;
   background: var(--white);
   color: var(--navy);
   font: inherit;
@@ -149,6 +149,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  border-radius: 999px;
   cursor: pointer;
   transition: background 0.2s ease;
 }

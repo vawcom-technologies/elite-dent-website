@@ -82,6 +82,16 @@ html.no-splash .home .hero__figure {
   transform: none;
 }
 
+.home.is-splash-landed .nav__brand {
+  position: relative;
+  z-index: 25;
+}
+
+.home.is-splash-landed .nav__brand {
+  position: relative;
+  z-index: 25;
+}
+
 .splash__film {
   position: absolute;
   inset: 0;
@@ -155,7 +165,20 @@ html.no-splash .home .hero__figure {
 }
 
 @media (max-width: 767px) {
+  .splash {
+    background: var(--surface);
+  }
+
+  .splash__film {
+    object-fit: cover;
+    background: var(--surface);
+  }
+
   .splash__brand {
-    width: min(260px, 58vw);
+    width: min(220px, 62vw);
+  }
+
+  .splash.is-handoff .splash__brand {
+    filter: drop-shadow(0 2px 8px rgb(29 53 87 / 0.08));
   }
 }

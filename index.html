@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1D3557" />
   <title>EliteDent</title>
+  <meta name="theme-color" content="#f4f8fc" />
+  <meta name="color-scheme" content="light" />
+  <style>html,body{background:#f4f8fc;margin:0}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://translate.google.com" />
   <link rel="preconnect" href="https://translate.googleapis.com" />
+  <link rel="stylesheet" href="assets/css/critical.css?v=1" />
+  <link rel="preload" href="assets/css/home.css?v=100" as="style" />
   <link
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="assets/css/splash.css?v=35" />
-  <link rel="stylesheet" href="assets/css/home.css?v=64" />
+  <link rel="stylesheet" href="assets/css/splash.css?v=39" />
+  <link rel="stylesheet" href="assets/css/home.css?v=100" />
+  <script src="assets/js/navigate.js?v=3"></script>
   <script src="assets/js/i18n.js?v=4"></script>
   <script>
     try {
@@ -123,9 +128,95 @@
             fetchpriority="high"
           />
         </div>
+        <a class="hero__cta" href="book/">Beratung buchen</a>
       </div>
+    </section>
 
-      <a class="hero__cta" href="book/">Beratung buchen</a>
+    <section class="stats" aria-labelledby="stats-heading">
+      <div class="stats__grid">
+        <article class="stats-card stats-card--orb stats-card--tall-left" data-reveal style="--i: 0">
+          <div class="stats-card__decor" aria-hidden="true">
+            <img
+              class="stats-card__sparkle stats-card__sparkle--br"
+              src="assets/images/tealsparkle.png"
+              alt=""
+              width="140"
+              height="140"
+              decoding="async"
+            />
+          </div>
+          <div class="stats-card__body">
+            <span class="stats-card__eyebrow">Vertrauen</span>
+            <h2 id="stats-heading" class="stats-card__headline">Zahlen, die Vertrauen schaffen</h2>
+            <p class="stats-card__detail">
+              Ruhige Betreuung mit klaren Ergebnissen, gemessen in Erfahrung, Zufriedenheit und Zeit für jeden Besuch.
+            </p>
+            <div class="stats-card__lottie" id="stats-sparkletooth" aria-hidden="true"></div>
+          </div>
+        </article>
+
+        <article class="stats-card stats-card--white stats-card--stat-compact" data-reveal style="--i: 1">
+          <div class="stats-card__decor" aria-hidden="true">
+            <img
+              class="stats-card__bg"
+              src="assets/images/display/perfectsmile.jpg"
+              alt=""
+              width="1600"
+              height="1066"
+              decoding="async"
+            />
+          </div>
+          <div class="stats-card__body">
+            <p class="stats-card__value">98<span class="stats-card__suffix">%</span></p>
+            <p class="stats-card__meta">Weiterempfehlung</p>
+          </div>
+        </article>
+
+        <article class="stats-card stats-card--navy stats-card--tall-right" data-reveal style="--i: 2">
+          <div class="stats-card__decor" aria-hidden="true">
+            <img
+              class="stats-card__sparkle stats-card__sparkle--br"
+              src="assets/images/tealsparkle.png"
+              alt=""
+              width="140"
+              height="140"
+              decoding="async"
+            />
+          </div>
+          <div class="stats-card__body">
+            <span class="stats-card__eyebrow stats-card__eyebrow--light">Beratungen</span>
+            <p class="stats-card__value">2.400<span class="stats-card__suffix stats-card__suffix--plus">+</span></p>
+            <p class="stats-card__meta">Erstgespräche</p>
+            <p class="stats-card__detail stats-card__detail--light">
+              Von Bleaching bis Implantaten, ruhig und klar, ohne Verkaufsskript.
+            </p>
+          </div>
+        </article>
+
+        <article class="stats-card stats-card--blue stats-card--tall-center" data-reveal style="--i: 3">
+          <div class="stats-card__body">
+            <span class="stats-card__eyebrow">Erfahrung</span>
+            <p class="stats-card__value">12<span class="stats-card__suffix stats-card__suffix--plus">+</span></p>
+            <p class="stats-card__meta">Jahre in der Praxis</p>
+            <p class="stats-card__detail">
+              Über 2.400 Beratungen und eine Patientenzufriedenheit von 4,9 von 5.
+            </p>
+          </div>
+        </article>
+
+        <article class="stats-card stats-card--white stats-card--cta-block" data-reveal style="--i: 4">
+          <div class="stats-card__body">
+            <span class="stats-card__eyebrow">Nächster Schritt</span>
+            <p class="stats-card__detail stats-card__detail--lead">
+              Bereit für ein ruhiges Gespräch?
+            </p>
+            <div class="stats-card__actions">
+              <a class="stats-card__cta" href="book/">Beratung buchen <span aria-hidden="true">→</span></a>
+              <a class="stats-card__link" href="about/">Mehr erfahren</a>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="services" class="services" aria-labelledby="services-heading">
@@ -262,8 +353,10 @@
     </div>
   </div>
 
-  <script src="assets/js/nav.js?v=13" defer></script>
-  <script src="assets/js/splash.js?v=33" defer></script>
-  <script src="assets/js/services.js?v=11" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+  <script src="assets/js/nav.js?v=21" defer></script>
+  <script src="assets/js/splash.js?v=37" defer></script>
+  <script src="assets/js/services.js?v=14" defer></script>
+  <script src="assets/js/stats-lottie.js?v=1" defer></script>
 </body>
 </html>

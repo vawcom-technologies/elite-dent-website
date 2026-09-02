@@ -5,6 +5,7 @@
 
   const KEY = "elitedent-splash";
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
 
   function revealHome() {
     app.hidden = false;
@@ -59,12 +60,19 @@
       } catch (_) {}
     }
 
+    const splashImg = brand.querySelector(".splash__mark");
+    if (isMobile && splashImg && navMark.src && splashImg.src !== navMark.src) {
+      splashImg.src = navMark.src;
+      splashImg.width = navMark.width || 400;
+      splashImg.height = navMark.height || 221;
+    }
+
     brand.hidden = false;
     splash.classList.add("is-handoff");
     revealHome();
     app.classList.add("is-splash-handoff");
 
-    requestAnimationFrame(() => {
+    const runHandoff = () => {
       const from = brand.getBoundingClientRect();
       const to = navMark.getBoundingClientRect();
       if (!to.width || !from.width) {
@@ -104,6 +112,10 @@
 
       brand.addEventListener("transitionend", land);
       setTimeout(() => land(null), 580);
+    };
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(runHandoff);
     });
   }
 
@@ -126,7 +138,6 @@
       const fail = () => res(false);
       film.addEventListener("loadeddata", ok, { once: true });
       film.addEventListener("error", fail, { once: true });
-      // Safari sometimes needs an explicit load()
       try {
         film.load();
       } catch (_) {}
@@ -147,8 +158,14 @@
       return;
     }
 
+    if (isMobile) {
+      brand.hidden = false;
+      splash.classList.add("is-handoff");
+      setTimeout(whooshToNav, 320);
+      return;
+    }
+
     if (!film || !filmOk) {
-      // Fallback: static mark → nav if video failed
       brand.hidden = false;
       splash.classList.add("is-handoff");
       setTimeout(whooshToNav, 600);
@@ -163,7 +180,6 @@
     };
 
     film.addEventListener("ended", handoff, { once: true });
-    // Safety if ended never fires
     film.addEventListener(
       "timeupdate",
       () => {
@@ -175,12 +191,10 @@
     const play = film.play();
     if (play && typeof play.catch === "function") {
       play.catch(() => {
-        // Autoplay blocked — jump to handoff
         handoff();
       });
     }
 
-    // Absolute fallback (~5s film + buffer after slower timing)
     setTimeout(handoff, 7500);
   });
 })();
