@@ -17,15 +17,18 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="assets/css/splash.css?v=44" />
+  <link rel="stylesheet" href="assets/css/splash.css?v=46" />
   <link rel="stylesheet" href="assets/css/home.css?v=107" />
+  <link rel="stylesheet" href="assets/css/hkp.css?v=2" />
+  <link rel="stylesheet" href="assets/css/site-guide.css?v=8" />
   <script src="assets/js/navigate.js?v=3"></script>
-  <script src="assets/js/i18n.js?v=4"></script>
+  <script src="assets/js/i18n.js?v=5"></script>
   <script>
     try {
       const params = new URLSearchParams(location.search);
       if (params.has("forceSplash")) {
         sessionStorage.removeItem("elitedent-splash");
+        localStorage.removeItem("elitedent-gru-intro");
       }
       if (sessionStorage.getItem("elitedent-splash")) {
         document.documentElement.classList.add("no-splash");
@@ -84,6 +87,7 @@
             <a href="services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
           </div>
         </div>
+        <a href="hkp/" data-i18n="hkp">HKP</a>
         <a href="about/" data-i18n="about">Über uns</a>
       </nav>
       <div class="nav__end">
@@ -128,7 +132,7 @@
             fetchpriority="high"
           />
         </div>
-        <a class="hero__cta" href="book/">Beratung buchen</a>
+        <a class="hero__cta" href="book/">Jetzt beraten</a>
       </div>
     </section>
 
@@ -211,12 +215,20 @@
               Bereit für ein ruhiges Gespräch?
             </p>
             <div class="stats-card__actions">
-              <a class="stats-card__cta" href="book/">Beratung buchen <span aria-hidden="true">→</span></a>
+              <a class="stats-card__cta" href="book/">Jetzt beraten <span aria-hidden="true">→</span></a>
               <a class="stats-card__link" href="about/">Mehr erfahren</a>
             </div>
           </div>
         </article>
       </div>
+    </section>
+
+    <section class="hkp-band reveal" data-reveal aria-labelledby="hkp-band-heading">
+      <h2 id="hkp-band-heading">Schon einen Heil- und Kostenplan?</h2>
+      <p>
+        Senden Sie uns Ihren bestehenden HKP. Wir prüfen Behandlung und Kosten und melden uns mit den nächsten Schritten.
+      </p>
+      <a class="hkp-band__btn" href="book/">Jetzt beraten</a>
     </section>
 
     <section id="services" class="services" aria-labelledby="services-heading">
@@ -319,8 +331,9 @@
         <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
           <a href="/" data-i18n="home">Startseite</a>
           <a href="services/" data-i18n="services">Leistungen</a>
+          <a href="hkp/" data-i18n="hkp">HKP</a>
           <a href="about/" data-i18n="about">Über uns</a>
-          <a class="site-footer__cta" href="book/" data-i18n="book">Beratung buchen</a>
+          <a class="site-footer__cta" href="book/" data-i18n="consult">Jetzt beraten</a>
         </nav>
       </div>
     </footer>
@@ -353,10 +366,12 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
-  <script src="assets/js/nav.js?v=22" defer></script>
-  <script src="assets/js/splash.js?v=38" defer></script>
+  <script src="assets/js/nav.js?v=23" defer></script>
+  <script src="assets/js/splash.js?v=40" defer></script>
   <script src="assets/js/services.js?v=14" defer></script>
   <script src="assets/js/stats-lottie.js?v=1" defer></script>
   <script src="assets/js/about-lottie.js?v=2" defer></script>
+  <script src="assets/js/guide-scripts.js?v=7" defer></script>
+  <script src="assets/js/site-guide-agent.js?v=19" defer></script>
 </body>
 </html>

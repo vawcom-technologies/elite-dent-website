@@ -197,7 +197,7 @@
       () => {
         if (film.duration && film.currentTime >= film.duration - 0.08) handoff();
       },
-      { passive: true }
+      { passive: true },
     );
 
     const play = film.play();

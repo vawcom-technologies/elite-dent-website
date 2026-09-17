@@ -19,8 +19,9 @@
   />
   <link rel="stylesheet" href="../assets/css/home.css?v=81" />
   <link rel="stylesheet" href="../assets/css/assess.css?v=4" />
+  <link rel="stylesheet" href="../assets/css/site-guide.css?v=8" />
   <script src="../assets/js/navigate.js?v=3"></script>
-  <script src="../assets/js/i18n.js?v=4"></script>
+  <script src="../assets/js/i18n.js?v=5"></script>
   <script>
     try {
       if (sessionStorage.getItem("elitedent-assess-expand") === "1") {
@@ -65,6 +66,7 @@
             <a href="../services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
           </div>
         </div>
+        <a href="../hkp/" data-i18n="hkp">HKP</a>
         <a href="../about/" data-i18n="about">Über uns</a>
       </nav>
       <div class="nav__end">
@@ -103,7 +105,7 @@
         <p class="assess-result__note">
           Das ist nur ein Hinweis aus Ihren Antworten. Ihre Zahnärztin oder Ihr Zahnarzt prüft nach einem gründlichen Blick, was passt.
         </p>
-        <a class="assess-result__cta" id="assess-book" href="../book/">Beratung buchen</a>
+        <a class="assess-result__cta" id="assess-book" href="../book/">Jetzt beraten</a>
         <button type="button" class="assess-result__restart" id="assess-restart">Von vorn beginnen</button>
       </div>
     </div>
@@ -117,15 +119,18 @@
       <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
         <a href="../" data-i18n="home">Startseite</a>
         <a href="../services/" data-i18n="services">Leistungen</a>
+        <a href="../hkp/" data-i18n="hkp">HKP</a>
         <a href="../about/" data-i18n="about">Über uns</a>
-        <a class="site-footer__cta" href="../book/" data-i18n="book">Beratung buchen</a>
+        <a class="site-footer__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
       </nav>
     </div>
   </footer>
 
-  <script src="../assets/js/nav.js?v=21" defer></script>
+  <script src="../assets/js/nav.js?v=23" defer></script>
   <script src="../assets/js/services.js?v=13" defer></script>
   <script src="../assets/js/assess.js?v=2" defer></script>
   <script src="../assets/js/assess-expand.js?v=2" defer></script>
+  <script src="../assets/js/guide-scripts.js?v=7" defer></script>
+  <script src="../assets/js/site-guide-agent.js?v=19" defer></script>
 </body>
 </html>

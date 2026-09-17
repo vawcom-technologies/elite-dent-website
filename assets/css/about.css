@@ -29,20 +29,15 @@
 .about-essay__header h1 {
   margin: 0 0 1.1rem;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.8vw, 2.85rem);
+  font-size: clamp(1.75rem, 3.8vw, 2.45rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1.18;
   color: var(--navy);
 }
 
 .about-essay__title-line {
   display: block;
-}
-
-.about-essay__title-line span {
-  display: block;
-  opacity: 1;
 }
 
 .about-essay__deck {
@@ -196,7 +191,6 @@
   .about-essay__meta,
   .about-essay__deck,
   .about-essay__figure,
-  .about-essay__title-line span,
   .about-essay .reveal {
     opacity: 1;
     animation: none !important;

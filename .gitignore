@@ -2,3 +2,6 @@
 .env
 .env.local
 .env*.local
+.tts-cache
+data/hkp.json
+data/hkp-files/

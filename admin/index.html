@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · EliteDent</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#f4f8fc" />
+  <link rel="stylesheet" href="../assets/css/critical.css?v=1" />
+  <link rel="stylesheet" href="../assets/css/hkp.css?v=6" />
+</head>
+<body class="page hkp-admin-page">
+  <main class="hkp-admin-shell">
+    <section class="hkp-admin-login" id="hkp-admin-login">
+      <h1>Admin</h1>
+      <form id="hkp-admin-form">
+        <label for="admin-password">Passwort</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required />
+        <button type="submit">Anmelden</button>
+        <p class="hkp-admin-login__error" id="hkp-admin-error" hidden></p>
+      </form>
+    </section>
+
+    <section class="hkp-admin" id="hkp-admin-panel" hidden>
+      <header class="hkp-admin__header">
+        <h1>Anfragen</h1>
+        <button type="button" class="hkp-admin__logout" id="hkp-admin-logout">Abmelden</button>
+      </header>
+      <div class="hkp-admin__filters" id="hkp-admin-filters" hidden>
+        <button type="button" class="hkp-admin__chip is-active" data-filter="all">Alle</button>
+        <button type="button" class="hkp-admin__chip" data-filter="new">Offen</button>
+        <button type="button" class="hkp-admin__chip" data-filter="approved">Genehmigt</button>
+        <button type="button" class="hkp-admin__chip" data-filter="rejected">Abgelehnt</button>
+      </div>
+      <div id="hkp-admin-list"></div>
+    </section>
+  </main>
+  <script src="../assets/js/hkp-admin.js?v=5" defer></script>
+</body>
+</html>

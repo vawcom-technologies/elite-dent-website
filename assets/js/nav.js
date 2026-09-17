@@ -27,17 +27,21 @@
     more: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>',
   };
 
+  function pathDepth() {
+    return location.pathname.replace(/\/index\.html$/, "").split("/").filter(Boolean).length;
+  }
+
   function inSubpage() {
-    return /\/(services|about|assess|book)(\/|$)/.test(location.pathname);
+    return pathDepth() > 0;
   }
 
   function pagePrefix() {
-    return inSubpage() ? "../" : "";
+    return "../".repeat(pathDepth());
   }
 
   function dockHref(key) {
-    const up = inSubpage() ? "../" : "";
-    if (key === "home") return inSubpage() ? "../" : "./";
+    const up = pagePrefix();
+    if (key === "home") return inSubpage() ? up : "./";
     if (key === "services") return `${up}services/`;
     if (key === "assess") return `${up}assess/`;
     return "#";

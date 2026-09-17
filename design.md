@@ -103,10 +103,10 @@ The script wordmark in `elitedentlogo.png` is the brand face. Site type stays ro
 
 ### Book (`/book/`)
 
-- Calm single-column form: full name, email, phone, optional message
+- Calm single-column form: full name, email, phone, optional message, HKP upload, privacy consent
 - No extra sections, stats, or marketing clutter — trust through clarity and restraint
 - **Book** / **Consult now** CTAs go to `/book/`
-- Submits to `POST /api/book` (Resend): German confirmation to the visitor (ref id + short details + company placeholders); notify `BOOKINGS_INBOX` (default `djanieverlan@gmail.com`)
+- Submits to `POST /api/hkp` (store + optional Resend); staff review at `/admin/`
 
 ---
 
