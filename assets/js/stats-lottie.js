@@ -14,7 +14,7 @@
       container: host,
       renderer: "svg",
       loop: !reduced,
-      autoplay: !reduced,
+      autoplay: false,
       path: "assets/lottie/sparkletooth.json?v=1",
     });
 
@@ -22,6 +22,22 @@
       anim.addEventListener("DOMLoaded", () => {
         anim.goToAndStop(0, true);
       });
+      return;
+    }
+
+    const playIfVisible = (on) => {
+      if (on) anim.play();
+      else anim.pause();
+    };
+
+    if ("IntersectionObserver" in window) {
+      const vis = new IntersectionObserver(
+        (entries) => playIfVisible(entries.some((entry) => entry.isIntersecting)),
+        { threshold: 0.08 },
+      );
+      vis.observe(host);
+    } else {
+      anim.play();
     }
   };
 
@@ -54,14 +70,30 @@
   };
 
   const home = document.querySelector(".home");
-  if (home?.hidden) {
-    const mo = new MutationObserver(() => {
-      if (home.hidden) return;
-      mo.disconnect();
-      requestAnimationFrame(boot);
-    });
-    mo.observe(home, { attributes: true, attributeFilter: ["hidden"] });
-  } else {
-    boot();
-  }
+  const afterSplash = (fn) => {
+    const splash = document.getElementById("splash");
+    if (
+      !splash ||
+      splash.classList.contains("is-done") ||
+      document.documentElement.classList.contains("no-splash")
+    ) {
+      fn();
+      return;
+    }
+    document.addEventListener("elitedent:splash-complete", fn, { once: true });
+  };
+
+  const kick = () => {
+    if (home?.hidden) {
+      const mo = new MutationObserver(() => {
+        if (home.hidden) return;
+        mo.disconnect();
+        requestAnimationFrame(boot);
+      });
+      mo.observe(home, { attributes: true, attributeFilter: ["hidden"] });
+    } else {
+      boot();
+    }
+  };
+  afterSplash(kick);
 })();

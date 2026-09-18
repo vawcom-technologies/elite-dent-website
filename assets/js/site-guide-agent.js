@@ -2,6 +2,7 @@
   const MUTE_KEY = "elitedent-guide-muted";
   const LANG_KEY = "elitedent-ui-lang";
   const INTRO_KEY = "elitedent-gru-intro";
+  const GUIDE_VOICE_ID = "onwK4e9ZLuTAKqWW03F9";
   const SKIP_VOICE =
     /female|anna|sandy|shelley|grandma|kathy|karen|moira|samantha|helena|petra|katja|nora|whisper|zarvox|bells|cellos|bubbles|boing|trinoids|jester|junior|princess|organ|superstar|bad news|good news|wobble|bahh|tessa|veena|fiona|zira|victoria/i;
   const PREFER = {
@@ -86,10 +87,12 @@
   let utterance = null;
   let ttsAbort = null;
   const ttsCache = new Map();
+  const ttsInflight = new Map();
   let guideOn = false;
   const played = new Set();
   let introActive = false;
   let introBusy = false;
+  let flyBusy = false;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let spotlightEls = [];
   let userPaused = false;
@@ -106,6 +109,7 @@
   const root = document.createElement("aside");
   root.className = "site-guide";
   root.innerHTML =
+    '<button type="button" class="site-guide__close"></button>' +
     '<div class="site-guide__avatar" aria-hidden="true"></div>' +
     '<div class="site-guide__body">' +
     '<p class="site-guide__kicker"></p>' +
@@ -120,6 +124,7 @@
   const line = root.querySelector(".site-guide__line");
   const playBtn = root.querySelector(".site-guide__btn--play");
   const muteBtn = root.querySelector(".site-guide__btn--mute");
+  const closeBtn = root.querySelector(".site-guide__close");
 
   const ICON_PAUSE =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4.5" height="14" rx="1"/><rect x="13.5" y="5" width="4.5" height="14" rx="1"/></svg>';
@@ -129,6 +134,8 @@
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3.5L12 18V6L7.5 10H4z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
   const ICON_UNMUTE =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3.5L12 18V6L7.5 10H4z"/><path d="M16 9.5a4.5 4.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+  const ICON_CLOSE =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>';
 
   function stepText(step) {
     return step ? step.text[lang] : "";
@@ -165,6 +172,8 @@
     muteBtn.innerHTML = muted ? ICON_MUTE : ICON_UNMUTE;
     muteBtn.setAttribute("aria-pressed", muted ? "true" : "false");
     muteBtn.setAttribute("aria-label", muted ? (en ? "Unmute" : "Ton an") : en ? "Mute" : "Stumm");
+    closeBtn.innerHTML = ICON_CLOSE;
+    closeBtn.setAttribute("aria-label", en ? "Move guide aside" : "Begleitung zur Seite legen");
   }
 
   function disarmGestureResume() {
@@ -179,8 +188,31 @@
 
   function kickFromGesture() {
     if (userPaused) return;
-    if (status === "loading") return;
+    if (!audio.paused && audio.muted && !muted) {
+      audio.muted = false;
+      blockedAutoplay = false;
+      disarmGestureResume();
+      status = "playing";
+      render();
+      return;
+    }
     if (audioIsLive()) return;
+    if (audio.src && blockedAutoplay) {
+      audio.muted = muted;
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise.then(
+          () => {
+            blockedAutoplay = false;
+            disarmGestureResume();
+            status = "playing";
+            render();
+          },
+          () => beginFromGesture(),
+        );
+        return;
+      }
+    }
     beginFromGesture();
   }
 
@@ -197,23 +229,55 @@
     window.addEventListener("keydown", kick, opts);
   }
 
+  async function sha256Hex(value) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+    return [...new Uint8Array(buf)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  }
+
+  async function bakedSrc(text) {
+    if (!crypto.subtle) return null;
+    try {
+      const hash = await sha256Hex(`${GUIDE_VOICE_ID}\n${text}`);
+      const res = await fetch(`/assets/voice/${hash}.mp3`);
+      if (!res.ok) return null;
+      const blob = await res.blob();
+      if (!blob || blob.size < 800) return null;
+      return URL.createObjectURL(blob);
+    } catch (_) {
+      return null;
+    }
+  }
+
   function warmText(text) {
     const key = lang + "\n" + text;
     if (ttsCache.has(key)) return Promise.resolve(ttsCache.get(key));
-    return fetch("/api/tts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, lang }),
-    })
-      .then((res) => (res.ok ? res.blob() : null))
-      .then((blob) => {
-        if (!blob) return null;
-        if (ttsCache.has(key)) return ttsCache.get(key);
-        const url = URL.createObjectURL(blob);
-        ttsCache.set(key, url);
-        return url;
-      })
-      .catch(() => null);
+    const pending = ttsInflight.get(key);
+    if (pending) return pending;
+    const job = (async () => {
+      const baked = await bakedSrc(text);
+      if (baked) {
+        ttsCache.set(key, baked);
+        return baked;
+      }
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, lang }),
+      });
+      if (!res.ok) return null;
+      const blob = await res.blob();
+      if (!blob) return null;
+      if (ttsCache.has(key)) return ttsCache.get(key);
+      const url = URL.createObjectURL(blob);
+      ttsCache.set(key, url);
+      return url;
+    })()
+      .catch(() => null)
+      .finally(() => {
+        ttsInflight.delete(key);
+      });
+    ttsInflight.set(key, job);
+    return job;
   }
 
   function openingStepIndex() {
@@ -367,32 +431,142 @@
     return normalizePath(pathname) === "/" && !introSeen() && !reducedMotion;
   }
 
+  const FLY_MS = 520;
+  const FLY_EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
+
+  function guideBox(el) {
+    const r = el.getBoundingClientRect();
+    return {
+      left: r.left,
+      top: r.top,
+      width: r.width,
+      height: r.height,
+      cx: r.left + r.width / 2,
+      cy: r.top + r.height / 2,
+    };
+  }
+
+  function snapshotAvatar() {
+    const canvas = avatar.querySelector("canvas");
+    if (!canvas || !canvas.width) return null;
+    const img = document.createElement("img");
+    img.className = "site-guide__snap";
+    img.alt = "";
+    try {
+      img.src = canvas.toDataURL("image/webp", 0.92);
+    } catch (_) {
+      try {
+        img.src = canvas.toDataURL("image/png");
+      } catch (err) {
+        return null;
+      }
+    }
+    return img;
+  }
+
+  function collapseTo(commit) {
+    if (reducedMotion) {
+      commit();
+      return Promise.resolve();
+    }
+
+    const from = guideBox(root);
+    const snap = snapshotAvatar();
+    const ghost = root.cloneNode(true);
+    ghost.classList.add("is-flying");
+    ghost.classList.remove("is-intro-boot");
+    ghost.setAttribute("aria-hidden", "true");
+    const ghostCanvas = ghost.querySelector("canvas");
+    if (snap && ghostCanvas) ghostCanvas.replaceWith(snap);
+    Object.assign(ghost.style, {
+      position: "fixed",
+      left: `${from.left}px`,
+      top: `${from.top}px`,
+      width: `${from.width}px`,
+      height: `${from.height}px`,
+      right: "auto",
+      bottom: "auto",
+      transform: "translate3d(0,0,0)",
+      transformOrigin: "50% 50%",
+      margin: "0",
+      zIndex: "43",
+      willChange: "transform, opacity",
+      pointerEvents: "none",
+    });
+    document.body.appendChild(ghost);
+
+    root.classList.add("is-flying");
+    root.style.opacity = "0";
+    commit();
+    const dest = guideBox(root);
+
+    const dx = dest.cx - from.cx;
+    const dy = dest.cy - from.cy;
+    const sx = dest.width / Math.max(1, from.width);
+    const sy = dest.height / Math.max(1, from.height);
+
+    const fly =
+      typeof ghost.animate === "function"
+        ? ghost.animate(
+            [
+              { transform: "translate3d(0,0,0) scale(1, 1)", opacity: 1 },
+              { transform: `translate3d(${dx}px, ${dy}px, 0) scale(${sx}, ${sy})`, opacity: 0 },
+            ],
+            { duration: FLY_MS, easing: FLY_EASE, fill: "forwards" },
+          )
+        : null;
+    const show =
+      typeof root.animate === "function"
+        ? root.animate([{ opacity: 0 }, { opacity: 0, offset: 0.62 }, { opacity: 1 }], {
+            duration: FLY_MS,
+            easing: "ease-out",
+            fill: "forwards",
+          })
+        : null;
+
+    const wait = Promise.all([
+      fly ? fly.finished.catch(() => {}) : Promise.resolve(),
+      show ? show.finished.catch(() => {}) : Promise.resolve(),
+    ]);
+
+    return wait.then(() => {
+      try {
+        fly?.cancel();
+        show?.cancel();
+      } catch (_) {}
+      ghost.remove();
+      root.style.opacity = "";
+      root.classList.remove("is-flying");
+    });
+  }
+
   function finishIntro() {
     if (!introActive || introBusy) return Promise.resolve();
     introBusy = true;
-    return new Promise((resolve) => {
-      let settled = false;
-      const settle = (event) => {
-        if (event && event.target !== root) return;
-        if (settled) return;
-        settled = true;
-        root.removeEventListener("transitionend", settle);
-        introBusy = false;
-        introActive = false;
-        markIntroSeen();
-        resolve();
-      };
-
-      document.documentElement.classList.remove("is-gru-intro");
+    document.documentElement.classList.remove("is-gru-intro");
+    return collapseTo(() => {
       root.classList.remove("is-intro");
+      introActive = false;
+      markIntroSeen();
+    }).finally(() => {
+      introBusy = false;
+    });
+  }
 
-      if (reducedMotion) {
-        settle(null);
-        return;
-      }
-
-      root.addEventListener("transitionend", settle);
-      setTimeout(() => settle(null), 780);
+  function dismissToSide() {
+    if (flyBusy) return;
+    if (!introActive && !root.classList.contains("is-intro")) return;
+    flyBusy = true;
+    pause();
+    document.documentElement.classList.remove("is-gru-intro", "is-gru-intro-pending");
+    collapseTo(() => {
+      introBusy = false;
+      introActive = false;
+      markIntroSeen();
+      root.classList.remove("is-intro", "is-intro-boot");
+      render();
+    }).finally(() => {
+      flyBusy = false;
     });
   }
 
@@ -500,20 +674,18 @@
     userPaused = false;
     wantPaused = false;
     blockedAutoplay = false;
+    await prefetchOpening();
+    if (userPaused) return;
     if (wantsIntro()) {
       document.documentElement.classList.add("is-gru-intro-pending");
-      await prefetchOpening();
-      if (userPaused) return;
       scheduleIntro();
       return;
     }
     document.documentElement.classList.remove("is-gru-intro-pending");
     guideOn = true;
-    await prefetchOpening();
-    if (userPaused) return;
     const start = firstStartIndex();
     if (start >= 0) {
-      await playStep(start);
+      void playStep(start);
       queueMicrotask(checkScroll);
       return;
     }
@@ -611,9 +783,10 @@
         await audio.play();
         audio.muted = false;
         // If the browser silently keeps it muted, treat as blocked
-        if (!audio.paused && !audio.muted) {
-          blockedAutoplay = false;
-          disarmGestureResume();
+        if (!audio.paused) {
+          blockedAutoplay = Boolean(audio.muted && !muted);
+          if (blockedAutoplay) armGestureResume();
+          else disarmGestureResume();
           return;
         }
         audio.pause();
@@ -627,10 +800,7 @@
     }
 
     if (gen !== playGen || wantPaused) return;
-    status = "paused";
-    clearSpotlight();
-    render();
-    if (!userPaused) armGestureResume();
+    holdForGesture();
   }
 
   async function ttsSrc(text, uiLang, gen) {
@@ -662,31 +832,12 @@
     return null;
   }
 
-  function speakBrowser(text, gen, index) {
-    if (typeof speechSynthesis === "undefined") {
-      status = "paused";
-      clearSpotlight();
-      render();
-      return;
-    }
-    speechSynthesis.cancel();
-    const next = new SpeechSynthesisUtterance(text);
-    const voice = applyFriendlyMaleVoice(next, lang);
-    next.volume = muted ? 0 : 1;
-    utterance = next;
-    root.dataset.voice = voice ? voice.name : "";
-    next.onend = () => {
-      if (gen !== playGen) return;
-      afterLine();
-    };
-    next.onerror = (event) => {
-      if (gen !== playGen) return;
-      if (event.error === "canceled" || event.error === "interrupted") return;
-      status = "paused";
-      clearSpotlight();
-      render();
-    };
-    speechSynthesis.speak(next);
+  function holdForGesture() {
+    status = "paused";
+    blockedAutoplay = true;
+    clearSpotlight();
+    render();
+    if (!userPaused) armGestureResume();
   }
 
   async function playStep(index) {
@@ -720,26 +871,25 @@
     }
 
     const text = stepText(step);
-    try {
-      const src = await ttsSrc(text, lang, gen);
-      if (gen !== playGen || wantPaused) return;
-      if (src) {
-        root.dataset.voice = "elevenlabs";
-        status = "playing";
-        render();
-        setSpotlight(step);
-        await playAudioSrc(src, gen);
-        return;
+    let src = null;
+    if (text) {
+      try {
+        src = await warmText(text);
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
       }
-    } catch (err) {
-      if (err && err.name === "AbortError") return;
+    }
+    if (gen !== playGen || wantPaused) return;
+    if (src) {
+      root.dataset.voice = "elevenlabs";
+      status = "playing";
+      render();
+      setSpotlight(step);
+      await playAudioSrc(src, gen);
+      return;
     }
 
-    if (gen !== playGen || wantPaused) return;
-    status = "paused";
-    clearSpotlight();
-    render();
-    if (!userPaused) armGestureResume();
+    holdForGesture();
   }
 
   function pause() {
@@ -826,7 +976,7 @@
 
   // 3D AVATAR: freeze current mouth pose; do not reset the clip
   audio.onpause = () => {
-    if (audio.ended) return;
+    if (audio.ended || utterance) return;
     if (status === "playing") {
       status = "paused";
       clearSpotlight();
@@ -844,11 +994,24 @@
     void audio.currentTime;
   };
 
-  playBtn.addEventListener("click", () => {
+  playBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
     if (status === "playing") pause();
     else resume();
   });
-  muteBtn.addEventListener("click", toggleMute);
+  muteBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleMute();
+  });
+  closeBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    dismissToSide();
+  });
+  veil.addEventListener("click", dismissToSide);
+  window.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    dismissToSide();
+  });
 
   document.querySelector(".lang-toggle")?.addEventListener("click", () => {
     lang = readLang();
@@ -886,6 +1049,7 @@
   observeSections();
 
   if (typeof speechSynthesis !== "undefined") {
+    speechSynthesis.cancel();
     speechSynthesis.getVoices();
     speechSynthesis.addEventListener("voiceschanged", () => speechSynthesis.getVoices());
   }
@@ -915,16 +1079,24 @@
       ? new URL("../grudentist.glb", agentSrc).href
       : "/assets/grudentist.glb";
     const avatarMod = agentSrc
-      ? new URL("site-guide-avatar.js?v=5", agentSrc).href
-      : "/assets/js/site-guide-avatar.js?v=5";
-    import(avatarMod)
-      .then((mod) =>
-        mod.mountGuideDentist(avatar, {
-          glbUrl,
-          talkingRef: () => status === "playing",
-        }),
-      )
-      .catch((err) => console.warn("guide avatar:", err));
+      ? new URL("site-guide-avatar.js?v=8", agentSrc).href
+      : "/assets/js/site-guide-avatar.js?v=8";
+    afterSplash(() => {
+      const boot = () =>
+        import(avatarMod)
+          .then((mod) =>
+            mod.mountGuideDentist(avatar, {
+              glbUrl,
+              talkingRef: () => status === "playing",
+            }),
+          )
+          .catch((err) => console.warn("guide avatar:", err));
+      if (typeof requestIdleCallback === "function") {
+        requestIdleCallback(boot, { timeout: 280 });
+      } else {
+        setTimeout(boot, 60);
+      }
+    });
 
     observeSections();
     scheduleAutoStart();

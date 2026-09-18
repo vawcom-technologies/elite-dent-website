@@ -5,7 +5,14 @@
 
   const KEY = "elitedent-splash";
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+  const isPhone = window.matchMedia("(max-width: 767px)").matches;
+
+  const FILM_LOCKUP = { x: 358, y: 330, w: 1178, h: 554, vw: 1920, vh: 1080 };
+  const PNG_CONTENT_W = 3164 / 3248;
+  const WHOOSH_MS = 820;
+  const WHOOSH_EASE = "cubic-bezier(0.33, 0, 0.2, 1)";
+  const LAND_FADE_MS = 120;
+  const REMOVE_MS = 200;
 
   function revealHome() {
     app.hidden = false;
@@ -47,17 +54,65 @@
   function finish() {
     markSeen();
     splash.classList.add("is-done");
+    app.classList.add("is-ready");
+    markSplashComplete();
     setTimeout(() => {
       app.classList.remove("is-splash-handoff", "is-splash-landed");
       splash.remove();
-    }, 280);
+    }, REMOVE_MS);
+  }
+
+  function warmHome() {
+    if (!app.hidden) return;
+    app.hidden = false;
+    app.classList.add("is-splash-handoff");
+  }
+
+  function sizeBrandToFilm() {
+    if (!brand || !film || isPhone) return;
+    const vw = film.videoWidth || FILM_LOCKUP.vw;
+    const vh = film.videoHeight || FILM_LOCKUP.vh;
+    if (!vw || !vh) return;
+    const area = film.getBoundingClientRect();
+    if (!area.width || !area.height) return;
+    const scale = Math.max(area.width / vw, area.height / vh);
+    const displayedW = vw * scale;
+    const displayedH = vh * scale;
+    const originX = area.left + (area.width - displayedW) / 2;
+    const originY = area.top + (area.height - displayedH) / 2;
+    const x = FILM_LOCKUP.x * (vw / FILM_LOCKUP.vw);
+    const y = FILM_LOCKUP.y * (vh / FILM_LOCKUP.vh);
+    const w = FILM_LOCKUP.w * (vw / FILM_LOCKUP.vw);
+    const h = FILM_LOCKUP.h * (vh / FILM_LOCKUP.vh);
+    brand.style.width = `${(w * scale) / PNG_CONTENT_W}px`;
+    brand.style.left = `${originX + (x + w / 2) * scale}px`;
+    brand.style.top = `${originY + (y + h / 2) * scale}px`;
+    brand.style.transform = "translate(-50%, -50%) translateZ(0)";
+  }
+
+  function flyBrand(dx, dy, scale) {
+    const from = "translate(-50%, -50%) translateZ(0)";
+    const to = `translate(-50%, -50%) translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+    brand.style.willChange = "transform";
+    if (typeof brand.animate === "function") {
+      const anim = brand.animate([{ transform: from }, { transform: to }], {
+        duration: WHOOSH_MS,
+        easing: WHOOSH_EASE,
+        fill: "forwards",
+      });
+      return anim.finished.catch(() => {
+        brand.style.transform = to;
+      });
+    }
+    brand.style.transition = `transform ${WHOOSH_MS}ms ${WHOOSH_EASE}`;
+    brand.style.transform = to;
+    return new Promise((resolve) => setTimeout(resolve, WHOOSH_MS));
   }
 
   function whooshToNav() {
     const navMark = app.querySelector(".nav__brand img");
     if (!brand || !navMark || reduced) {
       revealHome();
-      markSplashComplete();
       finish();
       return;
     }
@@ -68,66 +123,46 @@
       } catch (_) {}
     }
 
-    const splashImg = brand.querySelector(".splash__mark");
-    if (isMobile && splashImg && navMark.src && splashImg.src !== navMark.src) {
-      splashImg.src = navMark.src;
-      splashImg.width = navMark.width || 400;
-      splashImg.height = navMark.height || 221;
-    }
-
+    sizeBrandToFilm();
     brand.hidden = false;
+    warmHome();
     splash.classList.add("is-handoff");
-    revealHome();
-    app.classList.add("is-splash-handoff");
 
-    const runHandoff = () => {
-      const from = brand.getBoundingClientRect();
-      const to = navMark.getBoundingClientRect();
-      if (!to.width || !from.width) {
-        app.classList.remove("is-splash-handoff");
-        markSplashComplete();
-        finish();
-        return;
-      }
-
-      const scale = to.width / from.width;
-      const dx = to.left + to.width / 2 - (from.left + from.width / 2);
-      const dy = to.top + to.height / 2 - (from.top + from.height / 2);
-
-      brand.style.transition =
-        "transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.35s ease";
-      brand.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-      brand.style.filter = "drop-shadow(0 1px 4px rgb(0 0 0 / 0.1))";
-      brand.style.opacity = "1";
-      brand.style.visibility = "visible";
-
-      let settled = false;
-      const land = (event) => {
-        if (event && event.propertyName && event.propertyName !== "transform") return;
-        if (settled) return;
-        settled = true;
-        brand.removeEventListener("transitionend", land);
-
-        app.classList.add("is-splash-landed", "is-splash-complete");
-        app.classList.remove("is-splash-handoff");
-        brand.style.transition = "none";
-        brand.style.opacity = "0";
-        brand.style.visibility = "hidden";
-
-        document.dispatchEvent(new CustomEvent("elitedent:splash-complete"));
-
+    const startFly = () => {
+      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          requestAnimationFrame(finish);
-        });
-      };
+          const from = brand.getBoundingClientRect();
+          const to = navMark.getBoundingClientRect();
+          if (!to.width || !from.width) {
+            revealHome();
+            finish();
+            return;
+          }
 
-      brand.addEventListener("transitionend", land);
-      setTimeout(() => land(null), 580);
+          const scale = to.width / from.width;
+          const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+          const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+
+          splash.classList.add("is-revealing");
+
+          flyBrand(dx, dy, scale).then(() => {
+            app.classList.add("is-splash-landed");
+            app.classList.remove("is-splash-handoff");
+            brand.style.transition = `opacity ${LAND_FADE_MS}ms linear`;
+            brand.style.opacity = "0";
+
+            setTimeout(() => {
+              brand.style.willChange = "auto";
+              brand.style.visibility = "hidden";
+              finish();
+            }, LAND_FADE_MS);
+          });
+        });
+      });
     };
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(runHandoff);
-    });
+    if (isPhone) setTimeout(startFly, 420);
+    else startFly();
   }
 
   function readyMark() {
@@ -158,29 +193,22 @@
 
   Promise.all([readyFilm(), readyMark()]).then(([filmOk]) => {
     splash.classList.add("is-ready");
+    warmHome();
+    sizeBrandToFilm();
 
     if (reduced) {
       brand.hidden = false;
-      splash.classList.add("is-handoff");
+      splash.classList.add("is-handoff", "is-revealing");
       setTimeout(() => {
         revealHome();
-        markSplashComplete();
         finish();
       }, 200);
       return;
     }
 
-    if (isMobile) {
-      brand.hidden = false;
-      splash.classList.add("is-handoff");
-      setTimeout(whooshToNav, 320);
-      return;
-    }
-
     if (!film || !filmOk) {
       brand.hidden = false;
-      splash.classList.add("is-handoff");
-      setTimeout(whooshToNav, 600);
+      setTimeout(whooshToNav, isPhone ? 1000 : 400);
       return;
     }
 
@@ -195,7 +223,8 @@
     film.addEventListener(
       "timeupdate",
       () => {
-        if (film.duration && film.currentTime >= film.duration - 0.08) handoff();
+        const lead = isPhone ? 1.55 : 0.08;
+        if (film.duration && film.currentTime >= film.duration - lead) handoff();
       },
       { passive: true },
     );
@@ -203,6 +232,11 @@
     const play = film.play();
     if (play && typeof play.catch === "function") {
       play.catch(() => {
+        if (isPhone && !handedOff) {
+          brand.hidden = false;
+          setTimeout(handoff, 800);
+          return;
+        }
         handoff();
       });
     }

@@ -1,6 +1,6 @@
 /**
  * Tiny headshot of assets/grudentist.glb inside the guide circle.
- * Loads Three.js only when the widget mounts.
+ * Loads Three.js only when the widget mounts. Renders only while talking.
  */
 export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
   if (!host) return () => {};
@@ -19,11 +19,10 @@ export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: true,
+    antialias: false,
     powerPreference: "low-power",
     preserveDrawingBuffer: true,
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.setClearColor(0x000000, 0);
 
@@ -37,13 +36,26 @@ export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
 
   let model = null;
   let raf = 0;
+  let looping = false;
   let disposed = false;
+  let inView = true;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const baseY = { value: 0 };
+  const clock = new THREE.Clock();
+
+  function isFlying() {
+    return Boolean(host.closest(".site-guide.is-flying"));
+  }
+
+  function isTalking() {
+    return Boolean(talkingRef && talkingRef());
+  }
 
   function sizeToHost() {
     const w = Math.max(1, host.clientWidth);
     const h = Math.max(1, host.clientHeight);
+    const large = w >= 140;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, large ? 1.25 : 1));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -55,7 +67,6 @@ export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const large = host.clientWidth >= 140;
-    // Small dock: head crop. Intro: show more of the figure.
     const focus = new THREE.Vector3(
       center.x,
       center.y + size.y * (large ? 0.18 : 0.32),
@@ -67,6 +78,42 @@ export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
     camera.far = span * 40;
     camera.lookAt(focus);
     camera.updateProjectionMatrix();
+  }
+
+  function draw() {
+    if (disposed || isFlying()) return;
+    if (model && !reduced) {
+      const talking = isTalking();
+      const t = clock.getElapsedTime();
+      model.rotation.x = talking ? Math.sin(t * 3.2) * 0.045 : 0;
+      model.rotation.y = 0;
+      model.position.y = baseY.value;
+    }
+    renderer.render(scene, camera);
+  }
+
+  function stopLoop() {
+    looping = false;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+  }
+
+  function tick() {
+    if (disposed || !looping) return;
+    if (document.hidden || !inView || isFlying() || !isTalking()) {
+      draw();
+      stopLoop();
+      return;
+    }
+    draw();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function startLoop() {
+    if (disposed || looping || reduced) return;
+    if (document.hidden || !inView || isFlying() || !isTalking()) return;
+    looping = true;
+    raf = requestAnimationFrame(tick);
   }
 
   try {
@@ -88,37 +135,59 @@ export async function mountGuideDentist(host, { glbUrl, talkingRef }) {
     baseY.value = model.position.y;
     host.classList.add("has-model");
     sizeToHost();
-    renderer.render(scene, camera);
+    draw();
   } catch (err) {
     console.warn("guide dentist:", err);
   }
 
   sizeToHost();
+  draw();
+
   const ro = new ResizeObserver(() => {
+    if (isFlying()) return;
     sizeToHost();
     if (model) frameHead(model);
+    draw();
   });
   ro.observe(host);
 
-  const clock = new THREE.Clock();
-  function tick() {
-    if (disposed) return;
-    raf = requestAnimationFrame(tick);
-    const t = clock.getElapsedTime();
-    if (model && !reduced) {
-      const talking = talkingRef ? talkingRef() : false;
-      // Soft head nod only — keep the circle still.
-      model.rotation.x = talking ? Math.sin(t * 3.2) * 0.045 : Math.sin(t * 0.7) * 0.012;
-      model.rotation.y = 0;
-      model.position.y = baseY.value;
+  const talkingWatch = new MutationObserver(() => {
+    if (host.classList.contains("is-talking")) startLoop();
+    else {
+      draw();
+      stopLoop();
     }
-    renderer.render(scene, camera);
-  }
-  tick();
+  });
+  talkingWatch.observe(host, { attributes: true, attributeFilter: ["class"] });
+
+  const vis = new IntersectionObserver(
+    (entries) => {
+      inView = entries.some((entry) => entry.isIntersecting);
+      if (inView && host.classList.contains("is-talking")) startLoop();
+      else if (!inView) stopLoop();
+    },
+    { threshold: 0.01 },
+  );
+  vis.observe(host);
+
+  const onVis = () => {
+    if (document.hidden) {
+      stopLoop();
+      return;
+    }
+    if (host.classList.contains("is-talking")) startLoop();
+    else draw();
+  };
+  document.addEventListener("visibilitychange", onVis);
+
+  if (host.classList.contains("is-talking")) startLoop();
 
   return () => {
     disposed = true;
-    cancelAnimationFrame(raf);
+    stopLoop();
+    talkingWatch.disconnect();
+    vis.disconnect();
+    document.removeEventListener("visibilitychange", onVis);
     ro.disconnect();
     renderer.dispose();
     canvas.remove();

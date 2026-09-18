@@ -22,14 +22,18 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  opacity: 1;
-  background: #4a90e2;
-  transition: opacity 0.4s ease;
+  background: #428fe6;
   pointer-events: none;
+}
+
+.splash.is-handoff,
+.splash.is-revealing {
+  background: transparent;
 }
 
 .splash.is-done {
   opacity: 0;
+  transition: opacity 0.2s linear;
 }
 
 html.no-splash .splash {
@@ -59,21 +63,17 @@ html.no-splash .home .hero__figure {
 }
 
 .nav__brand img {
-  transition:
-    opacity 0.15s ease,
-    transform 0.35s cubic-bezier(0.22, 1.4, 0.36, 1);
+  transition: opacity 0.16s linear;
   transform-origin: 50% 50%;
 }
 
 .home.is-splash-handoff .nav__brand img {
   opacity: 0;
-  transform: scale(0.72);
   transition: none;
 }
 
 .home.is-splash-landed .nav__brand img {
   opacity: 1;
-  transform: scale(1);
 }
 
 .home.is-splash-handoff .nav,
@@ -84,14 +84,43 @@ html.no-splash .home .hero__figure {
   animation: none;
 }
 
-.home.is-splash-landed .nav__brand {
-  position: relative;
-  z-index: 25;
+.home.is-splash-handoff .nav__links,
+.home.is-splash-handoff .nav__end,
+.home.is-splash-handoff .nav__pill {
+  opacity: 0;
+}
+
+.home.is-splash-handoff .hero__word,
+.home.is-splash-handoff .hero__orb,
+.home.is-splash-handoff .hero__figure,
+.home.is-splash-handoff .hero__cta {
+  animation: none !important;
+}
+
+.home.is-splash-landed .nav__links,
+.home.is-splash-landed .nav__end,
+.home.is-splash-complete .nav__links,
+.home.is-splash-complete .nav__end {
+  opacity: 1;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .home.is-splash-landed .nav__brand {
   position: relative;
   z-index: 25;
+}
+
+.splash__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #428fe6;
+  opacity: 1;
+}
+
+.splash.is-revealing .splash__veil {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .splash__film {
@@ -102,7 +131,7 @@ html.no-splash .home .hero__figure {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #4a90e2;
+  background: #428fe6;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -113,20 +142,20 @@ html.no-splash .home .hero__figure {
 
 .splash.is-handoff .splash__film {
   opacity: 0;
+  transition: opacity 0.18s linear;
 }
 
-/* Whoosh mark — small centered lockup, matches final film framing */
 .splash__brand {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 56.2%;
   z-index: 2;
-  width: min(380px, 42vw);
+  width: min(63vw, 1180px);
   aspect-ratio: 3248 / 1800;
-  translate: -50% -50%;
+  transform: translate(-50%, -50%) translateZ(0);
   transform-origin: 50% 50%;
-  filter: drop-shadow(0 10px 28px rgb(29 53 87 / 0.12));
-  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  contain: layout style;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -148,9 +177,21 @@ html.no-splash .home .hero__figure {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform: translateZ(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .splash,
+  .splash__veil,
+  .splash__film,
+  .nav__brand img,
+  .home.is-splash-landed .nav__links,
+  .home.is-splash-landed .nav__end,
+  .home.is-splash-complete .nav__links,
+  .home.is-splash-complete .nav__end {
+    transition: none;
+  }
+
   .splash__film {
     display: none;
   }
@@ -160,27 +201,45 @@ html.no-splash .home .hero__figure {
     opacity: 1;
     visibility: visible;
   }
-
-  .nav__brand img {
-    transition: none;
-  }
 }
 
 @media (max-width: 767px) {
-  .splash {
-    background: var(--surface);
+  .splash,
+  .splash__veil,
+  .splash__film {
+    background: #428fe6;
   }
 
+  .splash.is-handoff:not(.is-revealing) {
+    background: #428fe6;
+  }
+
+  /* Full-bleed film; the wide lockup is swapped for the PNG before it crops */
   .splash__film {
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    background: var(--surface);
+    object-position: 50% 46%;
   }
 
   .splash__brand {
-    width: min(220px, 62vw);
+    top: 50%;
+    width: min(86vw, 22.5rem);
   }
 
-  .splash.is-handoff .splash__brand {
-    filter: drop-shadow(0 2px 8px rgb(29 53 87 / 0.08));
+  .home.is-splash-handoff .nav-dock,
+  .home.is-splash-landed .nav-dock,
+  html:has(#splash:not(.is-done)) .nav-dock {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .home.is-splash-complete .nav-dock {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
   }
 }

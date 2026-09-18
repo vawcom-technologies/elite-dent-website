@@ -64,8 +64,7 @@ body.legal {
   gap: 12px 20px;
   flex-wrap: wrap;
   padding: 1rem clamp(1.25rem, 4vw, 3rem);
-  background: rgb(244 248 252 / 0.92);
-  backdrop-filter: blur(12px);
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
 

@@ -13,9 +13,11 @@ const path = require("path");
 
 const MAX_CHARS = 2000;
 const CACHE_DIR = path.join(__dirname, "..", ".tts-cache");
+const BAKED_DIR = path.join(__dirname, "..", "assets", "voice");
 
 /** One ElevenLabs request at a time — free tier caps concurrent calls. */
 let elevenQueue = Promise.resolve();
+let elevenDisabled = false;
 function withElevenLock(fn) {
   const run = elevenQueue.then(fn, fn);
   elevenQueue = run.then(
@@ -63,6 +65,19 @@ function cacheFile(text) {
   return path.join(CACHE_DIR, `${hash}.mp3`);
 }
 
+function bakedFile(text) {
+  const hash = crypto.createHash("sha256").update(`${voiceId()}\n${text}`).digest("hex");
+  return path.join(BAKED_DIR, `${hash}.mp3`);
+}
+
+function readCached(text) {
+  const file = cacheFile(text);
+  if (fs.existsSync(file)) return fs.readFileSync(file);
+  const baked = bakedFile(text);
+  if (fs.existsSync(baked)) return fs.readFileSync(baked);
+  return null;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -73,10 +88,6 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return json(res, 405, { error: "Method not allowed" });
-  }
-
-  if (!process.env.ELEVENLABS_API_KEY) {
-    return json(res, 503, { error: "TTS is not configured yet." });
   }
 
   let body;
@@ -91,24 +102,34 @@ module.exports = async function handler(req, res) {
     return json(res, 400, { error: "Missing or too-long text." });
   }
 
-  const file = cacheFile(text);
-  if (fs.existsSync(file)) {
-    const audio = fs.readFileSync(file);
+  const cached = readCached(text);
+  if (cached) {
     res.statusCode = 200;
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Cache-Control", "private, max-age=86400");
     res.setHeader("X-TTS-Cache", "hit");
-    return res.end(audio);
+    return res.end(cached);
+  }
+
+  if (!process.env.ELEVENLABS_API_KEY) {
+    return json(res, 503, { error: "TTS is not configured yet." });
+  }
+
+  if (elevenDisabled) {
+    return json(res, 503, { error: "Voice is temporarily unavailable." });
   }
 
   return withElevenLock(async () => {
-    if (fs.existsSync(file)) {
-      const audio = fs.readFileSync(file);
+    const again = readCached(text);
+    if (again) {
       res.statusCode = 200;
       res.setHeader("Content-Type", "audio/mpeg");
       res.setHeader("Cache-Control", "private, max-age=86400");
       res.setHeader("X-TTS-Cache", "hit");
-      return res.end(audio);
+      return res.end(again);
+    }
+    if (elevenDisabled) {
+      return json(res, 503, { error: "Voice is temporarily unavailable." });
     }
 
     let response;
@@ -143,13 +164,14 @@ module.exports = async function handler(req, res) {
     if (!response.ok) {
       const detail = await response.text().catch(() => "");
       console.error("elevenlabs:", response.status, detail.slice(0, 300));
+      if (response.status === 401 && /quota/i.test(detail)) elevenDisabled = true;
       return json(res, 502, { error: "Voice generation failed." });
     }
 
     const audio = Buffer.from(await response.arrayBuffer());
     try {
       fs.mkdirSync(CACHE_DIR, { recursive: true });
-      fs.writeFileSync(file, audio);
+      fs.writeFileSync(cacheFile(text), audio);
     } catch (err) {
       console.error("tts cache write:", err);
     }

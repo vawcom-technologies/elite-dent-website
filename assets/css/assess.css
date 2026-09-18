@@ -23,15 +23,11 @@
   height: auto;
   border-radius: 0;
   opacity: 1;
-  transition:
-    opacity 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
-    clip-path 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-  clip-path: circle(150% at 50% 42%);
+  transition: opacity 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .assess-expand-veil--arrive.is-revealing {
   opacity: 0;
-  clip-path: circle(0% at 50% 42%);
 }
 
 html.assess-reveal .page--assess .nav,
@@ -263,5 +259,13 @@ html.assess-reveal-ready .page--assess .site-footer {
   .assess-option,
   .assess-result__cta {
     transition: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) and (max-height: 900px) and (pointer: coarse) {
+  .assess-page {
+    min-height: calc(100svh - 7rem);
+    padding-top: 1.75rem;
+    padding-bottom: 2.5rem;
   }
 }

@@ -18,10 +18,13 @@
       veil.className = "assess-expand-veil";
       veil.setAttribute("aria-hidden", "true");
       Object.assign(veil.style, {
-        left: `${rect.left}px`,
-        top: `${rect.top}px`,
+        left: "0",
+        top: "0",
         width: `${rect.width}px`,
         height: `${rect.height}px`,
+        transformOrigin: "0 0",
+        transform: `translate3d(${rect.left}px, ${rect.top}px, 0)`,
+        borderRadius: "999px",
       });
       document.body.appendChild(veil);
 
@@ -29,11 +32,29 @@
         sessionStorage.setItem(KEY, "1");
       } catch (_) {}
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          veil.classList.add("is-expanding");
-        });
-      });
+      const sx = Math.max(1, window.innerWidth / Math.max(1, rect.width));
+      const sy = Math.max(1, window.innerHeight / Math.max(1, rect.height));
+      const fly =
+        typeof veil.animate === "function"
+          ? veil.animate(
+              [
+                {
+                  transform: `translate3d(${rect.left}px, ${rect.top}px, 0) scale(1, 1)`,
+                  borderRadius: "999px",
+                },
+                {
+                  transform: `translate3d(0, 0, 0) scale(${sx}, ${sy})`,
+                  borderRadius: "0px",
+                },
+              ],
+              {
+                duration: 450,
+                easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+                fill: "forwards",
+              },
+            )
+          : null;
+      if (!fly) veil.classList.add("is-expanding");
 
       window.setTimeout(() => {
         location.href = href;
