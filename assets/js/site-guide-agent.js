@@ -1209,6 +1209,7 @@
   function mount() {
     if (!document.body.contains(hub)) document.body.appendChild(hub);
     if (!document.body.contains(root)) document.body.appendChild(root);
+    if (wantsIntro()) document.documentElement.classList.add("is-gru-intro-pending");
     observeSections();
     scheduleAutoStart();
   }

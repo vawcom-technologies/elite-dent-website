@@ -51,6 +51,13 @@ html.is-gru-intro .guide-hub {
   visibility: visible;
 }
 
+/* Sits behind the splash so its fade-out reveals the welcome backdrop, not the page */
+html.is-gru-intro-pending .guide-hub {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+
 .site-guide {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
