@@ -17,6 +17,8 @@ const SPEED = { de: 1.08, en: 1.2 };
 const engines = {};
 const memo = new Map();
 const MEMO_LIMIT = 200;
+// One line at a time: parallel jobs fill libuv's threadpool and stall file reads for page loads
+let queue = Promise.resolve();
 
 function engine(lang) {
   if (!engines[lang]) {
@@ -63,9 +65,11 @@ function toWav(samples, sampleRate) {
 function speech(text, lang) {
   const key = lang + "\n" + text;
   if (!memo.has(key)) {
-    const job = engine(lang)
+    const job = queue
+      .then(() => engine(lang))
       .then((tts) => tts.generateAsync({ text, sid: 0, speed: SPEED[lang] }))
       .then((audio) => toWav(audio.samples, audio.sampleRate));
+    queue = job.catch(() => {});
     job.catch(() => memo.delete(key));
     memo.set(key, job);
     if (memo.size > MEMO_LIMIT) memo.delete(memo.keys().next().value);

@@ -1211,7 +1211,12 @@
     if (!document.body.contains(root)) document.body.appendChild(root);
     if (wantsIntro()) document.documentElement.classList.add("is-gru-intro-pending");
     observeSections();
-    scheduleAutoStart();
+    // Hovered links are prerendered; don't make voice requests for a page nobody has opened yet
+    if (document.prerendering) {
+      document.addEventListener("prerenderingchange", scheduleAutoStart, { once: true });
+    } else {
+      scheduleAutoStart();
+    }
   }
   if (document.body) mount();
   else document.addEventListener("DOMContentLoaded", mount);
