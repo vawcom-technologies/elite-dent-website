@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/tts.js": {
+      "includeFiles": "{voices/**,node_modules/sherpa-onnx-linux-x64/**}",
+      "maxDuration": 30
+    }
+  }
+}

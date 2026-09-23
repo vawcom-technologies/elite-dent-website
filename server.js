@@ -61,8 +61,7 @@ function safeFile(urlPath) {
   if (
     rel.startsWith("data/") ||
     rel.startsWith(".env") ||
-    rel.startsWith(".tts-cache") ||
-    rel.startsWith(".piper") ||
+    rel.startsWith("voices/") ||
     rel.startsWith("node_modules/")
   ) {
     return null;

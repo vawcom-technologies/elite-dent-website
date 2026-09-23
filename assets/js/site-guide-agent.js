@@ -289,11 +289,7 @@
     const pending = ttsInflight.get(key);
     if (pending) return pending;
     const job = (async () => {
-      const res = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, lang }),
-      });
+      const res = await fetch(`/api/tts?lang=${lang}&text=${encodeURIComponent(text)}`);
       if (!res.ok) return null;
       const blob = await res.blob();
       if (!blob) return null;

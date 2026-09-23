@@ -1,0 +1,16 @@
+{
+  "name": "elite-dent-website",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "postinstall": "node scripts/fetch-voices.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "sherpa-onnx-node": "1.13.8",
+    "tar": "^7.4.3",
+    "unbzip2-stream": "^1.4.3"
+  }
+}

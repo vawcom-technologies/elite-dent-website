@@ -2,7 +2,7 @@
 .env
 .env.local
 .env*.local
-.tts-cache
-.piper
+node_modules/
+voices/
 data/hkp.json
 data/hkp-files/

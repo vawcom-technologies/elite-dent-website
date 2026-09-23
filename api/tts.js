@@ -1,165 +1,112 @@
 /**
- * POST /api/tts — Piper speech for the page guide, generated on first request and cached.
- * The spoken line is whatever text the client sends (from guideScripts).
- *
- * Env (all optional, defaults point at the local .piper/ setup):
- *   PIPER_PYTHON    Python with piper-tts installed
- *   PIPER_MODEL_DE  German voice (.onnx)
- *   PIPER_MODEL_EN  English voice (.onnx)
+ * GET /api/tts?lang=de|en&text=… — Piper speech for the page guide via sherpa-onnx.
+ * Lines are generated on first request; the long s-maxage lets Vercel's CDN keep each one,
+ * so a given line is normally generated once rather than per visitor.
+ * Voice models are downloaded into voices/ by scripts/fetch-voices.js on npm install.
  */
 
-const crypto = require("crypto");
-const fs = require("fs");
 const path = require("path");
-const { spawn } = require("child_process");
-const readline = require("readline");
 
-const ROOT = path.join(__dirname, "..");
-const MAX_CHARS = 2000;
-const CACHE_DIR = path.join(ROOT, ".tts-cache");
-const PIPER_DIR = path.join(ROOT, ".piper");
-const PYTHON = process.env.PIPER_PYTHON || path.join(PIPER_DIR, "venv", "bin", "python");
-const MODELS = {
-  de: process.env.PIPER_MODEL_DE || path.join(PIPER_DIR, "voices", "de_DE-thorsten-high.onnx"),
-  en: process.env.PIPER_MODEL_EN || path.join(PIPER_DIR, "voices", "en_GB-alan-medium.onnx"),
-};
+const MAX_CHARS = 600;
+const VOICES_DIR = path.join(__dirname, "..", "voices");
+const VOICE = { de: "de_DE-thorsten-medium", en: "en_GB-alan-medium" };
+const ESPEAK = path.join(VOICES_DIR, `vits-piper-${VOICE.de}`, "espeak-ng-data");
+// Slightly quicker than Piper's default pace, closer to how the guide read before
+const SPEED = 1.08;
 
-let worker = null;
-let nextId = 0;
-const pending = new Map();
-const inflight = new Map();
+const engines = {};
+const memo = new Map();
+const MEMO_LIMIT = 200;
 
-function startWorker() {
-  const proc = spawn(PYTHON, [path.join(ROOT, "lib", "piper_worker.py"), MODELS.de, MODELS.en], {
-    stdio: ["pipe", "pipe", "ignore"],
-  });
-  let markReady;
-  let failReady;
-  const ready = new Promise((resolve, reject) => {
-    markReady = resolve;
-    failReady = reject;
-  });
-  ready.catch(() => {});
-  proc.once("error", (err) => failReady(err));
-  readline.createInterface({ input: proc.stdout }).on("line", (line) => {
-    let msg;
-    try {
-      msg = JSON.parse(line);
-    } catch {
-      return;
-    }
-    if (msg.ready) return markReady();
-    const job = pending.get(msg.id);
-    if (!job) return;
-    pending.delete(msg.id);
-    msg.ok ? job.resolve() : job.reject(new Error(msg.error || "piper failed"));
-  });
-  proc.once("exit", () => {
-    failReady(new Error("piper exited"));
-    if (worker?.proc === proc) worker = null;
-    for (const job of pending.values()) job.reject(new Error("piper exited"));
-    pending.clear();
-  });
-  return { proc, ready };
+function engine(lang) {
+  if (!engines[lang]) {
+    const { OfflineTts } = require("sherpa-onnx-node");
+    const dir = path.join(VOICES_DIR, `vits-piper-${VOICE[lang]}`);
+    engines[lang] = OfflineTts.createAsync({
+      model: {
+        vits: {
+          model: path.join(dir, `${VOICE[lang]}.onnx`),
+          tokens: path.join(dir, "tokens.txt"),
+          dataDir: ESPEAK,
+        },
+        numThreads: 2,
+      },
+      maxNumSentences: 1,
+    });
+    engines[lang].catch(() => delete engines[lang]);
+  }
+  return engines[lang];
 }
 
-async function synthesize(text, lang, out) {
-  if (!worker) worker = startWorker();
-  const { proc, ready } = worker;
-  await ready;
-  const id = ++nextId;
-  const done = new Promise((resolve, reject) => pending.set(id, { resolve, reject }));
-  proc.stdin.write(JSON.stringify({ id, lang, text, out }) + "\n");
-  return done;
-}
-
-function cacheFile(text, lang) {
-  const hash = crypto.createHash("sha256").update(`piper:${lang}\n${text}`).digest("hex");
-  return path.join(CACHE_DIR, `${hash}.wav`);
+function toWav(samples, sampleRate) {
+  const data = Buffer.alloc(samples.length * 2);
+  for (let i = 0; i < samples.length; i += 1) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    data.writeInt16LE(Math.round(s * 32767), i * 2);
+  }
+  const header = Buffer.alloc(44);
+  header.write("RIFF", 0);
+  header.writeUInt32LE(36 + data.length, 4);
+  header.write("WAVEfmt ", 8);
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(1, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(sampleRate * 2, 28);
+  header.writeUInt16LE(2, 32);
+  header.writeUInt16LE(16, 34);
+  header.write("data", 36);
+  header.writeUInt32LE(data.length, 40);
+  return Buffer.concat([header, data]);
 }
 
 function speech(text, lang) {
-  const file = cacheFile(text, lang);
-  if (fs.existsSync(file)) return Promise.resolve(file);
-  if (inflight.has(file)) return inflight.get(file);
-  const tmp = `${file}.${process.pid}.tmp`;
-  const job = (async () => {
-    fs.mkdirSync(CACHE_DIR, { recursive: true });
-    await synthesize(text, lang, tmp);
-    fs.renameSync(tmp, file);
-    return file;
-  })().finally(() => inflight.delete(file));
-  inflight.set(file, job);
-  return job;
+  const key = lang + "\n" + text;
+  if (!memo.has(key)) {
+    const job = engine(lang)
+      .then((tts) => tts.generateAsync({ text, sid: 0, speed: SPEED }))
+      .then((audio) => toWav(audio.samples, audio.sampleRate));
+    job.catch(() => memo.delete(key));
+    memo.set(key, job);
+    if (memo.size > MEMO_LIMIT) memo.delete(memo.keys().next().value);
+  }
+  return memo.get(key);
 }
 
 function json(res, status, body) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify(body));
 }
 
-function readBody(req) {
-  if (req.body && typeof req.body === "object") return Promise.resolve(req.body);
-  if (typeof req.body === "string") {
-    try {
-      return Promise.resolve(JSON.parse(req.body));
-    } catch {
-      return Promise.reject(new Error("Invalid JSON"));
-    }
-  }
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    req.on("data", (chunk) => chunks.push(chunk));
-    req.on("end", () => {
-      try {
-        resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
-      } catch (err) {
-        reject(err);
-      }
-    });
-    req.on("error", reject);
-  });
-}
-
 module.exports = async function handler(req, res) {
-  if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    return json(res, 204, {});
-  }
-
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
     return json(res, 405, { error: "Method not allowed" });
   }
 
-  let body;
-  try {
-    body = await readBody(req);
-  } catch {
-    return json(res, 400, { error: "Invalid JSON" });
-  }
-
-  const text = String(body?.text || "").trim();
-  const lang = body?.lang === "en" ? "en" : "de";
+  const params = new URL(req.url || "/", "http://localhost").searchParams;
+  const text = String(params.get("text") || "").trim();
+  const lang = params.get("lang") === "en" ? "en" : "de";
   if (!text || text.length > MAX_CHARS) {
     return json(res, 400, { error: "Missing or too-long text." });
   }
 
-  let file;
+  let wav;
   try {
-    file = await speech(text, lang);
+    wav = await speech(text, lang);
   } catch (err) {
-    console.error("piper:", err.message);
+    console.error("tts:", err.message);
     return json(res, 503, { error: "Voice is temporarily unavailable." });
   }
   res.statusCode = 200;
   res.setHeader("Content-Type", "audio/wav");
-  res.setHeader("Cache-Control", "private, max-age=86400");
-  res.end(fs.readFileSync(file));
+  res.setHeader("Content-Length", wav.length);
+  res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=31536000, immutable");
+  res.end(wav);
 };
 
 module.exports.warm = () => {
-  if (!worker && fs.existsSync(PYTHON)) worker = startWorker();
+  engine("de").catch((err) => console.error("tts warm:", err.message));
 };
