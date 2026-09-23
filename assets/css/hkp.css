@@ -425,8 +425,18 @@
   background: #e8f1fb;
 }
 
+/* Same width as the service cards below */
 .home .hkp-band {
-  margin: 2.75rem clamp(1.25rem, 4vw, 3rem) 0;
+  box-sizing: border-box;
+  width: min(1080px, calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
+  /* Bottom gap mirrors the stats section's bottom padding so the band sits centred on the light background */
+  margin: 0 auto 4.25rem;
+}
+
+@media (max-width: 767px) {
+  .home .hkp-band {
+    margin-bottom: 2.75rem;
+  }
 }
 
 .service-article__actions {

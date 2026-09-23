@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>App · EliteDent</title>
+  <meta name="theme-color" content="#f4f8fc" />
+  <meta name="color-scheme" content="light" />
+  <style>html,body{background:#f4f8fc;margin:0}</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://translate.google.com" />
+  <link rel="preconnect" href="https://translate.googleapis.com" />
+  <link rel="stylesheet" href="../assets/css/critical.css?v=1" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../assets/css/home.css?v=113" />
+  <link rel="stylesheet" href="../assets/css/app.css?v=1" />
+  <link rel="stylesheet" href="../assets/css/site-guide.css?v=21" />
+  <script src="../assets/js/navigate.js?v=3"></script>
+  <script src="../assets/js/i18n.js?v=7"></script>
+</head>
+<body class="page page--app">
+  <header class="nav nav--static notranslate" translate="no">
+    <a class="nav__brand notranslate" href="../" translate="no">
+      <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
+    </a>
+    <button
+      type="button"
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label="Menü öffnen"
+    >
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav__panel" id="nav-panel">
+      <nav class="nav__links" aria-label="Hauptnavigation" data-i18n-aria="nav-label">
+        <a href="../" data-i18n="home">Startseite</a>
+        <div class="nav__services">
+          <div class="nav__services-head">
+            <a href="../services/" data-i18n="services">Leistungen</a>
+            <button
+              type="button"
+              class="nav__services-toggle"
+              aria-expanded="false"
+              aria-label="Leistungen anzeigen"
+            ></button>
+          </div>
+          <div class="nav__tabs">
+            <a href="../services/#whitening" data-i18n="whitening">Bleaching</a>
+            <a href="../services/#aligners" data-i18n="aligners">Aligner</a>
+            <a href="../services/#veneers" data-i18n="veneers">Veneers</a>
+            <a href="../services/#implants" data-i18n="implants">Implantate</a>
+            <a href="../services/#preventive" data-i18n="preventive">Prophylaxe</a>
+            <a href="../services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
+          </div>
+        </div>
+        <a href="../hkp/" data-i18n="hkp">HKP</a>
+        <a href="../about/" data-i18n="about">Über uns</a>
+        <a href="../team/" data-i18n="team">Team</a>
+        <a href="./" data-i18n="app" aria-current="page">App</a>
+      </nav>
+      <div class="nav__end">
+        <div class="lang-toggle notranslate" role="group" aria-label="Sprache" data-i18n-aria="lang-label" translate="no">
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
+        </div>
+        <a class="nav__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="google_translate_element" aria-hidden="true"></div>
+
+  <main class="app-page">
+    <div class="app-shell">
+      <header class="app-intro">
+        <div class="app-intro__copy">
+          <p class="app-meta">App</p>
+          <h1>Die <span class="notranslate" translate="no">EliteDent</span> App für Zahnarztpraxen</h1>
+          <p>
+            Eine iPad-App für die Arbeit am Behandlungsstuhl. Sie hilft bei der Bestimmung der Zahnfarbe,
+            beim Prüfen von Scans, bei der Vorschau auf ein neues Lächeln und beim Austausch mit dem Labor.
+          </p>
+          <p>
+            Auf dieser Seite zeigen wir die wichtigsten Bereiche und erklären, was dort passiert.
+          </p>
+        </div>
+        <figure class="app-shot app-shot--hero">
+          <img
+            src="../assets/images/app/sign-in.jpg"
+            alt="Anmeldebildschirm der EliteDent App, Pro Edition, auf einem iPad"
+            width="1024"
+            height="768"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+      </header>
+
+      <section class="app-feature reveal" data-reveal aria-labelledby="app-dashboard">
+        <figure class="app-shot">
+          <img
+            src="../assets/images/app/dashboard.jpg"
+            alt="Übersicht der App mit abgeschlossenen Fällen, offenen Scans und letzter Aktivität"
+            width="1024"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="app-feature__copy">
+          <p class="app-meta">Übersicht</p>
+          <h2 id="app-dashboard">Der Tag auf einen Blick</h2>
+          <p>
+            Nach der Anmeldung sieht die Zahnärztin oder der Zahnarzt, welche Fälle gerade Aufmerksamkeit brauchen.
+            Abgeschlossene Fälle, offene und abgelehnte Scans stehen oben, darunter die letzten Fälle mit ihrem Status.
+          </p>
+          <p>Neue Patientinnen und Patienten lassen sich direkt von hier anlegen.</p>
+        </div>
+      </section>
+
+      <section class="app-feature app-feature--flip reveal" data-reveal aria-labelledby="app-shade">
+        <figure class="app-shot">
+          <img
+            src="../assets/images/app/shade-detection.jpg"
+            alt="Farbbestimmung: Zähne auf einem Foto sind nummeriert, daneben VITA-Farben pro Zahn"
+            width="1024"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="app-feature__copy">
+          <p class="app-meta">Farbbestimmung</p>
+          <h2 id="app-shade">Die passende Zahnfarbe finden</h2>
+          <p>
+            Aus einem Foto der Zähne erkennt die App jeden einzelnen Zahn und schlägt eine Farbe nach
+            VITA classical vor, getrennt für Zahnhals, Mitte und Schneidekante. Auch die Farbe des Zahnfleischs wird bestimmt.
+          </p>
+          <p>
+            Der Vorschlag ist ein Ausgangspunkt. Ähnliche Farben stehen direkt daneben, und die Zahnärztin oder der Zahnarzt
+            bestätigt oder ändert jeden Wert, bevor er gespeichert wird.
+          </p>
+        </div>
+      </section>
+
+      <section class="app-feature reveal" data-reveal aria-labelledby="app-smile">
+        <figure class="app-shot">
+          <img
+            src="../assets/images/app/smile-preview.jpg"
+            alt="Lächel-Vorschau: eine Zahnform aus der Bibliothek liegt über dem Foto einer Patientin"
+            width="1024"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="app-feature__copy">
+          <p class="app-meta">Lächel-Vorschau</p>
+          <h2 id="app-smile">Ein neues Lächeln vorher sehen</h2>
+          <p>
+            Im Gespräch über Veneers oder Kronen lässt sich eine Zahnform aus der Bibliothek auf das Foto der Patientin
+            oder des Patienten legen. Größe, Breite, Höhe, Drehung und Überblendung werden von Hand angepasst, bis es stimmig aussieht.
+          </p>
+          <p>
+            So können beide Seiten über dasselbe Bild sprechen. Die Vorschau hilft bei der Entscheidung, sie ist aber keine Zusage
+            für das genaue Ergebnis.
+          </p>
+        </div>
+      </section>
+
+      <section class="app-feature app-feature--flip reveal" data-reveal aria-labelledby="app-interpreter">
+        <figure class="app-shot">
+          <img
+            src="../assets/images/app/interpreter.jpg"
+            alt="Dolmetscher: links spricht der Zahnarzt Englisch, rechts erscheint die Übersetzung auf Arabisch"
+            width="1024"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="app-feature__copy">
+          <p class="app-meta">Dolmetscher</p>
+          <h2 id="app-interpreter">Verstehen, auch ohne gemeinsame Sprache</h2>
+          <p>
+            Die Zahnärztin oder der Zahnarzt spricht oder tippt einen Satz, und auf der Seite der Patientin oder des Patienten
+            erscheint die Übersetzung. Sie kann auch vorgelesen werden. Das funktioniert in beide Richtungen.
+          </p>
+          <p>
+            Die Sprache der App selbst bleibt dabei unverändert. Übersetzt wird nur das Gespräch.
+          </p>
+        </div>
+      </section>
+
+      <section class="app-feature reveal" data-reveal aria-labelledby="app-messages">
+        <figure class="app-shot">
+          <img
+            src="../assets/images/app/messages.jpg"
+            alt="Nachrichten: Posteingang und geöffnetes Gespräch mit dem Labor"
+            width="1024"
+            height="768"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="app-feature__copy">
+          <p class="app-meta">Nachrichten</p>
+          <h2 id="app-messages">Kurzer Draht zum Labor</h2>
+          <p>
+            Fragen zu einem Fall gehen direkt aus der App an das Labor, als Text oder Sprachnachricht.
+            Das Gespräch bleibt beim Fall, so muss später niemand in E-Mails suchen.
+          </p>
+        </div>
+      </section>
+
+      <section class="app-more reveal" data-reveal aria-labelledby="app-more-heading">
+        <h2 id="app-more-heading">Außerdem in der App</h2>
+        <ul class="app-more__list">
+          <li>
+            <h3>Scans</h3>
+            <p>3D-Scans von Kiefer und Zähnen werden noch am Stuhl geprüft, bevor sie ans Labor gehen.</p>
+          </li>
+          <li>
+            <h3>Kamera</h3>
+            <p>Fotos für Farbbestimmung und Vorschau entstehen direkt mit dem iPad.</p>
+          </li>
+          <li>
+            <h3>Patienten und Termine</h3>
+            <p>Akten und Termine liegen an einem Ort, zusammen mit den Fällen.</p>
+          </li>
+          <li>
+            <h3>Berichte</h3>
+            <p>Eine Auswertung der Fälle, etwa wie lange die Bearbeitung dauert.</p>
+          </li>
+        </ul>
+        <p class="app-more__contact">
+          Fragen zur App? <a href="../team/#kontakt">Schreiben Sie uns</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <a class="site-footer__brand" href="../">
+        <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
+      </a>
+      <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+        <a href="../" data-i18n="home">Startseite</a>
+        <a href="../services/" data-i18n="services">Leistungen</a>
+        <a href="../hkp/" data-i18n="hkp">HKP</a>
+        <a href="../about/" data-i18n="about">Über uns</a>
+        <a href="../team/" data-i18n="team">Team</a>
+        <a href="./" data-i18n="app">App</a>
+        <a class="site-footer__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav.js?v=24" defer></script>
+  <script src="../assets/js/services.js?v=13" defer></script>
+  <script src="../assets/js/guide-scripts.js?v=15" defer></script>
+  <script src="../assets/js/site-guide-agent.js?v=34" defer></script>
+</body>
+</html>

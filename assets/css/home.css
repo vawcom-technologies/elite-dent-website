@@ -873,7 +873,8 @@ html:not(.is-translating) .site-footer {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: calc(100vh - 5rem);
+  /* Nav padding + logo height, so nav and hero together fill the first screen; 36rem floor keeps the title clear of the image on short windows */
+  min-height: max(36rem, calc(100svh - 2.7rem - clamp(42px, 4.8vw, 54px)));
   padding: 0 1rem 0;
   overflow: hidden;
   contain: layout style;
@@ -1716,7 +1717,7 @@ html:not(.is-translating) .site-footer {
   border-bottom-color: var(--navy);
 }
 
-/* —— About preview (home) —— */
+/* —— About preview (home) —— matches service-card footprint —— */
 .about-preview {
   position: relative;
   z-index: 4;
@@ -1727,14 +1728,13 @@ html:not(.is-translating) .site-footer {
 .about-preview__card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(13rem, 17rem);
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  max-width: 920px;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 0;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 1.45rem 0.5rem 1.45rem 2rem;
   overflow: hidden;
-  border-radius: 1.65rem;
+  border-radius: 1.35rem;
   background: var(--white);
   border: 1px solid rgb(29 53 87 / 0.07);
   box-shadow:
@@ -1742,37 +1742,56 @@ html:not(.is-translating) .site-footer {
     0 14px 34px rgb(29 53 87 / 0.08);
 }
 
+@media (min-width: 720px) {
+  .about-preview__card {
+    grid-template-columns: 1.15fr minmax(320px, 1fr);
+    min-height: 260px;
+  }
+}
+
 .about-preview__copy {
   position: relative;
   z-index: 1;
-  max-width: 26rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+  padding: 1.5rem 1.4rem 1.55rem;
+}
+
+@media (min-width: 720px) {
+  .about-preview__copy {
+    padding: 2rem 2.25rem 2.1rem 2rem;
+  }
 }
 
 .about-preview__copy h2 {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.55rem;
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.8vw, 1.8rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   color: var(--navy);
 }
 
 .about-preview__copy p {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.1rem;
+  max-width: 40ch;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.55;
 }
 
 .about-preview__link {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   gap: 0.35rem;
   color: var(--dental-blue);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   border-bottom: 1px solid rgb(74 144 226 / 0.35);
@@ -1794,9 +1813,18 @@ html:not(.is-translating) .site-footer {
   position: relative;
   z-index: 0;
   width: 100%;
-  aspect-ratio: 1;
-  margin: -0.85rem 0 -1rem -1.25rem;
+  min-height: 220px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--orb);
   pointer-events: none;
+}
+
+@media (min-width: 720px) {
+  .about-preview__visual {
+    min-height: 0;
+    align-self: stretch;
+  }
 }
 
 .about-preview__visual::before {
@@ -1809,12 +1837,13 @@ html:not(.is-translating) .site-footer {
 }
 
 .about-preview__visual svg {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
   display: block;
   width: 100% !important;
   height: 100% !important;
-  transform: translateX(-6%) scale(1.1);
+  transform: scale(1.05);
   transform-origin: 50% 50%;
 }
 
@@ -2226,28 +2255,15 @@ html:not(.is-translating) .site-footer {
 
   .about-preview__card {
     grid-template-columns: 1fr;
-    gap: 0.25rem;
-    padding: 1.5rem 1.25rem 0.65rem;
-    text-align: center;
     border-radius: 1.35rem;
   }
 
   .about-preview__copy {
-    max-width: none;
-  }
-
-  .about-preview__copy h2 {
-    font-size: clamp(1.3rem, 5.5vw, 1.55rem);
-  }
-
-  .about-preview__copy p {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    text-align: left;
   }
 
   .about-preview__visual {
-    width: min(68%, 12.5rem);
-    margin: 0.15rem auto -0.15rem;
+    min-height: 220px;
   }
 
   .page-hero {
@@ -2271,6 +2287,10 @@ html:not(.is-translating) .site-footer {
 
   .nav__brand img {
     height: 42px;
+  }
+
+  .hero {
+    min-height: max(36rem, calc(100svh - 2rem - 42px));
   }
 
   .nav__links > a,

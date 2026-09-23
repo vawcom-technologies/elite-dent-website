@@ -2,50 +2,25 @@
   const MUTE_KEY = "elitedent-guide-muted";
   const LANG_KEY = "elitedent-ui-lang";
   const INTRO_KEY = "elitedent-gru-intro";
-  const GUIDE_VOICE_ID = "onwK4e9ZLuTAKqWW03F9";
-  const SKIP_VOICE =
-    /female|anna|sandy|shelley|grandma|kathy|karen|moira|samantha|helena|petra|katja|nora|whisper|zarvox|bells|cellos|bubbles|boing|trinoids|jester|junior|princess|organ|superstar|bad news|good news|wobble|bahh|tessa|veena|fiona|zira|victoria/i;
-  const PREFER = {
-    de: ["reed", "eddy", "rocko", "yannick", "otto", "markus", "stefan", "google deutsch"],
-    en: ["daniel", "reed", "eddy", "rocko", "google uk english male", "alex", "microsoft david"],
-  };
-
-  function pickMaleVoice(uiLang) {
-    const prefix = uiLang === "en" ? "en" : "de";
-    const pool = speechSynthesis
-      .getVoices()
-      .filter((voice) => voice.lang.toLowerCase().startsWith(prefix) && !SKIP_VOICE.test(voice.name));
-    for (const name of PREFER[uiLang] || PREFER.de) {
-      const hit = pool.find((voice) => voice.name.toLowerCase().includes(name));
-      if (hit) return hit;
-    }
-    return pool.find((voice) => /male|reed|eddy|rocko|daniel|alex/.test(voice.name.toLowerCase())) || null;
-  }
-
-  function applyFriendlyMaleVoice(utterance, uiLang) {
-    const voice = pickMaleVoice(uiLang);
-    if (voice) {
-      utterance.voice = voice;
-      utterance.lang = voice.lang;
-    } else {
-      utterance.lang = uiLang === "en" ? "en-GB" : "de-DE";
-    }
-    utterance.rate = 0.9;
-    utterance.pitch = 0.92;
-    return voice;
-  }
-
   const pack = window.ELITEDENT_GUIDE || {};
   const DEFAULT_SCRIPT = pack.DEFAULT || { title: { de: "Seitenführung", en: "Page guide" }, steps: [] };
   const SCRIPTS = pack.SCRIPTS || {};
+  const HUB = pack.HUB || {};
 
   function normalizePath(pathname) {
     const trimmed = pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
     return trimmed === "" ? "/" : trimmed;
   }
 
+  // Hub questions ride along as steps so they use the same voice pipeline
   function getScript(pathname) {
-    return SCRIPTS[normalizePath(pathname)] || DEFAULT_SCRIPT;
+    const found = SCRIPTS[normalizePath(pathname)] || DEFAULT_SCRIPT;
+    for (const node of Object.values(HUB)) {
+      if (!found.steps.some((step) => step.id === node.id)) {
+        found.steps.push({ id: node.id, when: "hub", text: node.text });
+      }
+    }
+    return found;
   }
 
   function readMuted() {
@@ -92,39 +67,62 @@
   const played = new Set();
   let introActive = false;
   let introBusy = false;
-  let flyBusy = false;
+  let hubOpen = false;
+  let hubNode = "";
+  let repliesKey = "";
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let spotlightEls = [];
+  let spotlightFadeRaf = 0;
   let userPaused = false;
   let blockedAutoplay = false;
   let gestureArm = null;
   let startArmed = false;
+  const MIN_KEY = "elitedent-guide-min";
+  let minimized = false;
+  try {
+    minimized = sessionStorage.getItem(MIN_KEY) === "1";
+  } catch (_) {}
 
   audio.muted = muted;
 
-  const veil = document.createElement("div");
-  veil.className = "site-guide-veil";
-  veil.setAttribute("aria-hidden", "true");
+  const hub = document.createElement("div");
+  hub.className = "guide-hub notranslate";
+  hub.setAttribute("translate", "no");
+  hub.setAttribute("aria-hidden", "true");
+  hub.inert = true;
+  hub.innerHTML =
+    '<img class="guide-hub__logo" src="/assets/images/elitedentlogo-nav.png?v=1" alt="" width="400" height="221" decoding="async" />';
 
   const root = document.createElement("aside");
   root.className = "site-guide";
   root.innerHTML =
     '<button type="button" class="site-guide__close"></button>' +
-    '<div class="site-guide__avatar" aria-hidden="true"></div>' +
+    '<button type="button" class="site-guide__open"></button>' +
+    '<div class="site-guide__avatar has-model" aria-hidden="true">' +
+    '<img class="site-guide__face site-guide__face--large" src="/assets/images/guide/erlan-large.webp?v=1" alt="" width="1600" height="1200" decoding="async" />' +
+    '<img class="site-guide__face site-guide__face--small" src="/assets/images/guide/erlan-small.webp?v=1" alt="" width="256" height="256" decoding="async" />' +
+    "</div>" +
     '<div class="site-guide__body">' +
+    '<img class="site-guide__media" alt="" decoding="async" hidden />' +
     '<p class="site-guide__kicker"></p>' +
     '<p class="site-guide__line" aria-live="polite"></p>' +
+    '<div class="site-guide__replies" role="group" hidden></div>' +
     '<div class="site-guide__controls">' +
     '<button type="button" class="site-guide__btn site-guide__btn--play"></button>' +
     '<button type="button" class="site-guide__btn site-guide__btn--mute"></button>' +
+    '<button type="button" class="site-guide__btn site-guide__btn--topics"></button>' +
     "</div></div>";
 
   const avatar = root.querySelector(".site-guide__avatar");
+  const media = root.querySelector(".site-guide__media");
   const kicker = root.querySelector(".site-guide__kicker");
   const line = root.querySelector(".site-guide__line");
+  const replies = root.querySelector(".site-guide__replies");
   const playBtn = root.querySelector(".site-guide__btn--play");
   const muteBtn = root.querySelector(".site-guide__btn--mute");
   const closeBtn = root.querySelector(".site-guide__close");
+  const openBtn = root.querySelector(".site-guide__open");
+  const topicsBtn = root.querySelector(".site-guide__btn--topics");
 
   const ICON_PAUSE =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4.5" height="14" rx="1"/><rect x="13.5" y="5" width="4.5" height="14" rx="1"/></svg>';
@@ -136,36 +134,83 @@
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3.5L12 18V6L7.5 10H4z"/><path d="M16 9.5a4.5 4.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
   const ICON_CLOSE =
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>';
+  const ICON_TOPICS =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="2.2" rx="1.1"/><rect x="4" y="10.9" width="16" height="2.2" rx="1.1"/><rect x="4" y="16.3" width="10" height="2.2" rx="1.1"/></svg>';
 
   function stepText(step) {
     return step ? step.text[lang] : "";
   }
 
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  }
+
+  function renderReplies() {
+    const node = HUB[hubNode];
+    const key = hubOpen && node ? hubNode + lang : "";
+    replies.hidden = !key;
+    root.classList.toggle("has-replies", !!key);
+    if (key === repliesKey) return;
+    repliesKey = key;
+    replies.setAttribute("aria-label", lang === "en" ? "Your answer" : "Ihre Antwort");
+    replies.innerHTML = key
+      ? node.replies
+          .map(
+            (reply, i) =>
+              '<button type="button" class="site-guide__reply' +
+              (reply.close || reply.back ? " site-guide__reply--quiet" : "") +
+              '" data-reply="' +
+              i +
+              '">' +
+              escapeHtml(reply.label[lang]) +
+              "</button>",
+          )
+          .join("")
+      : "";
+  }
+
   function render() {
     const playing = status === "playing" || status === "loading";
     const en = lang === "en";
-    const title = introActive ? "Erlan" : script.title[lang];
-    const total = introActive
-      ? script.steps.filter((step) => step.intro).length || 1
-      : script.steps.length;
-    const shown = introActive ? 1 : stepIndex + 1;
+    const step = script.steps[stepIndex];
+    const pageSteps = script.steps.filter((s) => s.when !== "hub" && !s.intro);
     root.setAttribute("aria-label", en ? "Page guide" : "Seitenführung");
-    kicker.innerHTML = title + "<span>" + shown + "/" + total + "</span>";
-    line.textContent =
-      status === "idle"
-        ? introActive
-          ? en
-            ? "Hello — meet Gru."
-            : "Hallo — lernen Sie Gru kennen."
-          : en
-            ? "Start the page guide"
-            : "Seitenführung starten"
+    kicker.innerHTML = hubOpen
+      ? "Erlan"
+      : script.title[lang] + "<span>" + (pageSteps.indexOf(step) + 1 || 1) + "/" + pageSteps.length + "</span>";
+    const question = HUB[hubNode] ? stepText(script.steps.find((s) => s.id === HUB[hubNode].id)) : "";
+    const waiting =
+      status === "idle" &&
+      guideOn &&
+      !userPaused &&
+      !hubOpen &&
+      script.steps.some((s) => s.when && s.when !== "start" && s.when !== "hub" && !played.has(s.id));
+    root.classList.toggle("is-waiting", waiting);
+    line.textContent = hubOpen && (status === "idle" || status === "ended")
+      ? question
+      : waiting
+        ? en
+          ? "Scroll down when you're ready. I'll carry on at the next section."
+          : "Scrollen Sie weiter, wenn Sie so weit sind. Beim nächsten Abschnitt erzähle ich weiter."
+      : status === "idle"
+        ? en
+          ? "Start the page guide"
+          : "Seitenführung starten"
         : status === "ended"
           ? en
             ? "Guide finished"
             : "Führung beendet"
-          : stepText(script.steps[stepIndex]) ||
-            (en ? "Start the page guide" : "Seitenführung starten");
+          : stepText(step) || (en ? "Start the page guide" : "Seitenführung starten");
+
+    const image = !hubOpen && status !== "idle" && status !== "ended" ? step?.image : "";
+    if (image) {
+      if (media.getAttribute("src") !== image) media.src = image;
+      media.hidden = false;
+    } else {
+      media.hidden = true;
+    }
+    root.classList.toggle("has-media", !!image);
+
     avatar.classList.toggle("is-talking", status === "playing");
     playBtn.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
     playBtn.setAttribute("aria-label", playing ? "Pause" : en ? "Resume" : "Fortsetzen");
@@ -174,6 +219,12 @@
     muteBtn.setAttribute("aria-label", muted ? (en ? "Unmute" : "Ton an") : en ? "Mute" : "Stumm");
     closeBtn.innerHTML = ICON_CLOSE;
     closeBtn.setAttribute("aria-label", en ? "Move guide aside" : "Begleitung zur Seite legen");
+    root.classList.toggle("is-min", minimized && !hubOpen);
+    openBtn.hidden = !(minimized && !hubOpen);
+    openBtn.setAttribute("aria-label", en ? "Open the guide" : "Begleitung öffnen");
+    topicsBtn.innerHTML = ICON_TOPICS;
+    topicsBtn.setAttribute("aria-label", en ? "Where to next?" : "Wohin als Nächstes?");
+    renderReplies();
   }
 
   function disarmGestureResume() {
@@ -222,30 +273,14 @@
     startArmed = true;
     gestureArm = new AbortController();
     const opts = { capture: true, signal: gestureArm.signal };
-    const kick = () => kickFromGesture();
+    const kick = (event) => {
+      if (event.target?.closest?.(".site-guide__reply, .site-guide__btn")) return;
+      kickFromGesture();
+    };
     window.addEventListener("pointerdown", kick, opts);
     window.addEventListener("touchstart", kick, opts);
     window.addEventListener("click", kick, opts);
     window.addEventListener("keydown", kick, opts);
-  }
-
-  async function sha256Hex(value) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-    return [...new Uint8Array(buf)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-  }
-
-  async function bakedSrc(text) {
-    if (!crypto.subtle) return null;
-    try {
-      const hash = await sha256Hex(`${GUIDE_VOICE_ID}\n${text}`);
-      const res = await fetch(`/assets/voice/${hash}.mp3`);
-      if (!res.ok) return null;
-      const blob = await res.blob();
-      if (!blob || blob.size < 800) return null;
-      return URL.createObjectURL(blob);
-    } catch (_) {
-      return null;
-    }
   }
 
   function warmText(text) {
@@ -254,11 +289,6 @@
     const pending = ttsInflight.get(key);
     if (pending) return pending;
     const job = (async () => {
-      const baked = await bakedSrc(text);
-      if (baked) {
-        ttsCache.set(key, baked);
-        return baked;
-      }
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -306,12 +336,8 @@
 
     const step = script.steps[index];
     if (step.intro && !introActive && wantsIntro()) {
-      document.documentElement.classList.remove("is-gru-intro-pending");
       introActive = true;
-      document.documentElement.classList.add("is-gru-intro");
-      root.classList.add("is-intro", "is-intro-boot");
-      void root.offsetWidth;
-      requestAnimationFrame(() => root.classList.remove("is-intro-boot"));
+      openHub();
     }
 
     guideOn = true;
@@ -319,12 +345,11 @@
     stepIndex = index;
     status = "playing";
     render();
-    setSpotlight(step);
 
     const text = stepText(step);
     const cached = text ? ttsCache.get(lang + "\n" + text) : null;
     if (cached) {
-      root.dataset.voice = "elevenlabs";
+      root.dataset.voice = "piper";
       if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
       utterance = null;
       audio.playbackRate = 1.12;
@@ -350,6 +375,10 @@
   }
 
   function clearSpotlight() {
+    if (spotlightFadeRaf) {
+      cancelAnimationFrame(spotlightFadeRaf);
+      spotlightFadeRaf = 0;
+    }
     document.documentElement.classList.remove("is-guide-spotlighting");
     for (const el of spotlightEls) el.classList.remove("is-guide-spotlight");
     spotlightEls = [];
@@ -357,6 +386,7 @@
 
   function setSpotlight(step) {
     clearSpotlight();
+    if (muted) return;
     if (!step?.spotlight || status !== "playing") return;
     const nodes = document.querySelectorAll(step.spotlight);
     if (!nodes.length) return;
@@ -364,7 +394,14 @@
       el.classList.add("is-guide-spotlight");
       spotlightEls.push(el);
     });
-    document.documentElement.classList.add("is-guide-spotlighting");
+    // Transparent ring first, then fade in once paint has committed
+    spotlightFadeRaf = requestAnimationFrame(() => {
+      spotlightFadeRaf = requestAnimationFrame(() => {
+        spotlightFadeRaf = 0;
+        if (!spotlightEls.length || muted || status !== "playing") return;
+        document.documentElement.classList.add("is-guide-spotlighting");
+      });
+    });
   }
 
   function stopNow() {
@@ -394,12 +431,10 @@
     stepIndex = 0;
     guideOn = false;
     played.clear();
-    if (introActive) {
-      introActive = false;
-      introBusy = false;
-      root.classList.remove("is-intro");
-      document.documentElement.classList.remove("is-gru-intro", "is-gru-intro-pending");
-    }
+    introActive = false;
+    introBusy = false;
+    if (hubOpen) void closeHub();
+    document.documentElement.classList.remove("is-gru-intro-pending");
     clearSpotlight();
     render();
     observeSections();
@@ -413,22 +448,36 @@
     return rect.top < window.innerHeight * 0.75 && rect.bottom > 96;
   }
 
+  // Once per browser session, matching the splash
   function introSeen() {
     try {
-      return localStorage.getItem(INTRO_KEY) === "1";
+      return sessionStorage.getItem(INTRO_KEY) === "1";
     } catch (_) {
       return false;
     }
   }
 
   function markIntroSeen() {
+    introDone = true;
     try {
-      localStorage.setItem(INTRO_KEY, "1");
+      sessionStorage.setItem(INTRO_KEY, "1");
     } catch (_) {}
   }
 
+  // Skip only when coming back to Home from inside the site after seeing it
+  function cameFromSite() {
+    if (performance.getEntriesByType?.("navigation")[0]?.type === "reload") return false;
+    try {
+      return new URL(document.referrer).origin === location.origin;
+    } catch (_) {
+      return false;
+    }
+  }
+  const introOnThisLoad = !introSeen() || !cameFromSite();
+  let introDone = false;
+
   function wantsIntro() {
-    return normalizePath(pathname) === "/" && !introSeen() && !reducedMotion;
+    return normalizePath(pathname) === "/" && introOnThisLoad && !introDone;
   }
 
   const FLY_MS = 520;
@@ -446,24 +495,6 @@
     };
   }
 
-  function snapshotAvatar() {
-    const canvas = avatar.querySelector("canvas");
-    if (!canvas || !canvas.width) return null;
-    const img = document.createElement("img");
-    img.className = "site-guide__snap";
-    img.alt = "";
-    try {
-      img.src = canvas.toDataURL("image/webp", 0.92);
-    } catch (_) {
-      try {
-        img.src = canvas.toDataURL("image/png");
-      } catch (err) {
-        return null;
-      }
-    }
-    return img;
-  }
-
   function collapseTo(commit) {
     if (reducedMotion) {
       commit();
@@ -471,13 +502,10 @@
     }
 
     const from = guideBox(root);
-    const snap = snapshotAvatar();
     const ghost = root.cloneNode(true);
     ghost.classList.add("is-flying");
     ghost.classList.remove("is-intro-boot");
     ghost.setAttribute("aria-hidden", "true");
-    const ghostCanvas = ghost.querySelector("canvas");
-    if (snap && ghostCanvas) ghostCanvas.replaceWith(snap);
     Object.assign(ghost.style, {
       position: "fixed",
       left: `${from.left}px`,
@@ -540,49 +568,129 @@
     });
   }
 
-  function finishIntro() {
-    if (!introActive || introBusy) return Promise.resolve();
+  function setMinimized(value) {
+    minimized = value;
+    try {
+      if (value) sessionStorage.setItem(MIN_KEY, "1");
+      else sessionStorage.removeItem(MIN_KEY);
+    } catch (_) {}
+  }
+
+  function minimize() {
+    stopNow();
+    userPaused = true;
+    status = "idle";
+    setMinimized(true);
+    render();
+  }
+
+  function restore() {
+    setMinimized(false);
+    resume();
+  }
+
+  function openHub() {
+    if (hubOpen) return;
+    setMinimized(false);
+    hubOpen = true;
+    hubNode = "";
+    document.documentElement.classList.remove("is-gru-intro-pending");
+    document.documentElement.classList.add("is-gru-intro");
+    hub.removeAttribute("aria-hidden");
+    hub.inert = false;
+    root.classList.add("is-intro", "is-intro-boot");
+    void root.offsetWidth;
+    requestAnimationFrame(() => root.classList.remove("is-intro-boot"));
+    render();
+  }
+
+  function closeHub() {
+    if (!hubOpen || introBusy) return Promise.resolve();
     introBusy = true;
-    document.documentElement.classList.remove("is-gru-intro");
+    hubOpen = false;
+    document.documentElement.classList.remove("is-gru-intro", "is-gru-intro-pending");
+    hub.setAttribute("aria-hidden", "true");
+    hub.inert = true;
     return collapseTo(() => {
-      root.classList.remove("is-intro");
-      introActive = false;
-      markIntroSeen();
+      if (introActive) {
+        introActive = false;
+        markIntroSeen();
+      }
+      root.classList.remove("is-intro", "is-intro-boot");
+      render();
     }).finally(() => {
       introBusy = false;
     });
   }
 
-  function dismissToSide() {
-    if (flyBusy) return;
-    if (!introActive && !root.classList.contains("is-intro")) return;
-    flyBusy = true;
-    pause();
-    document.documentElement.classList.remove("is-gru-intro", "is-gru-intro-pending");
-    collapseTo(() => {
-      introBusy = false;
-      introActive = false;
-      markIntroSeen();
-      root.classList.remove("is-intro", "is-intro-boot");
+  function leaveHub() {
+    stopNow();
+    closeHub().then(() => {
+      guideOn = true;
+      userPaused = false;
+      status = "idle";
       render();
-    }).finally(() => {
-      flyBusy = false;
+      checkScroll();
+    });
+  }
+
+  function askHub(key) {
+    if (!HUB[key]) return;
+    hubNode = key;
+    const index = script.steps.findIndex((step) => step.id === HUB[key].id);
+    userPaused = false;
+    if (index >= 0) playStep(index);
+    else render();
+  }
+
+  function answerHub(reply) {
+    if (reply.go) askHub(reply.go);
+    else if (reply.href) selectTopic(reply.href);
+    else if (reply.close) leaveHub();
+  }
+
+  function stepForHash(hash) {
+    if (!hash) return -1;
+    return script.steps.findIndex((step) => step.when === hash);
+  }
+
+  function selectTopic(href) {
+    const url = new URL(href, location.href);
+    markIntroSeen();
+    if (normalizePath(url.pathname) !== normalizePath(location.pathname)) {
+      stopNow();
+      location.href = url.href;
+      return;
+    }
+    stopNow();
+    closeHub().then(() => {
+      guideOn = true;
+      userPaused = false;
+      if (url.hash) {
+        history.replaceState(null, "", url.hash);
+        document.querySelector(url.hash)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+      }
+      const index = url.hash ? stepForHash(url.hash) : firstStartIndex();
+      if (index >= 0) playStep(index);
+      else {
+        status = "idle";
+        render();
+      }
     });
   }
 
   function startIntro() {
     if (introActive || !wantsIntro()) return;
-    document.documentElement.classList.remove("is-gru-intro-pending");
     introActive = true;
-    document.documentElement.classList.add("is-gru-intro");
-    root.classList.add("is-intro", "is-intro-boot");
-    void root.offsetWidth;
-    requestAnimationFrame(() => root.classList.remove("is-intro-boot"));
+    openHub();
     guideOn = true;
     const start = script.steps.findIndex(
       (step) => step.intro && (!step.when || step.when === "start"),
     );
-    playStep(start >= 0 ? start : 0);
+    if (start >= 0) playStep(start);
+    else askHub("start");
   }
 
   function scheduleIntro() {
@@ -608,13 +716,24 @@
         playStep(stepIndex + 1);
         return;
       }
-      status = next ? "idle" : "ended";
+      status = next && next.when !== "hub" ? "idle" : "ended";
       render();
       checkScroll();
     };
 
-    if (introActive && step?.intro) {
-      finishIntro().then(continueNext);
+    if (hubOpen) {
+      const next = script.steps[stepIndex + 1];
+      if (step?.intro && next?.intro) {
+        playStep(stepIndex + 1);
+        return;
+      }
+      if (step?.intro) {
+        askHub("start");
+        return;
+      }
+      // Wait for an answer
+      status = "ended";
+      render();
       return;
     }
     continueNext();
@@ -623,7 +742,7 @@
   function visibleSectionIndex() {
     for (let i = 0; i < script.steps.length; i += 1) {
       const step = script.steps[i];
-      if (!step.when || step.when === "start") continue;
+      if (!step.when || step.when === "start" || step.when === "hub") continue;
       if (played.has(step.id)) continue;
       if (!sectionVisible(step.when)) continue;
       return i;
@@ -632,7 +751,7 @@
   }
 
   function checkScroll() {
-    if (!guideOn || introActive || userPaused) return;
+    if (!guideOn || introActive || hubOpen || userPaused) return;
     if (status === "paused" && !blockedAutoplay) return;
     const index = visibleSectionIndex();
     if (index < 0) return;
@@ -640,6 +759,8 @@
       const current = script.steps[stepIndex];
       if (!current?.when || current.when === "start" || current.intro) return;
       if (stepIndex === index) return;
+      // Let the current line finish while its section is still on screen; afterLine picks up the next one
+      if (sectionVisible(current.when)) return;
       stopNow();
     }
     playStep(index);
@@ -667,6 +788,7 @@
       n += 1;
       jobs.push(warmText(text));
     }
+    if (wantsIntro() && HUB.start) jobs.push(warmText(HUB.start.text[lang]));
     return Promise.all(jobs);
   }
 
@@ -674,15 +796,26 @@
     userPaused = false;
     wantPaused = false;
     blockedAutoplay = false;
-    await prefetchOpening();
-    if (userPaused) return;
     if (wantsIntro()) {
-      document.documentElement.classList.add("is-gru-intro-pending");
+      // Open straight away; the voice lines load while the first one is on screen
+      void prefetchOpening();
       scheduleIntro();
       return;
     }
     document.documentElement.classList.remove("is-gru-intro-pending");
+    if (minimized) {
+      userPaused = true;
+      render();
+      return;
+    }
     guideOn = true;
+    const topic = stepForHash(location.hash);
+    if (topic >= 0) {
+      void playStep(topic);
+      return;
+    }
+    await prefetchOpening();
+    if (userPaused) return;
     const start = firstStartIndex();
     if (start >= 0) {
       void playStep(start);
@@ -803,35 +936,6 @@
     holdForGesture();
   }
 
-  async function ttsSrc(text, uiLang, gen) {
-    const key = uiLang + "\n" + text;
-    const hit = ttsCache.get(key);
-    if (hit) return hit;
-    ttsAbort?.abort();
-    const ac = new AbortController();
-    ttsAbort = ac;
-
-    for (let attempt = 0; attempt < 5; attempt += 1) {
-      if (gen !== playGen || wantPaused) return null;
-      const res = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, lang: uiLang }),
-        signal: ac.signal,
-      });
-      if (res.ok) {
-        const url = URL.createObjectURL(await res.blob());
-        if (gen !== playGen) return null;
-        ttsCache.set(key, url);
-        return url;
-      }
-      // Rate limit / transient — wait and retry instead of robotic browser voice
-      if (res.status !== 429 && res.status !== 502 && res.status !== 503) return null;
-      await new Promise((r) => setTimeout(r, 450 * (attempt + 1)));
-    }
-    return null;
-  }
-
   function holdForGesture() {
     status = "paused";
     blockedAutoplay = true;
@@ -860,7 +964,6 @@
     status = "loading";
     stepIndex = index;
     render();
-    setSpotlight(step);
 
     if (step.src) {
       root.dataset.voice = "file";
@@ -881,7 +984,7 @@
     }
     if (gen !== playGen || wantPaused) return;
     if (src) {
-      root.dataset.voice = "elevenlabs";
+      root.dataset.voice = "piper";
       status = "playing";
       render();
       setSpotlight(step);
@@ -889,7 +992,17 @@
       return;
     }
 
-    holdForGesture();
+    // No voice available: show the line long enough to read, then carry on
+    root.dataset.voice = "text";
+    if (audio.paused) audio.removeAttribute("src");
+    if (step.id) played.add(step.id);
+    status = "playing";
+    render();
+    setSpotlight(step);
+    const words = text ? text.split(/\s+/).length : 0;
+    setTimeout(() => {
+      if (gen === playGen && !wantPaused && status === "playing") afterLine();
+    }, Math.max(2500, words * 330));
   }
 
   function pause() {
@@ -931,7 +1044,6 @@
     const gen = playGen;
     wantPaused = false;
     status = "playing";
-    setSpotlight(script.steps[stepIndex]);
     render();
 
     if (audio.src) {
@@ -961,6 +1073,11 @@
     writeMuted(muted);
     audio.muted = muted;
     if (utterance) utterance.volume = muted ? 0 : 1;
+    if (muted) {
+      clearSpotlight();
+    } else if (status === "playing" && !audio.paused) {
+      setSpotlight(script.steps[stepIndex]);
+    }
     render();
   }
 
@@ -971,6 +1088,7 @@
     blockedAutoplay = false;
     disarmGestureResume();
     status = "playing";
+    setSpotlight(step);
     render();
   };
 
@@ -996,8 +1114,15 @@
 
   playBtn.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (status === "playing") pause();
-    else resume();
+    if (status === "playing" || status === "loading") {
+      pause();
+      return;
+    }
+    if (hubOpen && hubNode && status !== "paused") {
+      askHub(hubNode);
+      return;
+    }
+    resume();
   });
   muteBtn.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -1005,12 +1130,29 @@
   });
   closeBtn.addEventListener("click", (event) => {
     event.stopPropagation();
-    dismissToSide();
+    if (hubOpen) leaveHub();
+    else minimize();
   });
-  veil.addEventListener("click", dismissToSide);
-  window.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    dismissToSide();
+  openBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    restore();
+  });
+  topicsBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    stopNow();
+    openHub();
+    askHub("start");
+  });
+  replies.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const button = event.target.closest(".site-guide__reply");
+    const reply = button && HUB[hubNode]?.replies[Number(button.dataset.reply)];
+    if (!reply) return;
+    stopNow();
+    answerHub(reply);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && hubOpen) leaveHub();
   });
 
   document.querySelector(".lang-toggle")?.addEventListener("click", () => {
@@ -1042,17 +1184,11 @@
       rootMargin: "0px 0px -12% 0px",
     });
     script.steps.forEach((step) => {
-      if (!step.when || step.when === "start") return;
+      if (!step.when || step.when === "start" || step.when === "hub") return;
       document.querySelectorAll(step.when).forEach((el) => sectionObserver.observe(el));
     });
   }
   observeSections();
-
-  if (typeof speechSynthesis !== "undefined") {
-    speechSynthesis.cancel();
-    speechSynthesis.getVoices();
-    speechSynthesis.addEventListener("voiceschanged", () => speechSynthesis.getVoices());
-  }
 
   render();
 
@@ -1072,32 +1208,8 @@
   }
 
   function mount() {
-    if (!document.body.contains(veil)) document.body.appendChild(veil);
+    if (!document.body.contains(hub)) document.body.appendChild(hub);
     if (!document.body.contains(root)) document.body.appendChild(root);
-    const agentSrc = [...document.scripts].find((s) => /site-guide-agent\.js/.test(s.src))?.src;
-    const glbUrl = agentSrc
-      ? new URL("../grudentist.glb", agentSrc).href
-      : "/assets/grudentist.glb";
-    const avatarMod = agentSrc
-      ? new URL("site-guide-avatar.js?v=8", agentSrc).href
-      : "/assets/js/site-guide-avatar.js?v=8";
-    afterSplash(() => {
-      const boot = () =>
-        import(avatarMod)
-          .then((mod) =>
-            mod.mountGuideDentist(avatar, {
-              glbUrl,
-              talkingRef: () => status === "playing",
-            }),
-          )
-          .catch((err) => console.warn("guide avatar:", err));
-      if (typeof requestIdleCallback === "function") {
-        requestIdleCallback(boot, { timeout: 280 });
-      } else {
-        setTimeout(boot, 60);
-      }
-    });
-
     observeSections();
     scheduleAutoStart();
   }

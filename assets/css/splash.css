@@ -207,20 +207,17 @@ html.no-splash .home .hero__figure {
   .splash,
   .splash__veil,
   .splash__film {
-    background: #428fe6;
+    background: #4a91e2;
   }
 
   .splash.is-handoff:not(.is-revealing) {
-    background: #428fe6;
+    background: #4a91e2;
   }
 
-  /* Full-bleed film; the wide lockup is swapped for the PNG before it crops */
+  /* Phones play splash-mobile.mp4, a portrait film with its backdrop baked in, full-bleed */
   .splash__film {
-    inset: 0;
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-    object-position: 50% 46%;
+    object-position: 50% 50%;
   }
 
   .splash__brand {

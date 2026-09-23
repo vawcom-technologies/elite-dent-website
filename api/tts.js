@@ -1,30 +1,96 @@
 /**
- * POST /api/tts — ElevenLabs speech for the page guide.
+ * POST /api/tts — Piper speech for the page guide, generated on first request and cached.
  * The spoken line is whatever text the client sends (from guideScripts).
  *
- * Env:
- *   ELEVENLABS_API_KEY   required
- *   ELEVENLABS_VOICE_ID  optional male multilingual default (Daniel)
+ * Env (all optional, defaults point at the local .piper/ setup):
+ *   PIPER_PYTHON    Python with piper-tts installed
+ *   PIPER_MODEL_DE  German voice (.onnx)
+ *   PIPER_MODEL_EN  English voice (.onnx)
  */
 
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const { spawn } = require("child_process");
+const readline = require("readline");
 
+const ROOT = path.join(__dirname, "..");
 const MAX_CHARS = 2000;
-const CACHE_DIR = path.join(__dirname, "..", ".tts-cache");
-const BAKED_DIR = path.join(__dirname, "..", "assets", "voice");
+const CACHE_DIR = path.join(ROOT, ".tts-cache");
+const PIPER_DIR = path.join(ROOT, ".piper");
+const PYTHON = process.env.PIPER_PYTHON || path.join(PIPER_DIR, "venv", "bin", "python");
+const MODELS = {
+  de: process.env.PIPER_MODEL_DE || path.join(PIPER_DIR, "voices", "de_DE-thorsten-high.onnx"),
+  en: process.env.PIPER_MODEL_EN || path.join(PIPER_DIR, "voices", "en_GB-alan-medium.onnx"),
+};
 
-/** One ElevenLabs request at a time — free tier caps concurrent calls. */
-let elevenQueue = Promise.resolve();
-let elevenDisabled = false;
-function withElevenLock(fn) {
-  const run = elevenQueue.then(fn, fn);
-  elevenQueue = run.then(
-    () => {},
-    () => {},
-  );
-  return run;
+let worker = null;
+let nextId = 0;
+const pending = new Map();
+const inflight = new Map();
+
+function startWorker() {
+  const proc = spawn(PYTHON, [path.join(ROOT, "lib", "piper_worker.py"), MODELS.de, MODELS.en], {
+    stdio: ["pipe", "pipe", "ignore"],
+  });
+  let markReady;
+  let failReady;
+  const ready = new Promise((resolve, reject) => {
+    markReady = resolve;
+    failReady = reject;
+  });
+  ready.catch(() => {});
+  proc.once("error", (err) => failReady(err));
+  readline.createInterface({ input: proc.stdout }).on("line", (line) => {
+    let msg;
+    try {
+      msg = JSON.parse(line);
+    } catch {
+      return;
+    }
+    if (msg.ready) return markReady();
+    const job = pending.get(msg.id);
+    if (!job) return;
+    pending.delete(msg.id);
+    msg.ok ? job.resolve() : job.reject(new Error(msg.error || "piper failed"));
+  });
+  proc.once("exit", () => {
+    failReady(new Error("piper exited"));
+    if (worker?.proc === proc) worker = null;
+    for (const job of pending.values()) job.reject(new Error("piper exited"));
+    pending.clear();
+  });
+  return { proc, ready };
+}
+
+async function synthesize(text, lang, out) {
+  if (!worker) worker = startWorker();
+  const { proc, ready } = worker;
+  await ready;
+  const id = ++nextId;
+  const done = new Promise((resolve, reject) => pending.set(id, { resolve, reject }));
+  proc.stdin.write(JSON.stringify({ id, lang, text, out }) + "\n");
+  return done;
+}
+
+function cacheFile(text, lang) {
+  const hash = crypto.createHash("sha256").update(`piper:${lang}\n${text}`).digest("hex");
+  return path.join(CACHE_DIR, `${hash}.wav`);
+}
+
+function speech(text, lang) {
+  const file = cacheFile(text, lang);
+  if (fs.existsSync(file)) return Promise.resolve(file);
+  if (inflight.has(file)) return inflight.get(file);
+  const tmp = `${file}.${process.pid}.tmp`;
+  const job = (async () => {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    await synthesize(text, lang, tmp);
+    fs.renameSync(tmp, file);
+    return file;
+  })().finally(() => inflight.delete(file));
+  inflight.set(file, job);
+  return job;
 }
 
 function json(res, status, body) {
@@ -56,28 +122,6 @@ function readBody(req) {
   });
 }
 
-function voiceId() {
-  return process.env.ELEVENLABS_VOICE_ID || "onwK4e9ZLuTAKqWW03F9";
-}
-
-function cacheFile(text) {
-  const hash = crypto.createHash("sha256").update(`${voiceId()}\n${text}`).digest("hex");
-  return path.join(CACHE_DIR, `${hash}.mp3`);
-}
-
-function bakedFile(text) {
-  const hash = crypto.createHash("sha256").update(`${voiceId()}\n${text}`).digest("hex");
-  return path.join(BAKED_DIR, `${hash}.mp3`);
-}
-
-function readCached(text) {
-  const file = cacheFile(text);
-  if (fs.existsSync(file)) return fs.readFileSync(file);
-  const baked = bakedFile(text);
-  if (fs.existsSync(baked)) return fs.readFileSync(baked);
-  return null;
-}
-
 module.exports = async function handler(req, res) {
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -98,87 +142,24 @@ module.exports = async function handler(req, res) {
   }
 
   const text = String(body?.text || "").trim();
+  const lang = body?.lang === "en" ? "en" : "de";
   if (!text || text.length > MAX_CHARS) {
     return json(res, 400, { error: "Missing or too-long text." });
   }
 
-  const cached = readCached(text);
-  if (cached) {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.setHeader("Cache-Control", "private, max-age=86400");
-    res.setHeader("X-TTS-Cache", "hit");
-    return res.end(cached);
-  }
-
-  if (!process.env.ELEVENLABS_API_KEY) {
-    return json(res, 503, { error: "TTS is not configured yet." });
-  }
-
-  if (elevenDisabled) {
+  let file;
+  try {
+    file = await speech(text, lang);
+  } catch (err) {
+    console.error("piper:", err.message);
     return json(res, 503, { error: "Voice is temporarily unavailable." });
   }
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "audio/wav");
+  res.setHeader("Cache-Control", "private, max-age=86400");
+  res.end(fs.readFileSync(file));
+};
 
-  return withElevenLock(async () => {
-    const again = readCached(text);
-    if (again) {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "audio/mpeg");
-      res.setHeader("Cache-Control", "private, max-age=86400");
-      res.setHeader("X-TTS-Cache", "hit");
-      return res.end(again);
-    }
-    if (elevenDisabled) {
-      return json(res, 503, { error: "Voice is temporarily unavailable." });
-    }
-
-    let response;
-    for (let attempt = 0; attempt < 4; attempt += 1) {
-      response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId()}?output_format=mp3_44100_128`,
-        {
-          method: "POST",
-          headers: {
-            "xi-api-key": process.env.ELEVENLABS_API_KEY,
-            "Content-Type": "application/json",
-            Accept: "audio/mpeg",
-          },
-          body: JSON.stringify({
-            text,
-            model_id: "eleven_multilingual_v2",
-            voice_settings: {
-              stability: 0.4,
-              similarity_boost: 0.75,
-              style: 0.35,
-              use_speaker_boost: true,
-              speed: 1.1,
-            },
-          }),
-        },
-      );
-      if (response.ok) break;
-      if (response.status !== 429 || attempt === 3) break;
-      await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
-    }
-
-    if (!response.ok) {
-      const detail = await response.text().catch(() => "");
-      console.error("elevenlabs:", response.status, detail.slice(0, 300));
-      if (response.status === 401 && /quota/i.test(detail)) elevenDisabled = true;
-      return json(res, 502, { error: "Voice generation failed." });
-    }
-
-    const audio = Buffer.from(await response.arrayBuffer());
-    try {
-      fs.mkdirSync(CACHE_DIR, { recursive: true });
-      fs.writeFileSync(cacheFile(text), audio);
-    } catch (err) {
-      console.error("tts cache write:", err);
-    }
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.setHeader("Cache-Control", "private, max-age=86400");
-    res.setHeader("X-TTS-Cache", "miss");
-    res.end(audio);
-  });
+module.exports.warm = () => {
+  if (!worker && fs.existsSync(PYTHON)) worker = startWorker();
 };

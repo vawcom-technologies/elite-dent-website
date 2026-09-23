@@ -87,18 +87,19 @@
     row-gap: 0;
   }
 
-  .about-essay__lead {
-    grid-column: 1 / -1;
-    max-width: 40rem;
-  }
-
-  .about-essay__span {
-    grid-column: 1 / -1;
-  }
-
+  .about-essay__opener,
+  .about-essay__span,
   .about-essay__inline {
     grid-column: 1 / -1;
   }
+}
+
+.about-essay__opener {
+  margin-bottom: 0.35rem;
+}
+
+.about-essay__opener p {
+  max-width: none;
 }
 
 .about-essay__lead {
@@ -123,6 +124,7 @@
   line-height: 1.25;
   color: var(--navy);
 }
+
 
 .about-essay__inline {
   margin: 1.85rem 0 2.15rem;

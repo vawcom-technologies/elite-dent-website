@@ -3,5 +3,6 @@
 .env.local
 .env*.local
 .tts-cache
+.piper
 data/hkp.json
 data/hkp-files/

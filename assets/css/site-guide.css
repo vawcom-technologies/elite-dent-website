@@ -33,48 +33,79 @@ html.is-gru-intro .home {
   pointer-events: none;
 }
 
-.site-guide-veil {
+/* Full-screen welcome: the twin asks, the visitor answers */
+.guide-hub {
   position: fixed;
   inset: 0;
-  z-index: 39;
-  background: rgb(15 28 48 / 0.62);
+  z-index: 60;
+  background: linear-gradient(160deg, #ffffff 0%, #eef5fb 42%, var(--orb, #d9ebf9) 100%);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
+  visibility: hidden;
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s ease;
 }
 
-html.is-gru-intro .site-guide-veil {
+html.is-gru-intro .guide-hub {
   opacity: 1;
-  pointer-events: auto;
+  visibility: visible;
+}
+
+.guide-hub__logo {
+  position: absolute;
+  top: calc(1.5rem + env(safe-area-inset-top, 0px));
+  left: 50%;
+  width: auto;
+  height: 2.6rem;
+  transform: translateX(-50%);
 }
 
 .site-guide {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+/* Full-screen twin: the figure fills the stage, the conversation sits below */
 .site-guide.is-intro {
-  z-index: 41;
-  right: auto;
-  bottom: auto;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
-  width: min(26rem, calc(100vw - 2rem));
+  z-index: 61;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100dvh;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
   text-align: center;
-  padding: 1.4rem 1.25rem 1.2rem;
-  border-radius: 1.75rem;
-  box-shadow: 0 28px 64px rgb(15 28 48 / 0.35);
+  padding: calc(4.75rem + env(safe-area-inset-top, 0px)) 1.25rem
+    calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .site-guide.is-intro.is-intro-boot {
   transition: none;
 }
 
-.site-guide.is-intro .site-guide__avatar {
-  width: min(20rem, 72vw);
-  height: min(20rem, 72vw);
+.site-guide.is-intro .site-guide__avatar,
+.site-guide.is-intro .site-guide__avatar.has-model {
+  flex: 1 1 auto;
+  width: min(56rem, 100%);
+  height: auto;
+  min-height: 12rem;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+
+.site-guide.is-intro .site-guide__body {
+  flex: 0 0 auto;
 }
 
 .site-guide.is-intro.is-intro-boot .site-guide__avatar {
@@ -98,21 +129,23 @@ html.is-gru-intro .site-guide-veil {
   pointer-events: none;
 }
 
-.site-guide__snap {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
 .site-guide.is-intro .site-guide__body {
   width: 100%;
-  max-width: none;
+  max-width: 46rem;
+}
+
+.site-guide.is-intro .site-guide__kicker {
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
 }
 
 .site-guide.is-intro .site-guide__line {
-  font-size: 0.95rem;
+  max-width: 34rem;
+  margin: 0 auto 1.25rem;
+  font-family: var(--font-display, "Nunito", system-ui, sans-serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-weight: 700;
   line-height: 1.45;
 }
 
@@ -120,11 +153,186 @@ html.is-gru-intro .site-guide-veil {
   justify-content: center;
 }
 
+.site-guide.is-intro .site-guide__btn {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.site-guide.is-intro .site-guide__btn--topics {
+  display: none;
+}
+
+/* Answers the visitor can give, written like speech */
+.site-guide__replies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.site-guide__replies[hidden] {
+  display: none;
+}
+
+.site-guide__reply {
+  padding: 0.7rem 1.15rem;
+  border: 1px solid rgb(29 53 87 / 0.12);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 6px 18px rgb(29 53 87 / 0.06);
+  color: var(--navy, #1d3557);
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  animation: guide-reply-in 0.4s ease both;
+}
+
+.site-guide__reply:nth-child(2) { animation-delay: 0.05s; }
+.site-guide__reply:nth-child(3) { animation-delay: 0.1s; }
+.site-guide__reply:nth-child(4) { animation-delay: 0.15s; }
+.site-guide__reply:nth-child(5) { animation-delay: 0.2s; }
+.site-guide__reply:nth-child(6) { animation-delay: 0.25s; }
+.site-guide__reply:nth-child(n + 7) { animation-delay: 0.3s; }
+
+.site-guide__reply:hover,
+.site-guide__reply:focus-visible {
+  border-color: var(--dental-blue, #4a90e2);
+  color: var(--dental-blue, #4a90e2);
+  box-shadow: 0 10px 24px rgb(74 144 226 / 0.16);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.site-guide__reply--quiet {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted, #6b7c93);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(107 124 147 / 0.35);
+  text-underline-offset: 3px;
+}
+
+.site-guide__reply--quiet:hover,
+.site-guide__reply--quiet:focus-visible {
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+@keyframes guide-reply-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 767px) {
+  .guide-hub__logo {
+    height: 2.1rem;
+  }
+
+  .site-guide.is-intro {
+    padding: calc(4rem + env(safe-area-inset-top, 0px)) 1.1rem
+      calc(2rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.25rem;
+  }
+
+  .site-guide.is-intro .site-guide__avatar,
+  .site-guide.is-intro .site-guide__avatar.has-model {
+    min-height: 9rem;
+  }
+
+  /* While answers are on screen the figure steps back to make room */
+  .site-guide.is-intro.has-replies .site-guide__avatar,
+  .site-guide.is-intro.has-replies .site-guide__avatar.has-model {
+    flex: 0 0 auto;
+    height: 24dvh;
+    min-height: 6.5rem;
+  }
+
+  .site-guide.is-intro .site-guide__body {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+
+  .site-guide.is-intro .site-guide__line {
+    flex: 0 0 auto;
+    margin-bottom: 0.75rem;
+    font-size: 1.02rem;
+  }
+
+  .site-guide.is-intro .site-guide__controls {
+    flex: 0 0 auto;
+  }
+
+  .site-guide__replies {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0.75rem;
+    min-height: 0;
+    margin: 0 -0.35rem 0.75rem;
+    padding: 0.6rem 0.35rem 1.25rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 0.6rem, #000 calc(100% - 1.25rem), transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 0.6rem, #000 calc(100% - 1.25rem), transparent);
+  }
+
+  .site-guide__reply {
+    flex: 0 0 auto;
+    min-height: 3.1rem;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .site-guide__reply--quiet {
+    min-height: 2.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-guide,
-  .site-guide-veil {
+  .guide-hub {
     transition: none;
   }
+
+  .site-guide__reply {
+    animation: none;
+  }
+}
+
+/* Topic photo in the small window */
+.site-guide.has-media {
+  align-items: flex-start;
+}
+
+.site-guide__media {
+  display: block;
+  width: 100%;
+  height: 7.5rem;
+  margin: 0 0 0.6rem;
+  border-radius: 0.8rem;
+  object-fit: cover;
+  background: var(--orb, #d9ebf9);
+}
+
+.site-guide__media[hidden] {
+  display: none;
 }
 
 .site-guide__avatar {
@@ -144,10 +352,49 @@ html.is-gru-intro .site-guide-veil {
   background: linear-gradient(160deg, #cfe4f7, #7aa9d8 55%, #1d3557);
 }
 
-.site-guide__canvas {
+.site-guide__face {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transform-origin: 50% 80%;
+}
+
+.site-guide__face--large,
+.site-guide.is-intro .site-guide__face--small {
+  display: none;
+}
+
+/* Scales with the figure's height and stays centred, like the old fixed-FOV camera */
+.site-guide.is-intro .site-guide__face--large {
+  display: block;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  translate: -50% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-guide__avatar.is-talking .site-guide__face {
+    animation: guide-nod 1.96s ease-in-out infinite;
+  }
+}
+
+@keyframes guide-nod {
+  0%,
+  50%,
+  100% {
+    transform: perspective(40rem) rotateX(0deg);
+  }
+  25% {
+    transform: perspective(40rem) rotateX(2.6deg);
+  }
+  75% {
+    transform: perspective(40rem) rotateX(-2.6deg);
+  }
 }
 
 .site-guide__avatar.is-talking {
@@ -193,8 +440,18 @@ html.is-gru-intro .site-guide-veil {
 }
 
 .site-guide.is-intro .site-guide__close {
-  top: 0.7rem;
-  right: 0.7rem;
+  top: calc(1.4rem + env(safe-area-inset-top, 0px));
+  right: 1.4rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.site-guide:not(.is-intro) .site-guide__close {
+  display: none;
+}
+
+.site-guide:not(.is-intro) .site-guide__kicker {
+  padding-right: 0;
 }
 
 .site-guide__body {
@@ -228,6 +485,32 @@ html.is-gru-intro .site-guide-veil {
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.4;
+}
+
+.site-guide.is-waiting .site-guide__line {
+  color: var(--dental-blue, #4a90e2);
+}
+
+.site-guide.is-waiting .site-guide__line::before {
+  content: "↓";
+  display: inline-block;
+  margin-right: 0.4rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-guide.is-waiting .site-guide__line::before {
+    animation: guide-scroll-hint 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes guide-scroll-hint {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 .site-guide__controls {
@@ -264,12 +547,58 @@ html.is-gru-intro .site-guide-veil {
   outline-offset: 2px;
 }
 
+.site-guide__open {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.site-guide__open[hidden] {
+  display: none;
+}
+
+.site-guide__open:focus-visible {
+  outline: 2px solid var(--dental-blue, #4a90e2);
+  outline-offset: 3px;
+}
+
 @media (max-width: 767px) {
   .site-guide {
     right: 0.85rem;
     bottom: calc(6.4rem + env(safe-area-inset-bottom, 0px));
     width: min(26rem, calc(100vw - 1.7rem));
   }
+
+  .site-guide:not(.is-intro):not(.is-min) .site-guide__close {
+    display: inline-flex;
+  }
+
+  .site-guide:not(.is-intro) .site-guide__kicker {
+    padding-right: 1.9rem;
+  }
+}
+
+/* Minimised: only the face stays, tucked against the edge */
+.site-guide.is-min {
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.site-guide.is-min .site-guide__body {
+  display: none;
+}
+
+.site-guide.is-min .site-guide__avatar {
+  width: 100%;
+  height: 100%;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -297,38 +626,50 @@ html.is-gru-intro .site-guide-veil {
   }
 }
 
-/* Spoken-line spotlight — only while guide audio is playing */
-html.is-guide-spotlighting .is-guide-spotlight {
+/* Spoken-line spotlight — fades in only while unmuted audio is playing */
+.is-guide-spotlight {
   position: relative;
   z-index: 36;
-  outline: 3px solid rgb(74 144 226 / 0.92);
+  outline: 3px solid transparent;
   outline-offset: 12px;
-  box-shadow: 0 18px 48px rgb(29 53 87 / 0.16);
   border-radius: 1rem;
   transition:
-    outline-offset 0.35s ease,
-    box-shadow 0.35s ease,
-    transform 0.35s ease;
+    outline-color 0.7s ease,
+    outline-offset 0.45s ease,
+    transform 0.45s ease;
 }
 
-html.is-guide-spotlighting .nav.is-guide-spotlight {
+html.is-guide-spotlighting .is-guide-spotlight {
+  outline-color: rgb(74 144 226 / 0.92);
+}
+
+.is-guide-spotlight.nav {
   z-index: 46;
   border-radius: 999px;
   outline-offset: 8px;
-  box-shadow: 0 14px 36px rgb(29 53 87 / 0.16);
+}
+
+a.is-guide-spotlight,
+button.is-guide-spotlight,
+[data-assess-expand].is-guide-spotlight {
+  border-radius: 999px;
+  outline-offset: 10px;
 }
 
 html.is-guide-spotlighting a.is-guide-spotlight,
 html.is-guide-spotlighting button.is-guide-spotlight,
 html.is-guide-spotlighting [data-assess-expand].is-guide-spotlight {
-  border-radius: 999px;
-  outline-offset: 10px;
   transform: scale(1.04);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.is-guide-spotlighting .is-guide-spotlight {
+  .is-guide-spotlight {
     transition: none;
+  }
+
+  html.is-guide-spotlighting a.is-guide-spotlight,
+  html.is-guide-spotlighting button.is-guide-spotlight,
+  html.is-guide-spotlighting [data-assess-expand].is-guide-spotlight {
     transform: none;
   }
 }

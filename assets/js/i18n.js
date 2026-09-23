@@ -8,6 +8,8 @@
     home: { de: "Startseite", en: "Home" },
     services: { de: "Leistungen", en: "Services" },
     about: { de: "Über uns", en: "About" },
+    team: { de: "Team", en: "Team" },
+    app: { de: "App", en: "App" },
     consult: { de: "Jetzt beraten", en: "Consult now" },
     book: { de: "Jetzt beraten", en: "Consult now" },
     hkp: { de: "HKP", en: "HKP" },

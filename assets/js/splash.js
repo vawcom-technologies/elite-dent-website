@@ -8,6 +8,8 @@
   const isPhone = window.matchMedia("(max-width: 767px)").matches;
 
   const FILM_LOCKUP = { x: 358, y: 330, w: 1178, h: 554, vw: 1920, vh: 1080 };
+  // splash-mobile.mp4: middle 1370px of the film scaled to 1080 wide, centred in 1080×2400
+  const FILM_LOCKUP_PHONE = { x: 65.4, y: 1034.3, w: 928.6, h: 437, vw: 1080, vh: 2400 };
   const PNG_CONTENT_W = 3164 / 3248;
   const WHOOSH_MS = 820;
   const WHOOSH_EASE = "cubic-bezier(0.33, 0, 0.2, 1)";
@@ -69,9 +71,10 @@
   }
 
   function sizeBrandToFilm() {
-    if (!brand || !film || isPhone) return;
-    const vw = film.videoWidth || FILM_LOCKUP.vw;
-    const vh = film.videoHeight || FILM_LOCKUP.vh;
+    if (!brand || !film) return;
+    const lockup = (film.currentSrc || film.src).includes("splash-mobile") ? FILM_LOCKUP_PHONE : FILM_LOCKUP;
+    const vw = film.videoWidth || lockup.vw;
+    const vh = film.videoHeight || lockup.vh;
     if (!vw || !vh) return;
     const area = film.getBoundingClientRect();
     if (!area.width || !area.height) return;
@@ -80,10 +83,10 @@
     const displayedH = vh * scale;
     const originX = area.left + (area.width - displayedW) / 2;
     const originY = area.top + (area.height - displayedH) / 2;
-    const x = FILM_LOCKUP.x * (vw / FILM_LOCKUP.vw);
-    const y = FILM_LOCKUP.y * (vh / FILM_LOCKUP.vh);
-    const w = FILM_LOCKUP.w * (vw / FILM_LOCKUP.vw);
-    const h = FILM_LOCKUP.h * (vh / FILM_LOCKUP.vh);
+    const x = lockup.x * (vw / lockup.vw);
+    const y = lockup.y * (vh / lockup.vh);
+    const w = lockup.w * (vw / lockup.vw);
+    const h = lockup.h * (vh / lockup.vh);
     brand.style.width = `${(w * scale) / PNG_CONTENT_W}px`;
     brand.style.left = `${originX + (x + w / 2) * scale}px`;
     brand.style.top = `${originY + (y + h / 2) * scale}px`;
@@ -124,6 +127,7 @@
     }
 
     sizeBrandToFilm();
+    brand.style.willChange = "transform";
     brand.hidden = false;
     warmHome();
     splash.classList.add("is-handoff");
@@ -177,16 +181,17 @@
   }
 
   function readyFilm() {
-    if (!film) return Promise.resolve(false);
+    if (!film || reduced) return Promise.resolve(false);
     if (film.readyState >= 2) return Promise.resolve(true);
     return new Promise((res) => {
       const ok = () => res(true);
       const fail = () => res(false);
       film.addEventListener("loadeddata", ok, { once: true });
+      film.addEventListener("playing", ok, { once: true });
       film.addEventListener("error", fail, { once: true });
-      try {
-        film.load();
-      } catch (_) {}
+      // iOS Safari ignores preload and only fetches the film once play() is called
+      const kick = film.play();
+      if (kick && typeof kick.catch === "function") kick.catch(() => {});
       setTimeout(() => res(film.readyState >= 2), 4000);
     });
   }
@@ -223,8 +228,7 @@
     film.addEventListener(
       "timeupdate",
       () => {
-        const lead = isPhone ? 1.55 : 0.08;
-        if (film.duration && film.currentTime >= film.duration - lead) handoff();
+        if (film.duration && film.currentTime >= film.duration - 0.08) handoff();
       },
       { passive: true },
     );

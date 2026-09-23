@@ -62,6 +62,7 @@ function safeFile(urlPath) {
     rel.startsWith("data/") ||
     rel.startsWith(".env") ||
     rel.startsWith(".tts-cache") ||
+    rel.startsWith(".piper") ||
     rel.startsWith("node_modules/")
   ) {
     return null;
@@ -116,15 +117,46 @@ const server = http.createServer(async (req, res) => {
 
   const type = MIME[path.extname(file).toLowerCase()] || "application/octet-stream";
   res.setHeader("Content-Type", type);
+  res.setHeader("Accept-Ranges", "bytes");
+
+  // iOS Safari refuses to play video unless byte ranges are honoured
+  const size = fs.statSync(file).size;
+  const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || "");
+  if (range && (range[1] || range[2])) {
+    const start = range[1] ? Number(range[1]) : Math.max(0, size - Number(range[2]));
+    const end = range[1] && range[2] ? Math.min(Number(range[2]), size - 1) : size - 1;
+    if (start > end || start >= size) {
+      res.statusCode = 416;
+      res.setHeader("Content-Range", `bytes */${size}`);
+      res.end();
+      return;
+    }
+    res.statusCode = 206;
+    res.setHeader("Content-Range", `bytes ${start}-${end}/${size}`);
+    res.setHeader("Content-Length", end - start + 1);
+    fs.createReadStream(file, { start, end }).pipe(res);
+    return;
+  }
+  res.setHeader("Content-Length", size);
   fs.createReadStream(file).pipe(res);
 });
 
-server.listen(PORT, "127.0.0.1", () => {
-  const key = process.env.ELEVENLABS_API_KEY;
-  if (!key) {
-    console.log("Missing ELEVENLABS_API_KEY in .env — guide will fall back to the system voice.");
-  } else if (!key.startsWith("sk_")) {
-    console.log("ELEVENLABS_API_KEY should be the secret key (sk_...), not the Key ID.");
+const HOST = process.env.HOST || "0.0.0.0";
+
+server.listen(PORT, HOST, () => {
+  tts.warm();
+  console.log(`Laptop:  http://127.0.0.1:${PORT}/`);
+  try {
+    const os = require("os");
+    const nets = os.networkInterfaces();
+    for (const list of Object.values(nets)) {
+      for (const n of list || []) {
+        if (n.family === "IPv4" && !n.internal) {
+          console.log(`Mobile:  http://${n.address}:${PORT}/  (same Wi‑Fi)`);
+        }
+      }
+    }
+  } catch (_) {
+    /* ignore */
   }
-  console.log(`http://127.0.0.1:${PORT}/about/`);
 });
