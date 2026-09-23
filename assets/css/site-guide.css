@@ -51,15 +51,6 @@ html.is-gru-intro .guide-hub {
   visibility: visible;
 }
 
-.guide-hub__logo {
-  position: absolute;
-  top: calc(1.5rem + env(safe-area-inset-top, 0px));
-  left: 50%;
-  width: auto;
-  height: 2.6rem;
-  transform: translateX(-50%);
-}
-
 .site-guide {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
@@ -237,10 +228,6 @@ html.is-gru-intro .guide-hub {
 }
 
 @media (max-width: 767px) {
-  .guide-hub__logo {
-    height: 2.1rem;
-  }
-
   .site-guide.is-intro {
     padding: calc(4rem + env(safe-area-inset-top, 0px)) 1.1rem
       calc(2rem + env(safe-area-inset-bottom, 0px));

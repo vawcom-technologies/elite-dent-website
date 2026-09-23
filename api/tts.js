@@ -11,8 +11,8 @@ const MAX_CHARS = 600;
 const VOICES_DIR = path.join(__dirname, "..", "voices");
 const VOICE = { de: "de_DE-thorsten-medium", en: "en_GB-alan-medium" };
 const ESPEAK = path.join(VOICES_DIR, `vits-piper-${VOICE.de}`, "espeak-ng-data");
-// Slightly quicker than Piper's default pace, closer to how the guide read before
-const SPEED = 1.08;
+// Pace relative to Piper's default; Alan reads slowly, so English gets a bit more
+const SPEED = { de: 1.08, en: 1.2 };
 
 const engines = {};
 const memo = new Map();
@@ -64,7 +64,7 @@ function speech(text, lang) {
   const key = lang + "\n" + text;
   if (!memo.has(key)) {
     const job = engine(lang)
-      .then((tts) => tts.generateAsync({ text, sid: 0, speed: SPEED }))
+      .then((tts) => tts.generateAsync({ text, sid: 0, speed: SPEED[lang] }))
       .then((audio) => toWav(audio.samples, audio.sampleRate));
     job.catch(() => memo.delete(key));
     memo.set(key, job);

@@ -90,8 +90,6 @@
   hub.setAttribute("translate", "no");
   hub.setAttribute("aria-hidden", "true");
   hub.inert = true;
-  hub.innerHTML =
-    '<img class="guide-hub__logo" src="/assets/images/elitedentlogo-nav.png?v=1" alt="" width="400" height="221" decoding="async" />';
 
   const root = document.createElement("aside");
   root.className = "site-guide";
@@ -289,7 +287,8 @@
     const pending = ttsInflight.get(key);
     if (pending) return pending;
     const job = (async () => {
-      const res = await fetch(`/api/tts?lang=${lang}&text=${encodeURIComponent(text)}`);
+      // Bump v whenever the voice or its speed changes, so the CDN doesn't serve old audio
+      const res = await fetch(`/api/tts?v=2&lang=${lang}&text=${encodeURIComponent(text)}`);
       if (!res.ok) return null;
       const blob = await res.blob();
       if (!blob) return null;
@@ -455,6 +454,7 @@
 
   function markIntroSeen() {
     introDone = true;
+    lang = readLang();
     try {
       sessionStorage.setItem(INTRO_KEY, "1");
     } catch (_) {}
@@ -475,6 +475,8 @@
   function wantsIntro() {
     return normalizePath(pathname) === "/" && introOnThisLoad && !introDone;
   }
+  // The welcome popup always speaks German; the saved language takes over once it closes
+  if (wantsIntro()) lang = "de";
 
   const FLY_MS = 520;
   const FLY_EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
@@ -1152,6 +1154,7 @@
   });
 
   document.querySelector(".lang-toggle")?.addEventListener("click", () => {
+    if (wantsIntro()) return;
     lang = readLang();
     render();
   });
