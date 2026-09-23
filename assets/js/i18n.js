@@ -11,6 +11,13 @@
     team: { de: "Team", en: "Team" },
     app: { de: "App", en: "App" },
     consult: { de: "Jetzt beraten", en: "Consult now" },
+    login: { de: "Anmelden", en: "Log in" },
+    "login-construction-title": { de: "Im Aufbau", en: "Under construction" },
+    "login-construction-body": {
+      de: "Die Anmeldung ist noch nicht verfügbar. Wir arbeiten daran.",
+      en: "Sign-in is not available yet. We're working on it.",
+    },
+    "login-construction-close": { de: "Schließen", en: "Close" },
     book: { de: "Jetzt beraten", en: "Consult now" },
     hkp: { de: "HKP", en: "HKP" },
     whitening: { de: "Bleaching", en: "Whitening" },

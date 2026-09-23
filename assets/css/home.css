@@ -402,12 +402,105 @@ body {
   outline: none;
 }
 
+.nav__login {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0 clamp(0.7rem, 1.3vw, 1.15rem);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid rgb(29 53 87 / 0.16);
+}
+
+.nav__login:hover,
+.nav__login:focus-visible {
+  color: var(--dental-blue);
+  border-color: rgb(74 144 226 / 0.45);
+  outline: none;
+}
+
 .nav__end {
   justify-self: end;
   display: flex;
   align-items: center;
   gap: clamp(0.35rem, 0.9vw, 0.65rem);
   min-width: 0;
+}
+
+.login-construction {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgb(15 28 48 / 0.58);
+}
+
+.login-construction[hidden] {
+  display: none;
+}
+
+.login-construction__card {
+  width: min(26rem, 100%);
+  padding: 1.7rem 1.45rem 1.4rem;
+  border-radius: 1.5rem;
+  background: #fff;
+  box-shadow: 0 24px 56px rgb(15 28 48 / 0.28);
+  text-align: center;
+  color: var(--navy);
+}
+
+.login-construction__kicker {
+  margin: 0 0 0.45rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.login-construction__card h2 {
+  margin: 0 0 0.55rem;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.login-construction__card p:last-of-type {
+  margin: 0 0 1.15rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.login-construction__close {
+  min-height: 2.45rem;
+  padding: 0 1.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+html.is-login-construction {
+  overflow: hidden;
 }
 
 .nav__toggle {
@@ -852,12 +945,16 @@ html:not(.is-translating) .site-footer {
     font-size: 0.72rem;
   }
 
+  .nav__login,
   .nav__cta {
     width: 100%;
     justify-content: center;
     padding: 0.95rem 1.15rem;
     font-size: 0.78rem;
     letter-spacing: 0.1em;
+  }
+
+  .nav__cta {
     box-shadow: 0 12px 28px rgb(29 53 87 / 0.14);
   }
 }
