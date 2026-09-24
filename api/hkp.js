@@ -7,7 +7,7 @@ const store = require("../lib/hkpStore");
 const { validateHkpDocument } = require("../lib/hkpValidate");
 
 const FROM = process.env.RESEND_FROM || "EliteDent <noreply@elitedent.com>";
-const BOOKINGS_INBOX = process.env.BOOKINGS_INBOX || "djanieverlan@gmail.com";
+const BOOKINGS_INBOX = process.env.BOOKINGS_INBOX || "elitedent@outlook.de";
 
 function json(res, status, body) {
   res.statusCode = status;

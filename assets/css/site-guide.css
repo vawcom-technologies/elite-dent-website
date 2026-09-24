@@ -440,12 +440,12 @@ html.is-gru-intro-pending .guide-hub {
   height: 2.5rem;
 }
 
-.site-guide:not(.is-intro) .site-guide__close {
+.site-guide.is-min .site-guide__close {
   display: none;
 }
 
 .site-guide:not(.is-intro) .site-guide__kicker {
-  padding-right: 0;
+  padding-right: 1.9rem;
 }
 
 .site-guide__body {
@@ -567,18 +567,11 @@ html.is-gru-intro-pending .guide-hub {
     bottom: calc(6.4rem + env(safe-area-inset-bottom, 0px));
     width: min(26rem, calc(100vw - 1.7rem));
   }
-
-  .site-guide:not(.is-intro):not(.is-min) .site-guide__close {
-    display: inline-flex;
-  }
-
-  .site-guide:not(.is-intro) .site-guide__kicker {
-    padding-right: 1.9rem;
-  }
 }
 
-/* Minimised: only the face stays, tucked against the edge */
-.site-guide.is-min {
+/* Minimised: only the face stays, tucked against the edge.
+   :not(.is-intro) matches the specificity of the breakpoint rules below so the bubble wins at every width. */
+.site-guide.is-min:not(.is-intro) {
   width: 3.6rem;
   height: 3.6rem;
   padding: 0;
@@ -590,7 +583,7 @@ html.is-gru-intro-pending .guide-hub {
   display: none;
 }
 
-.site-guide.is-min .site-guide__avatar {
+.site-guide.is-min:not(.is-intro) .site-guide__avatar {
   width: 100%;
   height: 100%;
 }

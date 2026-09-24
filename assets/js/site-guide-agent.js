@@ -585,6 +585,7 @@
   function restore() {
     setMinimized(false);
     resume();
+    render();
   }
 
   function openHub() {

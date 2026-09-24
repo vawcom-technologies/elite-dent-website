@@ -33,7 +33,7 @@ Host the folders `support/`, `privacy/`, and `impressum/` at the domain root (ea
 | --- | --- |
 | Legal name | Erlan Djaniev, handelnd unter Elite Dent (Einzelunternehmen) |
 | Address | Hirsauer Straße 63, 75180 Pforzheim, Germany |
-| Email | djanieverlan@gmail.com |
+| Email | elitedent@outlook.de |
 | Phone | +49 176 25858231 |
 | Commercial register | None (sole proprietorship) |
 | VAT ID | DE464085701 |

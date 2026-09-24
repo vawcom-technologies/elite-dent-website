@@ -9,33 +9,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1D3557" />
+  <meta name="theme-color" content="#f4f8fc" />
+  <meta name="color-scheme" content="light" />
   <meta name="robots" content="index,follow" />
-  <meta id="meta-desc" name="description" content="Elite Dent Support — Hilfe für Zahnarztpraxen und Dentallabore. iPad-App, kein Patientenportal." />
+  <meta name="description" content="Elite Dent Support — Hilfe für Zahnarztpraxen und Dentallabore. iPad-App, kein Patientenportal." />
   <title>Support — Elite Dent</title>
+  <style>html,body{background:#f4f8fc;margin:0}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/css/legal.css?v=2" />
+  <link rel="preconnect" href="https://translate.google.com" />
+  <link rel="preconnect" href="https://translate.googleapis.com" />
+  <link rel="stylesheet" href="../assets/css/critical.css?v=1" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../assets/css/home.css?v=120" />
+  <link rel="stylesheet" href="../assets/css/legal.css?v=3" />
+  <script src="../assets/js/legal.js?v=3"></script>
+  <script src="../assets/js/navigate.js?v=3"></script>
+  <script src="../assets/js/i18n.js?v=7"></script>
 </head>
-<body class="legal">
-  <a class="skip" href="#main"><span class="i18n-de">Zum Inhalt</span><span class="i18n-en">Skip to content</span></a>
-  <header class="legal-nav">
-    <a class="legal-nav__brand" href="../">
+<body class="page page--legal">
+  <a class="skip notranslate" translate="no" href="#main"><span class="i18n-de">Zum Inhalt</span><span class="i18n-en">Skip to content</span></a>
+  <header class="nav nav--static notranslate" translate="no">
+    <a class="nav__brand notranslate" href="../" translate="no">
       <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
     </a>
-    <nav class="legal-nav__links" aria-label="Seiten">
-      <a href="./" aria-current="page">Support</a>
-      <a href="../privacy/"><span class="i18n-de">Datenschutz</span><span class="i18n-en">Privacy</span></a>
-      <a href="../impressum/">Impressum</a>
-    </nav>
-    <div class="lang" role="group" aria-label="Language">
-      <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
-      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    <button
+      type="button"
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label="Menü öffnen"
+    >
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav__panel" id="nav-panel">
+      <nav class="nav__links" aria-label="Hauptnavigation" data-i18n-aria="nav-label">
+        <a href="../" data-i18n="home">Startseite</a>
+        <div class="nav__services">
+          <div class="nav__services-head">
+            <a href="../services/" data-i18n="services">Leistungen</a>
+            <button
+              type="button"
+              class="nav__services-toggle"
+              aria-expanded="false"
+              aria-label="Leistungen anzeigen"
+            ></button>
+          </div>
+          <div class="nav__tabs">
+            <a href="../services/#whitening" data-i18n="whitening">Bleaching</a>
+            <a href="../services/#aligners" data-i18n="aligners">Aligner</a>
+            <a href="../services/#veneers" data-i18n="veneers">Veneers</a>
+            <a href="../services/#implants" data-i18n="implants">Implantate</a>
+            <a href="../services/#preventive" data-i18n="preventive">Prophylaxe</a>
+            <a href="../services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
+          </div>
+        </div>
+        <a href="../hkp/" data-i18n="hkp">HKP</a>
+        <a href="../about/" data-i18n="about">Über uns</a>
+        <a href="../team/" data-i18n="team">Team</a>
+        <a href="../app/" data-i18n="app">App</a>
+      </nav>
+      <div class="nav__end">
+        <div class="lang-toggle notranslate" role="group" aria-label="Sprache" data-i18n-aria="lang-label" translate="no">
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
+        </div>
+        <a class="nav__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+      </div>
     </div>
   </header>
 
-  <main id="main" class="legal-main">
+  <div id="google_translate_element" aria-hidden="true"></div>
+
+  <!-- Authored in DE and EN, so Google Translate must leave it alone -->
+  <main id="main" class="legal-main notranslate" translate="no">
     <article class="lang-block" data-lang="de">
       <p class="kicker">Elite Dent · iPad · Version 1.0.0</p>
       <h1>Support</h1>
@@ -44,7 +94,7 @@
       <h2 id="kontakt">Hilfe erhalten</h2>
       <p>E-Mail ist der vorgesehene Weg für Praxen, Labore und die App-Store-Prüfung. Derselbe Posteingang beantwortet Anfragen zu einem Demozugang.</p>
       <div class="actions">
-        <a class="btn" href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a>
+        <a class="btn" href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>
         <a class="btn btn--ghost" href="tel:+4917625858231">+49 176 25858231</a>
       </div>
       <ul>
@@ -72,17 +122,17 @@
           <p>Wenn Sie bereits eine E-Mail mit Reset-Link haben, öffnen Sie ihn auf dem iPad. Die zugehörige Seite liegt unter <a href="../forgot-password/">/forgot-password</a>.</p>
         </details>
         <details>
-          <summary>Die App erreicht den Laborserver nicht</summary>
-          <p>In der Produktion muss die API unter einer <strong>öffentlichen HTTPS-Adresse</strong> erreichbar sein. <code>127.0.0.1</code> oder eine lokale Entwicklungs-URL funktioniert nur auf dem Rechner, auf dem der Server läuft — auf einem physischen iPad ist das das iPad selbst, nicht Ihr Mac.</p>
-          <p>Prüfen Sie WLAN/VPN, die Basis-URL unter Einstellungen, und ob das Labor die API öffentlich und mit gültigem Zertifikat bereitstellt.</p>
+          <summary>Wo werden meine Daten gespeichert?</summary>
+          <p><strong>Nur auf Ihrem iPad.</strong> Patientenakten, Scans, Fotos, Farb- und Fallnotizen bleiben lokal auf dem Gerät, nicht in einer Cloud und nicht bei Elite Dent. Einzig die Anmeldedaten Ihres Kontos (E-Mail, gehashtes Passwort) liegen beim Anmeldedienst.</p>
+          <p>Schützen Sie das iPad mit einem Gerätecode. Wenn Sie iCloud- oder Computer-Backups nutzen, können die App-Daten darin enthalten sein.</p>
         </details>
         <details>
           <summary>Kamera, Mikrofon oder Mediathek verweigert</summary>
           <p>Elite Dent fragt nur nach, wenn Sie Fotos, Sprache oder Video tatsächlich verwenden. Wurde die Erlaubnis abgelehnt: iPad <strong>Einstellungen → Elite Dent</strong> und Kamera, Mikrofon bzw. Fotos erlauben.</p>
         </details>
         <details>
-          <summary>Offline / Sync-Warteschlange</summary>
-          <p>Die App ist offline-fähig. Chairside-Aufnahmen können lokal zwischengespeichert und in eine Warteschlange gestellt werden. Sobald das iPad wieder Netz hat, wird synchronisiert. Offene Einträge sehen Sie in den Einstellungen; dort können Sie den Sync auch manuell anstoßen.</p>
+          <summary>Funktioniert die App ohne Internet?</summary>
+          <p>Ja. Da alle Daten auf dem iPad liegen, arbeiten Akten, Aufnahmen und Fallablauf auch ohne Netz. Internet brauchen Sie nur für Anmeldung und Passwort-Reset.</p>
         </details>
         <details>
           <summary>Die Farb-KI weicht von meiner Einschätzung ab</summary>
@@ -94,20 +144,20 @@
         </details>
         <details>
           <summary>Konto löschen</summary>
-          <p>In der App: <strong>Einstellungen → Konto löschen</strong>. Sie bestätigen mit <code>DELETE</code> und dem Kontopasswort. Damit wird das Benutzerkonto und die damit verbundenen App-Daten gelöscht. Patientenakten der Praxis können gesondert betroffen sein — siehe Datenschutz und den Abschnitt zu Datenauskünften unten.</p>
+          <p>In der App: <strong>Einstellungen → Konto löschen</strong>. Sie bestätigen mit <code>DELETE</code> und dem Kontopasswort. Damit wird das Benutzerkonto gelöscht. Patientenakten liegen lokal auf dem iPad. Exportieren Sie vor dem Löschen der App alles, was nach den Aufbewahrungspflichten aufbewahrt werden muss.</p>
         </details>
       </div>
 
       <h2>Konto- und Datenanfragen (DSGVO)</h2>
       <ul>
         <li><strong>Konto löschen:</strong> in der App unter Einstellungen. Die vollständige Kontolöschung ist vorhanden.</li>
-        <li><strong>Auskunft, Export oder Löschung von Patientendaten:</strong> E-Mail an <a href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a>. Die Praxis ist Verantwortliche für die Patientenakte; Elite Dent hostet die App als Auftragsverarbeiterin. Einzelheiten stehen in der <a href="../privacy/">Datenschutzerklärung</a>.</li>
+        <li><strong>Auskunft, Export oder Löschung von Patientendaten:</strong> über die behandelnde Praxis. Die Daten liegen nur auf deren iPad; Elite Dent hat keinen Zugriff darauf. Fragen zu Kontodaten an <a href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>. Einzelheiten stehen in der <a href="../privacy/">Datenschutzerklärung</a>.</li>
         <li><strong>Demokonten</strong> (z. B. <code>dentist@elitedent.demo</code>) sind keine Produktivkonten und dürfen keine echten Patientendaten enthalten.</li>
       </ul>
 
       <h2>Hinweis für die App-Store-Prüfung</h2>
       <div class="callout">
-        <p>Elite Dent ist eine B2B-Praxis-App. Es gibt <strong>keine öffentliche Registrierung</strong>. Apple Review: Wenn Sie einen Demo-Zugang benötigen, schreiben Sie an <a href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a>. Wir stellen Prüferzugangsdaten bereit. Demo-Passwörter stehen nicht auf dieser Seite.</p>
+        <p>Elite Dent ist eine B2B-Praxis-App. Es gibt <strong>keine öffentliche Registrierung</strong>. Apple Review: Wenn Sie einen Demo-Zugang benötigen, schreiben Sie an <a href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>. Wir stellen Prüferzugangsdaten bereit. Demo-Passwörter stehen nicht auf dieser Seite.</p>
       </div>
       <p class="meta">Bundle-ID <code>com.elitedent.dentalLabAi</code> · iPad · kein Verbraucherprodukt.</p>
     </article>
@@ -120,7 +170,7 @@
       <h2 id="contact">How to get help</h2>
       <p>Email is the support channel clinics, labs, and App Review should use. The same inbox answers requests for a demo login.</p>
       <div class="actions">
-        <a class="btn" href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a>
+        <a class="btn" href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>
         <a class="btn btn--ghost" href="tel:+4917625858231">+49 176 25858231</a>
       </div>
       <ul>
@@ -148,17 +198,17 @@
           <p>If you already have a reset email, open the link on the iPad. The landing page lives at <a href="../forgot-password/">/forgot-password</a>.</p>
         </details>
         <details>
-          <summary>App can’t reach the lab server</summary>
-          <p>In production the API must be a <strong>public HTTPS URL</strong>. <code>127.0.0.1</code> or a local dev URL only works on the machine running the server — on a physical iPad that address is the iPad itself, not your Mac.</p>
-          <p>Check Wi-Fi/VPN, the base URL in Settings, and that the lab’s API is publicly reachable with a valid certificate.</p>
+          <summary>Where is my data stored?</summary>
+          <p><strong>Only on your iPad.</strong> Patient records, scans, photos, shade and case notes stay locally on the device — not in a cloud and not with Elite Dent. Only your account sign-in data (email, hashed password) is held by the sign-in service.</p>
+          <p>Protect the iPad with a passcode. If you use iCloud or computer backups, app data may be included in them.</p>
         </details>
         <details>
           <summary>Camera, microphone, or photo library denied</summary>
           <p>Elite Dent asks for these only when you use photos, voice, or video. If permission was denied: iPad <strong>Settings → Elite Dent</strong> and enable Camera, Microphone, and/or Photos.</p>
         </details>
         <details>
-          <summary>Offline / sync queue</summary>
-          <p>The app is offline-capable. Chairside captures can be stored locally and queued. They sync when the iPad is back on a network. Pending items appear in Settings; you can also trigger sync there.</p>
+          <summary>Does the app work without internet?</summary>
+          <p>Yes. Because all data is on the iPad, records, captures, and the case workflow work offline. You only need internet for sign-in and password reset.</p>
         </details>
         <details>
           <summary>Shade AI doesn’t match my judgement</summary>
@@ -170,39 +220,87 @@
         </details>
         <details>
           <summary>How to delete your account</summary>
-          <p>In the app: <strong>Settings → Delete account</strong>. You confirm by typing <code>DELETE</code> and entering the account password. That removes the user account and associated app data. Clinic patient records may be handled separately — see the Privacy Policy and data-request section below.</p>
+          <p>In the app: <strong>Settings → Delete account</strong>. You confirm by typing <code>DELETE</code> and entering the account password. That removes the user account. Patient records are stored locally on the iPad, so export anything you are required to keep before deleting the app.</p>
         </details>
       </div>
 
       <h2>Account and data requests (GDPR / App Store 5.1.1)</h2>
       <ul>
         <li><strong>Delete account:</strong> in-app Settings. Full account deletion is implemented.</li>
-        <li><strong>Access, export, or deletion of patient data:</strong> email <a href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a>. The clinic is controller of the patient record; Elite Dent hosts the app as processor. Details are in the <a href="../privacy/">Privacy Policy</a>.</li>
+        <li><strong>Access, export, or deletion of patient data:</strong> through the treating clinic. The data is only on its iPad, and Elite Dent has no access to it. Account-data questions go to <a href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>. Details are in the <a href="../privacy/">Privacy Policy</a>.</li>
         <li><strong>Demo accounts</strong> (for example <code>dentist@elitedent.demo</code>) are not production and must not contain real patient data.</li>
       </ul>
 
       <h2>App Store reviewer note</h2>
       <div class="callout">
-        <p>This is a B2B clinic app. There is <strong>no public sign-up</strong>. Apple Review: if you need a demo login, email <a href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a> and we will provide credentials. Demo passwords are not published on this page.</p>
+        <p>This is a B2B clinic app. There is <strong>no public sign-up</strong>. Apple Review: if you need a demo login, email <a href="mailto:elitedent@outlook.de">elitedent@outlook.de</a> and we will provide credentials. Demo passwords are not published on this page.</p>
       </div>
       <p class="meta">Bundle ID <code>com.elitedent.dentalLabAi</code> · iPad · not a consumer product.</p>
     </article>
   </main>
 
-  <footer class="legal-footer">
-    <div class="legal-footer__inner">
-      <nav aria-label="Footer">
-        <a href="./">Support</a>
-        <a href="../privacy/"><span class="i18n-de">Datenschutz</span><span class="i18n-en">Privacy Policy</span></a>
+  <footer class="site-footer" id="kontakt">
+    <div class="site-footer__inner">
+      <div class="site-footer__info">
+        <a class="site-footer__brand" href="../">
+          <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" loading="lazy" decoding="async" />
+        </a>
+        <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+          <a href="../" data-i18n="home">Startseite</a>
+          <a href="../services/" data-i18n="services">Leistungen</a>
+          <a href="../hkp/" data-i18n="hkp">HKP</a>
+          <a href="../about/" data-i18n="about">Über uns</a>
+          <a href="../team/" data-i18n="team">Team</a>
+          <a href="../app/" data-i18n="app">App</a>
+          <a class="site-footer__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+        </nav>
+        <div class="site-footer__cols">
+          <div class="site-footer__col">
+            <h2>Kontakt</h2>
+            <address class="site-footer__contact">
+              <span>Hirsauer Straße 63<br />75180 Pforzheim</span>
+              <a href="tel:+4917625858231">+49 176 25858231</a>
+              <a href="mailto:elitedent@outlook.de">elitedent@outlook.de</a>
+            </address>
+          </div>
+          <div class="site-footer__col">
+            <h2>Öffnungszeiten</h2>
+            <ul class="site-footer__hours">
+              <li><span>Mo–Do</span><span>09:00–17:00</span></li>
+              <li><span>Fr</span><span>09:00–14:00</span></li>
+              <li><span>Sa–So</span><span>geschlossen</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="site-footer__location">
+        <a
+          class="site-footer__map"
+          href="https://www.google.com/maps/search/?api=1&query=Hirsauer%20Stra%C3%9Fe%2063%2C%2075180%20Pforzheim%2C%20Germany"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="../assets/images/footer-map.svg?v=1"
+            alt="Karte: EliteDent, Hirsauer Straße 63, Pforzheim – in Google Maps öffnen"
+            width="1600"
+            height="900"
+            decoding="async"
+          />
+        </a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p>© 2026 <span class="notranslate" translate="no">EliteDent</span></p>
+      <nav aria-label="Rechtliches">
+        <a href="./" aria-current="page">Support</a>
+        <a href="../privacy/">Datenschutz</a>
         <a href="../impressum/">Impressum</a>
       </nav>
-      <p>© 2026 Erlan Djaniev · Elite Dent</p>
-      <p class="copy">
-        <span class="i18n-de">Hirsauer Straße 63, 75180 Pforzheim · Kein Medizinprodukt zur Diagnose. Nur für die zahnärztliche / zahntechnische Fachnutzung.</span>
-        <span class="i18n-en">Hirsauer Straße 63, 75180 Pforzheim, Germany · Not a medical device for diagnosis. For professional dental use only.</span>
-      </p>
     </div>
   </footer>
-  <script src="../assets/js/legal.js"></script>
+
+  <script src="../assets/js/nav.js?v=24" defer></script>
+  <script src="../assets/js/services.js?v=13" defer></script>
 </body>
 </html>
