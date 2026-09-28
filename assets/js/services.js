@@ -114,6 +114,9 @@
       articles.forEach((article) => {
         article.classList.toggle("is-active", article.id === id);
       });
+      window.dispatchEvent(
+        new CustomEvent("elitedent:service-section", { detail: { id } })
+      );
     };
 
     links.forEach((a) => {

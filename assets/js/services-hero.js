@@ -1,5 +1,5 @@
 (() => {
-  const host = document.getElementById("services-hero-lottie");
+  const host = document.querySelector(".page-hero__lottie[data-hero-lottie]");
   if (!host || typeof lottie === "undefined") return;
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -24,7 +24,7 @@
         if (entries.some((entry) => entry.isIntersecting)) anim.play();
         else anim.pause();
       },
-      { threshold: 0.08 },
+      { threshold: 0.08 }
     );
     vis.observe(host);
   } else {

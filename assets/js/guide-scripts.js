@@ -129,7 +129,7 @@ window.ELITEDENT_GUIDE = {
         {
           id: "services-page",
           when: "start",
-          spotlight: ".page-hero",
+          spotlight: ".services-video-hero",
           image: "/assets/images/display/equipment.jpg",
           text: {
             de: "Willkommen. Hier finden Sie alle unsere Behandlungen. Zu jeder erklären wir, wie sie abläuft und was ein Termin umfasst.",
@@ -138,7 +138,7 @@ window.ELITEDENT_GUIDE = {
         },
         {
           id: "services-assess",
-          when: ".page-hero__cta, [data-assess-expand]",
+          when: ".services-video-hero__cta, [data-assess-expand]",
           spotlight: "[href*='assess'], [data-assess-expand]",
           text: {
             de: "Der kurze Check führt Sie mit ein paar Fragen zu einem ruhigen nächsten Schritt.",
@@ -231,19 +231,10 @@ window.ELITEDENT_GUIDE = {
         {
           id: "about-page",
           when: "start",
-          spotlight: ".about-essay__header",
+          spotlight: ".page-hero",
           text: {
             de: "Lassen Sie mich kurz beginnen. Mich bewegen Forschung, Innovation und Lösungen mit echtem Nutzen.",
             en: "Let me begin with a short introduction. I care about research, new ideas, and solutions that actually help people.",
-          },
-        },
-        {
-          id: "about-figure",
-          when: ".about-essay__figure",
-          spotlight: ".about-essay__figure",
-          text: {
-            de: "Das Ergebnis, das wir anstreben, wirkt unaufdringlich: ein Lächeln, das wie Sie an einem guten Tag aussieht.",
-            en: "The result we aim for is understated: a smile that looks like you on a good day.",
           },
         },
         {
@@ -433,8 +424,8 @@ window.ELITEDENT_GUIDE = {
           when: ".hkp-process",
           spotlight: ".hkp-process",
           text: {
-            de: "Ihr Plan kommt direkt mit in die Beratungsanfrage. Name, Kontakt und Dokument reichen.",
-            en: "Your plan goes straight into the consultation request. Your name, contact details, and the document are enough.",
+            de: "Zwei Schritte: Anfrage mit HKP senden, dann melden wir uns mit der Einschätzung.",
+            en: "Two steps: send your request with the HKP, then we follow up with an assessment.",
           },
         },
         {
@@ -442,8 +433,8 @@ window.ELITEDENT_GUIDE = {
           when: ".hkp-close",
           spotlight: ".hkp-close",
           text: {
-            de: "Häufige Fragen finden Sie hier. Wenn Sie bereit sind, öffnen Sie Jetzt beraten.",
-            en: "Common questions are here. When you're ready, open Consult now.",
+            de: "Häufige Fragen finden Sie hier. Wenn Sie bereit sind, öffnen Sie Jetzt beraten oben oder im vorherigen Abschnitt.",
+            en: "Common questions are here. When you're ready, open Consult now in the hero or the steps section.",
           },
         },
       ],

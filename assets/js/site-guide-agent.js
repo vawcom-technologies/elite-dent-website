@@ -436,11 +436,54 @@
     scheduleAutoStart();
   }
 
-  function sectionVisible(selector) {
-    const el = document.querySelector(selector);
-    if (!el) return false;
-    const rect = el.getBoundingClientRect();
-    return rect.top < window.innerHeight * 0.75 && rect.bottom > 96;
+  /** Which script step matches the section the visitor is actually looking at. */
+  function focusedSectionIndex() {
+    const vh = window.innerHeight;
+    const focusY = vh * 0.32;
+    let best = -1;
+    let bestScore = -Infinity;
+    const activeId = document.querySelector(".service-article.is-active[id]")?.id;
+
+    for (let i = 0; i < script.steps.length; i += 1) {
+      const step = script.steps[i];
+      if (!step.when || step.when === "start" || step.when === "hub") continue;
+
+      let rect = null;
+      document.querySelectorAll(step.when).forEach((el) => {
+        const next = el.getBoundingClientRect();
+        if (next.bottom <= 88 || next.top >= vh - 48) return;
+        if (!rect) {
+          rect = next;
+          return;
+        }
+        const mid = (a) => (a.top + a.bottom) / 2;
+        if (Math.abs(mid(next) - focusY) < Math.abs(mid(rect) - focusY)) rect = next;
+      });
+      if (!rect) continue;
+
+      let score;
+      const inFocusBand = rect.top <= focusY && rect.bottom >= focusY;
+      if (inFocusBand) {
+        score = 2000 - Math.abs(rect.top - focusY * 0.35);
+      } else if (rect.top > focusY) {
+        score = 1000 - (rect.top - focusY);
+      } else {
+        score = 1000 - (focusY - rect.bottom);
+      }
+      const visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+      score += Math.min(visible, vh) * 0.02;
+
+      // Jump-nav active article is a hint only when it is actually in the focus band
+      if (activeId && step.when === `#${activeId}` && inFocusBand) {
+        score += 350;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        best = i;
+      }
+    }
+    return best;
   }
 
   // Once per browser session, matching the splash
@@ -705,8 +748,9 @@
     clearSpotlight();
     const step = script.steps[stepIndex];
     const continueNext = () => {
-      const ahead = visibleSectionIndex();
-      if (ahead >= 0) {
+      const ahead = focusedSectionIndex();
+      // Only jump ahead when the visitor has already moved to another section
+      if (ahead >= 0 && ahead !== stepIndex) {
         playStep(ahead);
         return;
       }
@@ -738,28 +782,20 @@
     continueNext();
   }
 
-  function visibleSectionIndex() {
-    for (let i = 0; i < script.steps.length; i += 1) {
-      const step = script.steps[i];
-      if (!step.when || step.when === "start" || step.when === "hub") continue;
-      if (played.has(step.id)) continue;
-      if (!sectionVisible(step.when)) continue;
-      return i;
-    }
-    return -1;
-  }
-
   function checkScroll() {
     if (!guideOn || introActive || hubOpen || userPaused) return;
     if (status === "paused" && !blockedAutoplay) return;
-    const index = visibleSectionIndex();
+    const index = focusedSectionIndex();
     if (index < 0) return;
+    if (stepIndex === index && (status === "playing" || status === "loading")) return;
+    if (stepIndex === index && status === "idle" && played.has(script.steps[index]?.id)) {
+      render();
+      return;
+    }
     if (status === "playing" || status === "loading") {
       const current = script.steps[stepIndex];
       if (!current?.when || current.when === "start" || current.intro) return;
-      if (stepIndex === index) return;
-      // Let the current line finish while its section is still on screen; afterLine picks up the next one
-      if (sectionVisible(current.when)) return;
+      // Section in focus changed — switch line + image to match
       stopNow();
     }
     playStep(index);
@@ -1174,6 +1210,18 @@
   });
   window.addEventListener("popstate", () => applyPath(location.pathname));
   window.addEventListener("scroll", checkScroll, { passive: true });
+  window.addEventListener("elitedent:service-section", () => {
+    queueMicrotask(checkScroll);
+  });
+  window.addEventListener("hashchange", () => {
+    const topic = stepForHash(location.hash);
+    if (topic >= 0 && guideOn && !hubOpen && !userPaused) {
+      if (status === "playing" || status === "loading") stopNow();
+      playStep(topic);
+      return;
+    }
+    checkScroll();
+  });
 
   let sectionObserver = null;
   function observeSections() {

@@ -3,8 +3,8 @@ EliteDent splash — Paramount-style tooth fly-through (Blender 5.x)
 
 Beats:
   Slow tunnel: camera banks through multiple angles as teeth rise from below.
-  Teeth are solid 3D enamel meshes in flight, then flatten and crossfade into the
-  2D logo PNGs as they seat, so the finished lockup matches the logo artwork.
+  Teeth stay solid 3D enamel meshes the whole way — they fly into the logo
+  arch and seat as shaded crowns (no flatten / no crossfade into 2D PNGs).
   Wordmark fills the page, camera eases to a small centered lockup.
 
 Rebuild:
@@ -32,16 +32,14 @@ FRAME_END = 220
 # Beats below are authored at 30fps, then retimed to RENDER_FPS at the end.
 BEAT_FPS = 30
 RENDER_FPS = 60
-# Depth scale the crown collapses to as it seats into the flat logo tooth.
-SEAT_FLATTEN = 0.02
+# Kept for the unused morph graph; crowns no longer collapse when they seat.
+SEAT_FLATTEN = 1.0
 # Flight is keyed every half beat, which lands on every frame once retimed to
 # RENDER_FPS. Dense keys mean playback is exactly the sampled curve.
 SAMPLE_STEP = 0.5
-# Fraction of the flight where the crown hands over to the flat logo tooth.
-# Starts earlier so the 3D→2D settle is a long ease, not a late pop.
-MORPH_START = 0.64
-# Brightening toward logo white starts earlier than the handover.
-SEAT_LIFT_START = 0.34
+# Morph / seat-lift disabled — teeth remain shaded 3D at the lockup.
+MORPH_START = 2.0
+SEAT_LIFT_START = 2.0
 # Crowns run larger while airborne so the modelling reads, easing to logo size.
 FLIGHT_SCALE = [
     (0.00, 1.48),
@@ -432,6 +430,7 @@ def make_morph_tooth(name: str, path_2d: Path):
     # A shaded crown is darker than the flat logo tooth it hands over to, so without
     # this the last arrival pops from grey to white. Brightening toward logo white
     # over the approach makes each tooth simply light up as it locks into the arch.
+    # (Currently keyed off — crowns stay shaded 3D for the whole splash.)
     lift = nt.nodes.new("ShaderNodeValue")
     lift.name = "SeatLift"
     lift.label = "SeatLift"
@@ -792,7 +791,7 @@ for p in TOOTH_2D_PATHS:
 if not SHELL_PATH.exists():
     raise FileNotFoundError(SHELL_PATH)
 
-# --- teeth (solid enamel crowns that seat as 2D logo teeth) ---
+# --- teeth (solid enamel crowns that seat as 3D logo teeth) ---
 teeth = []
 morphs = []
 lifts = []
@@ -983,7 +982,8 @@ for i, obj in enumerate(teeth):
         obj.keyframe_insert("hide_render", frame=f)
 
     seated_q = Euler((math.radians(90), 0.0, 0.0), "XYZ").to_quaternion()
-    seated_scale = Vector((scale, scale, scale * SEAT_FLATTEN))
+    # Full crown depth at the seat — stay 3D, do not paper-flatten into the logo.
+    seated_scale = Vector((scale, scale, scale))
 
     q_start = (aim_quat(p_start, p_rise) @ spin("X", 25.0 * side)).normalized()
     q_seat_arc = seated_q.copy()
@@ -1008,24 +1008,19 @@ for i, obj in enumerate(teeth):
         wobble = (1.0 - ramp(t, 0.58, 0.90)) * math.sin(math.pi * t)
         quat = quat @ Quaternion(AXES["X"], math.radians(18.0) * side * wobble)
 
-        # Depth collapse and the 2D crossfade share one curve, so the crown never
-        # squashes while it is still shaded as a solid.
-        m = ramp(t, MORPH_START, 1.0)
         s = scale * _profile(t, FLIGHT_SCALE)
-        depth = 1.0 - (1.0 - SEAT_FLATTEN) * m
 
-        key_pose(obj, f, loc, quat, Vector((s, s, s * depth)), pose)
-        key_morph(morph, f, m)
-        # Runs ahead of the crossfade so the crown is already at logo white by the
-        # time the flat tooth takes over.
-        key_morph(lift, f, ramp(t, SEAT_LIFT_START, 1.0))
+        key_pose(obj, f, loc, quat, Vector((s, s, s)), pose)
+        # Morph + seat-lift stay off so crowns never crossfade into flat logo PNGs.
+        key_morph(morph, f, 0.0)
+        key_morph(lift, f, 0.0)
 
     key_pose(obj, land_f, seat, seated_q, seated_scale, pose)
     key_pose(obj, FRAME_END, seat, seated_q, seated_scale, pose)
-    key_morph(morph, land_f, 1.0)
-    key_morph(morph, FRAME_END, 1.0)
-    key_morph(lift, land_f, 1.0)
-    key_morph(lift, FRAME_END, 1.0)
+    key_morph(morph, land_f, 0.0)
+    key_morph(morph, FRAME_END, 0.0)
+    key_morph(lift, land_f, 0.0)
+    key_morph(lift, FRAME_END, 0.0)
 
     linearize_object(obj)
     if morph.id_data.animation_data:

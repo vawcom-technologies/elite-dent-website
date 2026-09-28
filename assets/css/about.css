@@ -8,7 +8,7 @@
 .about-essay {
   max-width: 58rem;
   margin: 0 auto;
-  padding: 3rem clamp(1.35rem, 5vw, 3.5rem) 5.5rem;
+  padding: 2rem clamp(1.35rem, 5vw, 3.5rem) 5.5rem;
 }
 
 .about-essay__header {

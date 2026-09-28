@@ -52,6 +52,8 @@ const MIME = {
   ".webm": "video/webm",
   ".woff2": "font/woff2",
   ".pdf": "application/pdf",
+  ".glb": "model/gltf-binary",
+  ".gltf": "model/gltf+json",
 };
 
 function safeFile(urlPath) {
