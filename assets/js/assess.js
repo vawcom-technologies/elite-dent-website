@@ -54,10 +54,10 @@
   };
 
   const SERVICES = {
-    whitening: {
-      name: "Bleaching",
-      href: "../services/#whitening",
-      blurb: "Eine kontrollierte Aufhellung, wenn die Farbe im Vordergrund steht.",
+    zirconia: {
+      name: "Zirkonversorgungen",
+      href: "../services/#zirconia",
+      blurb: "Ästhetischer, biokompatibler Zahnersatz, wenn Farbe und Form im Vordergrund stehen.",
     },
     aligners: {
       name: "Aligner",
@@ -74,15 +74,15 @@
       href: "../services/#implants",
       blurb: "Eine stabile Möglichkeit, einen fehlenden Zahn zu ersetzen.",
     },
-    preventive: {
-      name: "Prophylaxe",
-      href: "../services/#preventive",
-      blurb: "Eine ruhige Kontrolle und Reinigung für eine klare Ausgangslage.",
+    splint: {
+      name: "Schienentherapie",
+      href: "../services/#splint",
+      blurb: "Eine individuelle Aufbissschiene, die Zähne vor Knirschen und Pressen schützt.",
     },
-    restorative: {
-      name: "Zahnerhaltung",
-      href: "../services/#restorative",
-      blurb: "Reparaturen, die Komfort sowie abgenutzte oder abgesplitterte Kanten wiederherstellen.",
+    abutments: {
+      name: "Hybrid-Abutments",
+      href: "../services/#abutments",
+      blurb: "Die präzise Verbindung zwischen Implantat und Krone.",
     },
   };
 
@@ -102,21 +102,21 @@
   function suggestServices(a) {
     const ids = [];
     if (a.concern === "color") {
-      ids.push(a.approach === "involved" ? "veneers" : "whitening");
-      if (a.approach === "involved") ids.push("whitening");
+      ids.push(a.approach === "involved" ? "veneers" : "zirconia");
+      if (a.approach === "involved") ids.push("zirconia");
       else ids.push("veneers");
     } else if (a.concern === "alignment") {
       ids.push("aligners");
       if (a.approach === "involved") ids.push("veneers");
     } else if (a.concern === "shape") {
-      ids.push(a.approach === "gentle" ? "restorative" : "veneers");
-      ids.push(a.approach === "gentle" ? "veneers" : "restorative");
+      ids.push(a.approach === "gentle" ? "zirconia" : "veneers");
+      ids.push(a.approach === "gentle" ? "veneers" : "zirconia");
     } else if (a.concern === "missing") {
       ids.push("implants");
-      ids.push("restorative");
+      ids.push("abutments");
     } else {
-      ids.push("preventive");
-      if (a.timeline === "soon") ids.push("whitening");
+      ids.push("splint");
+      if (a.timeline === "soon") ids.push("zirconia");
     }
     return [...new Set(ids)].slice(0, 2).map((id) => SERVICES[id]);
   }

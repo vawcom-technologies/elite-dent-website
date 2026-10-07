@@ -57,7 +57,7 @@
 .about-essay__figure img {
   display: block;
   width: 100%;
-  height: clamp(260px, 48vw, 420px);
+  height: clamp(16.25rem, 48vw, 26.25rem);
   object-fit: cover;
   object-position: 50% 40%;
   background: var(--orb);
@@ -133,7 +133,7 @@
 .about-essay__inline img {
   display: block;
   width: 100%;
-  height: clamp(200px, 38vw, 320px);
+  height: clamp(12.5rem, 38vw, 20rem);
   object-fit: cover;
   object-position: 70% 45%;
   background: var(--orb);

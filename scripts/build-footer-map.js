@@ -118,7 +118,7 @@ async function main() {
       '<path d="M0 0C-8-22-34-38-34-62a34 34 0 1 1 68 0c0 24-26 40-34 62z" fill="#fff"/>' +
       '<circle cx="0" cy="-62" r="14" fill="#428fe6"/>' +
       "</g>",
-    `<text x="${W / 2}" y="${H / 2 + 40}" ${FONT} font-size="30" text-anchor="middle">EliteDent</text>`,
+    `<text x="${W / 2 + 22}" y="${H / 2 + 40}" ${FONT} font-size="30" text-anchor="middle">EliteDent</text>`,
     "</svg>",
   );
 

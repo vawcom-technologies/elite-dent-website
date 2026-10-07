@@ -38,12 +38,15 @@ window.ELITEDENT_GUIDE = {
         en: "Sure. What are you looking for?",
       },
       replies: [
-        { href: "/services/#whitening", label: { de: "Hellere Zähne", en: "Whiter teeth" } },
-        { href: "/services/#aligners", label: { de: "Geradere Zähne", en: "Straighter teeth" } },
+        { href: "/services/#milling", label: { de: "Fräsmaschine", en: "Milling machine" } },
+        { href: "/services/#printing", label: { de: "3D-Druck", en: "3D printing" } },
+        { href: "/services/#aligners", label: { de: "Geradere Zähne mit Alignern", en: "Straighter teeth with aligners" } },
+        { href: "/services/#template", label: { de: "Eine digitale Bohrschablone", en: "A digital drilling template" } },
+        { href: "/services/#splint", label: { de: "Schienentherapie", en: "Splint therapy" } },
+        { href: "/services/#zirconia", label: { de: "Zirkonversorgungen", en: "Zirconia restorations" } },
         { href: "/services/#veneers", label: { de: "Form und Farbe mit Veneers", en: "Shape and colour with veneers" } },
         { href: "/services/#implants", label: { de: "Einen fehlenden Zahn ersetzen", en: "Replacing a missing tooth" } },
-        { href: "/services/#preventive", label: { de: "Kontrolle und Reinigung", en: "A check-up and cleaning" } },
-        { href: "/services/#restorative", label: { de: "Eine Füllung oder Krone", en: "A filling or crown" } },
+        { href: "/services/#abutments", label: { de: "Hybrid-Abutments", en: "Hybrid abutments" } },
         { href: "/assess/", label: { de: "Ich bin mir noch unsicher", en: "I'm not sure yet" } },
         { go: "start", back: true, label: { de: "Zurück", en: "Back" } },
       ],
@@ -71,8 +74,8 @@ window.ELITEDENT_GUIDE = {
           when: "start",
           intro: true,
           text: {
-            de: "Hallo und willkommen bei EliteDent. Ich bin Erlan Djaniev und führe Sie heute durch unsere Seite.",
-            en: "Hello and welcome to EliteDent. I'm Erlan Djaniev, and I'll show you around our site today.",
+            de: "Elite Dent – Dentaltechnik der Zukunft.",
+            en: "Elite Dent – Dental Technology of the Future.",
           },
         },
         {
@@ -129,7 +132,7 @@ window.ELITEDENT_GUIDE = {
         {
           id: "services-page",
           when: "start",
-          spotlight: ".services-video-hero",
+          spotlight: ".svc-hero",
           image: "/assets/images/display/equipment.jpg",
           text: {
             de: "Willkommen. Hier finden Sie alle unsere Behandlungen. Zu jeder erklären wir, wie sie abläuft und was ein Termin umfasst.",
@@ -146,13 +149,23 @@ window.ELITEDENT_GUIDE = {
           },
         },
         {
-          id: "services-whitening",
-          when: "#whitening",
-          spotlight: "#whitening",
+          id: "services-milling",
+          when: "#milling",
+          spotlight: "#milling",
           image: "/assets/images/display/perfectsmile.jpg",
           text: {
-            de: "Zahnaufhellung: ein helleres Lächeln mit kontrolliertem, schmelzschonendem Bleaching in der Praxis.",
-            en: "Whitening: a brighter smile with controlled, enamel-friendly bleaching in the practice.",
+            de: "Fräsmaschine: präzise digitale Fertigung von Zahnersatz aus biokompatiblen Materialien.",
+            en: "Milling machine: precise digital production of dental restorations from biocompatible materials.",
+          },
+        },
+        {
+          id: "services-printing",
+          when: "#printing",
+          spotlight: "#printing",
+          image: "/assets/images/heroimg.png",
+          text: {
+            de: "3D-Druck: Modelle, Schienen und Schablonen direkt aus dem digitalen Scan.",
+            en: "3D printing: models, splints and templates straight from the digital scan.",
           },
         },
         {
@@ -163,6 +176,36 @@ window.ELITEDENT_GUIDE = {
           text: {
             de: "Transparente Aligner: dezente Schienen, die Engstände und Lücken Schritt für Schritt ausgleichen.",
             en: "Clear aligners: discreet trays that gradually even out crowding and gaps.",
+          },
+        },
+        {
+          id: "services-template",
+          when: "#template",
+          spotlight: "#template",
+          image: "/assets/images/display/perfectsmile2.jpg",
+          text: {
+            de: "Digitale Bohrschablone: Die Implantatposition wird digital geplant und geführt übertragen.",
+            en: "Digital drilling template: the implant position is planned digitally and transferred under guidance.",
+          },
+        },
+        {
+          id: "services-splint",
+          when: "#splint",
+          spotlight: "#splint",
+          image: "/assets/images/display/perfectsmile.jpg",
+          text: {
+            de: "Schienentherapie: individuelle Aufbissschienen, die Zähne vor Knirschen und Pressen schützen.",
+            en: "Splint therapy: custom bite splints that protect teeth from grinding and clenching.",
+          },
+        },
+        {
+          id: "services-zirconia",
+          when: "#zirconia",
+          spotlight: "#zirconia",
+          image: "/assets/images/display/teeth.jpg",
+          text: {
+            de: "Zirkonversorgungen: ästhetischer, biokompatibler Zahnersatz für Kassen- und Privatpatienten, mit 10 Jahren Garantie.",
+            en: "Zirconia restorations: aesthetic, biocompatible dental restorations for statutory and private patients, with a 10-year guarantee.",
           },
         },
         {
@@ -186,23 +229,13 @@ window.ELITEDENT_GUIDE = {
           },
         },
         {
-          id: "services-preventive",
-          when: "#preventive",
-          spotlight: "#preventive",
+          id: "services-abutments",
+          when: "#abutments",
+          spotlight: "#abutments",
           image: "/assets/images/display/perfectsmile.jpg",
           text: {
-            de: "Prophylaxe: Kontrollen und Reinigungen, die Zähne und Zahnfleisch langfristig gesund halten.",
-            en: "Prevention: check-ups and cleanings that keep teeth and gums healthy over time.",
-          },
-        },
-        {
-          id: "services-restorative",
-          when: "#restorative",
-          spotlight: "#restorative",
-          image: "/assets/images/display/teeth.jpg",
-          text: {
-            de: "Zahnerhaltung: Füllungen, Kronen und Reparaturen, die Komfort und Funktion wiederherstellen.",
-            en: "Restorative care: fillings, crowns, and repairs that restore comfort and function.",
+            de: "Hybrid-Abutments: die präzise Verbindung zwischen Implantat und Krone, aus Titanbasis und Zirkon.",
+            en: "Hybrid abutments: the precise link between implant and crown, made of a titanium base and zirconia.",
           },
         },
         {
@@ -231,7 +264,7 @@ window.ELITEDENT_GUIDE = {
         {
           id: "about-page",
           when: "start",
-          spotlight: ".page-hero",
+          spotlight: ".services-video-hero",
           text: {
             de: "Lassen Sie mich kurz beginnen. Mich bewegen Forschung, Innovation und Lösungen mit echtem Nutzen.",
             en: "Let me begin with a short introduction. I care about research, new ideas, and solutions that actually help people.",

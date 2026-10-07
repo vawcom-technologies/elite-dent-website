@@ -9,10 +9,10 @@ const path = require("path");
 
 const MAX_CHARS = 600;
 const VOICES_DIR = path.join(__dirname, "..", "voices");
-const VOICE = { de: "de_DE-thorsten-medium", en: "en_GB-alan-medium" };
+const VOICE = { de: "de_DE-ramona-low", en: "en_GB-jenny_dioco-medium" };
 const ESPEAK = path.join(VOICES_DIR, `vits-piper-${VOICE.de}`, "espeak-ng-data");
-// Pace relative to Piper's default; Alan reads slowly, so English gets a bit more
-const SPEED = { de: 1.08, en: 1.2 };
+// Pace relative to Piper's default
+const SPEED = { de: 1, en: 1.05 };
 
 const engines = {};
 const memo = new Map();

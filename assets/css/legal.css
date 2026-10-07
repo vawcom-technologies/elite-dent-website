@@ -8,9 +8,9 @@ html {
 .skip {
   position: absolute;
   left: -999px;
-  top: 8px;
+  top: 0.5rem;
   z-index: 60;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   border-radius: 999px;
   background: var(--navy);
   color: var(--white);
@@ -18,7 +18,7 @@ html {
 }
 
 .skip:focus {
-  left: 8px;
+  left: 0.5rem;
 }
 
 .legal-main {

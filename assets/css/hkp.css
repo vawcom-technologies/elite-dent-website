@@ -422,7 +422,7 @@
 /* Home only: inset card among the service cards */
 .home .hkp-band {
   box-sizing: border-box;
-  width: min(1080px, calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
+  width: min(67.5rem, calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
   /* Bottom gap mirrors the stats section's bottom padding so the band sits centred on the light background */
   margin: 0 auto 4.25rem;
   border-radius: 1.5rem;

@@ -99,6 +99,7 @@
     '<div class="site-guide__avatar has-model" aria-hidden="true">' +
     '<img class="site-guide__face site-guide__face--large" src="/assets/images/guide/erlan-large.webp?v=1" alt="" width="1600" height="1200" decoding="async" />' +
     '<img class="site-guide__face site-guide__face--small" src="/assets/images/guide/erlan-small.webp?v=1" alt="" width="256" height="256" decoding="async" />' +
+    '<model-viewer class="site-guide__model" src="/assets/images/guide/nurse.glb?v=2" camera-target="0m 1.5m 0m" camera-orbit="0deg 88deg 0.8m" min-camera-orbit="auto auto 0.1m" max-camera-orbit="auto auto 10m" field-of-view="30deg" interpolation-decay="80" interaction-prompt="none" disable-tap loading="eager"></model-viewer>' +
     "</div>" +
     '<div class="site-guide__body">' +
     '<img class="site-guide__media" alt="" decoding="async" hidden />' +
@@ -173,8 +174,9 @@
     const step = script.steps[stepIndex];
     const pageSteps = script.steps.filter((s) => s.when !== "hub" && !s.intro);
     root.setAttribute("aria-label", en ? "Page guide" : "Seitenführung");
+    kicker.hidden = hubOpen;
     kicker.innerHTML = hubOpen
-      ? "Erlan"
+      ? ""
       : script.title[lang] + "<span>" + (pageSteps.indexOf(step) + 1 || 1) + "/" + pageSteps.length + "</span>";
     const question = HUB[hubNode] ? stepText(script.steps.find((s) => s.id === HUB[hubNode].id)) : "";
     const waiting =
@@ -288,7 +290,7 @@
     if (pending) return pending;
     const job = (async () => {
       // Bump v whenever the voice or its speed changes, so the CDN doesn't serve old audio
-      const res = await fetch(`/api/tts?v=2&lang=${lang}&text=${encodeURIComponent(text)}`);
+      const res = await fetch(`/api/tts?v=4&lang=${lang}&text=${encodeURIComponent(text)}`);
       if (!res.ok) return null;
       const blob = await res.blob();
       if (!blob) return null;
@@ -547,6 +549,23 @@
     ghost.classList.add("is-flying");
     ghost.classList.remove("is-intro-boot");
     ghost.setAttribute("aria-hidden", "true");
+    // A second live WebGL viewer would flash in; fly a still of the current pose instead
+    const ghostModel = ghost.querySelector(".site-guide__model");
+    if (ghostModel) {
+      let still = "";
+      try {
+        if (avatarModel?.loaded) still = avatarModel.toDataURL("image/png");
+      } catch (_) {}
+      if (still) {
+        const img = new Image();
+        img.className = "site-guide__model";
+        img.alt = "";
+        img.src = still;
+        ghostModel.replaceWith(img);
+      } else {
+        ghostModel.remove();
+      }
+    }
     Object.assign(ghost.style, {
       position: "fixed",
       left: `${from.left}px`,
@@ -1267,6 +1286,112 @@
       scheduleAutoStart();
     }
   }
+  // 3D AVATAR: the model has no rig, so her head and hair are hinged at the neck and animated
+  // directly (nod while talking, glances, small tilts, turning toward the cursor). The camera
+  // itself stays level, so the figure never moves up and down.
+  const MODEL_VIEWER = "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
+  const avatarModel = avatar.querySelector(".site-guide__model");
+  // Framing: face in the small bubble, head and shoulders in the full-screen intro
+  const AVATAR_FRAME = { small: { radius: 0.8, y: 1.5 }, intro: { radius: 1.15, y: 1.47 } };
+  const NECK = [0, 1.4, -0.02];
+
+  // model-viewer keeps its three.js scene behind a symbol; there is no public node API
+  function avatarHead() {
+    const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
+    const scene = sym && avatarModel[sym];
+    const head = scene?.getObjectByName("head");
+    const hair = scene?.getObjectByName("hair");
+    if (!head || !hair) return null;
+    scene.updateMatrixWorld(true);
+    const neck = new head.parent.constructor();
+    neck.position.set(...NECK);
+    head.parent.add(neck);
+    neck.updateMatrixWorld(true);
+    neck.attach(head);
+    neck.attach(hair);
+    return { scene, neck };
+  }
+
+  function startAvatarModel() {
+    if (!avatarModel) return;
+    avatar.classList.add("has-3d");
+    const fail = () => avatar.classList.remove("has-3d");
+    avatarModel.addEventListener("error", fail, { once: true });
+    import(MODEL_VIEWER).catch(fail);
+
+    let rig = null;
+    avatarModel.addEventListener("load", () => {
+      try {
+        rig = avatarHead();
+      } catch (_) {
+        rig = null;
+      }
+    });
+
+    let cursorX = 0;
+    let cursorY = 0;
+    let lookX = 0;
+    let lookY = 0;
+    let talk = 0;
+    let glanceX = 0;
+    let glanceY = 0;
+    let glanceAt = 0;
+    let running = false;
+    const t0 = performance.now();
+
+    if (!reducedMotion) {
+      document.addEventListener(
+        "pointermove",
+        (e) => {
+          if (e.pointerType === "touch") return;
+          cursorX = (e.clientX / innerWidth - 0.5) * 2;
+          cursorY = (e.clientY / innerHeight - 0.5) * 2;
+        },
+        { passive: true }
+      );
+    }
+
+    function tick(now) {
+      if (!running) return;
+      requestAnimationFrame(tick);
+      if (!avatarModel.loaded) return;
+      const intro = root.classList.contains("is-intro");
+      const frame = intro ? AVATAR_FRAME.intro : AVATAR_FRAME.small;
+      avatarModel.cameraOrbit = `0deg 88deg ${frame.radius}m`;
+      avatarModel.cameraTarget = `0m ${frame.y}m 0m`;
+      if (!rig || reducedMotion) return;
+
+      const t = (now - t0) / 1000;
+      // Every few seconds she glances somewhere new, more often while listening than talking
+      if (now > glanceAt) {
+        glanceX = (Math.random() - 0.5) * 0.5;
+        glanceY = (Math.random() - 0.5) * 0.3;
+        glanceAt = now + 2500 + Math.random() * 3500;
+      }
+      talk += ((avatar.classList.contains("is-talking") ? 1 : 0) - talk) * 0.06;
+      lookX += (cursorX + glanceX - lookX) * 0.04;
+      lookY += (cursorY + glanceY - lookY) * 0.04;
+
+      const nod = talk * (0.045 * Math.sin(t * 10.7) + 0.025 * Math.sin(t * 18.1 + 1.3));
+      const emphasis = talk * 0.03 * Math.max(0, Math.sin(t * 1.9));
+      rig.neck.rotation.set(
+        lookY * 0.12 + nod + emphasis + 0.01 * Math.sin(t * 0.5),
+        lookX * 0.32 + talk * 0.03 * Math.sin(t * 2.3),
+        0.035 * Math.sin(t * 0.37) + talk * 0.025 * Math.sin(t * 3.1)
+      );
+      rig.scene.queueRender();
+    }
+
+    const setRunning = (on) => {
+      if (on === running) return;
+      running = on;
+      if (on) requestAnimationFrame(tick);
+    };
+    document.addEventListener("visibilitychange", () => setRunning(!document.hidden));
+    setRunning(!document.hidden);
+  }
+  startAvatarModel();
+
   if (document.body) mount();
   else document.addEventListener("DOMContentLoaded", mount);
 })();
