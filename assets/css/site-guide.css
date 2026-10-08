@@ -620,9 +620,9 @@ html.is-gru-intro-pending .guide-hub {
   outline: 3px solid transparent;
   outline-offset: 12px;
   border-radius: 1rem;
+  /* Colour only: animating outline-offset repaints the whole (often huge) section on every frame */
   transition:
     outline-color 0.7s ease,
-    outline-offset 0.45s ease,
     transform 0.45s ease;
 }
 

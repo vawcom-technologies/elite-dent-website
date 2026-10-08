@@ -423,10 +423,14 @@
   }
 
   function setSpotlight(step) {
-    clearSpotlight();
-    if (muted) return;
-    if (!step?.spotlight || status !== "playing") return;
+    if (muted || !step?.spotlight || status !== "playing") {
+      clearSpotlight();
+      return;
+    }
     const nodes = document.querySelectorAll(step.spotlight);
+    // playStep and audio.onplay both call this for the same line; restarting the ring each time made it flash
+    if (nodes.length && nodes.length === spotlightEls.length && [...nodes].every((el, i) => el === spotlightEls[i])) return;
+    clearSpotlight();
     if (!nodes.length) return;
     nodes.forEach((el) => {
       el.classList.add("is-guide-spotlight");
