@@ -170,7 +170,7 @@ body {
 
 .nav__brand img {
   display: block;
-  height: clamp(2.625rem, 4.8vw, 3.375rem);
+  height: clamp(3.5rem, 6.2vw, 4.5rem);
   width: auto;
 }
 
@@ -542,7 +542,7 @@ html:not(.is-translating) .site-footer {
   }
 
   .nav__brand img {
-    height: 3rem;
+    height: 4rem;
   }
 
   .nav__toggle {
@@ -1102,7 +1102,7 @@ html:not(.is-translating) .site-footer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.15rem;
-  max-width: 63.75rem;
+  max-width: max(63.75rem, min(70.833vw, 92.44rem));
   margin: 0 auto;
 }
 
@@ -1587,7 +1587,7 @@ html:not(.is-translating) .site-footer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.35rem;
-  max-width: 67.5rem;
+  max-width: max(67.5rem, min(75.000vw, 97.88rem));
   margin: 0 auto;
 }
 
@@ -1729,7 +1729,7 @@ html:not(.is-translating) .site-footer {
   grid-template-columns: 1fr;
   align-items: stretch;
   gap: 0;
-  max-width: 67.5rem;
+  max-width: max(67.5rem, min(75.000vw, 97.88rem));
   margin: 0 auto;
   overflow: hidden;
   border-radius: 1.35rem;
@@ -1861,7 +1861,7 @@ html:not(.is-translating) .site-footer {
   /* minmax(0, …) stops the iframe's intrinsic 300px width from widening the page. */
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem 3rem;
-  max-width: 68.75rem;
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
   margin: 0 auto;
 }
 
@@ -1879,7 +1879,7 @@ html:not(.is-translating) .site-footer {
 
 .site-footer__brand img {
   display: block;
-  height: 2.25rem;
+  height: 3.25rem;
   width: auto;
   /* Logo artwork is navy; render it white on the blue footer. */
   filter: brightness(0) invert(1);
@@ -1948,6 +1948,9 @@ html:not(.is-translating) .site-footer {
 
 .site-footer__contact a {
   overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(255 255 255 / 0.45);
 }
 
 .site-footer__hours {
@@ -2013,7 +2016,7 @@ html:not(.is-translating) .site-footer {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.4rem 1.5rem;
-  max-width: 68.75rem;
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
   margin: 1.5rem auto 0;
   padding-top: 0.85rem;
   border-top: 1px solid rgb(255 255 255 / 0.25);
@@ -2023,6 +2026,22 @@ html:not(.is-translating) .site-footer {
 
 .site-footer__bottom p {
   margin: 0;
+}
+
+.site-footer__credit {
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
+  margin: 0.85rem auto 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(255 255 255 / 0.25);
+  font-size: 0.78rem;
+  text-align: center;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.site-footer__credit a {
+  margin-left: 0.25em;
+  color: #fff;
+  font-weight: 800;
 }
 
 .site-footer__bottom nav {
@@ -2415,7 +2434,7 @@ html:not(.is-translating) .site-footer {
   }
 
   .nav__brand img {
-    height: 2.625rem;
+    height: 3.5rem;
   }
 
   .hero {

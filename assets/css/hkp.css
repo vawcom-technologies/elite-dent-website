@@ -1,7 +1,7 @@
 /* HKP — landing layout + submit form + admin */
 
 .hkp-page {
-  width: min(100%, 72rem);
+  width: min(100%, max(72.0rem, min(80.000vw, 104.4rem)));
   margin: 0 auto;
   padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 4.5rem;
   background: var(--surface);
@@ -365,15 +365,42 @@
   line-height: 1.55;
 }
 
-.hkp-file input[type="file"] {
-  width: 100%;
+.hkp-file__pick {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
   padding: 0.85rem 0.95rem;
   border: 1px dashed rgb(29 53 87 / 0.28);
   border-radius: 0.75rem;
   background: var(--surface);
   color: var(--navy);
-  font: inherit;
   font-size: 0.92rem;
+}
+
+/* Native input stays for validation/submit; its English UI text is hidden behind the German label */
+.hkp-file__pick input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hkp-file__btn {
+  flex: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 700;
+}
+
+.hkp-file__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hkp-band {
@@ -422,7 +449,7 @@
 /* Home only: inset card among the service cards */
 .home .hkp-band {
   box-sizing: border-box;
-  width: min(67.5rem, calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
+  width: min(max(67.5rem, min(75.000vw, 97.88rem)), calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
   /* Bottom gap mirrors the stats section's bottom padding so the band sits centred on the light background */
   margin: 0 auto 4.25rem;
   border-radius: 1.5rem;

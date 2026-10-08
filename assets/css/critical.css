@@ -2,9 +2,9 @@
 html {
   background: #f4f8fc;
   color-scheme: light;
-  /* Big screens and projectors: scale the whole (rem-based) layout from a 1920×1080 baseline,
-     using whichever side is relatively smaller so ultrawides don't blow up. Never below 100%. */
-  font-size: max(100%, min(0.8333vw, 1.4815vh));
+  /* Big screens: scale the whole (rem-based) layout up from a 1440×900 (13" laptop) baseline,
+     using whichever side is relatively smaller so ultrawides don't blow up. 100%–150%. */
+  font-size: clamp(100%, min(1.1111vw, 1.7778vh), 150%);
 }
 
 body {

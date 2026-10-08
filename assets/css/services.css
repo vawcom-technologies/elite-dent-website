@@ -9,7 +9,7 @@
 .service-jump {
   position: sticky;
   top: 0;
-  z-index: 15;
+  z-index: 40; /* above the guide spotlight (36) so its outline slides under the bar */
   margin-top: 0;
   background: var(--surface);
   border-bottom: 1px solid rgb(29 53 87 / 0.08);
@@ -248,7 +248,7 @@
 .services-video-hero__inner {
   position: relative;
   z-index: 1;
-  width: min(100%, 72rem);
+  width: min(100%, max(72.0rem, min(80.000vw, 104.4rem)));
   margin: 0 auto;
   padding: clamp(5.5rem, 14vh, 8rem) clamp(1.25rem, 4vw, 3rem) clamp(2.75rem, 7vh, 4.5rem);
 }
@@ -393,7 +393,7 @@
 }
 
 .service-feed {
-  max-width: 61.25rem;
+  max-width: max(61.25rem, min(68.056vw, 88.81rem));
   margin: 0 auto;
   padding: clamp(2.75rem, 8vh, 5rem) clamp(1.25rem, 4vw, 3rem) 1rem;
 }
@@ -413,11 +413,6 @@
   border-top: 0;
 }
 
-/* Keep Bleaching image a bit lower than its copy */
-.service-article:first-child .service-article__media {
-  margin-top: calc(clamp(1.5rem, 6vh, 3.5rem) + 1.25rem);
-}
-
 .service-article:last-child {
   border-bottom: 1px solid rgb(29 53 87 / 0.1);
 }
@@ -426,7 +421,7 @@
   .service-article {
     grid-template-columns: 1.15fr 0.85fr;
     gap: 2.75rem;
-    align-items: start;
+    align-items: center;
     padding: 3.25rem 0;
   }
 
@@ -443,13 +438,15 @@
   }
 }
 
-.service-article:target .service-article__copy h2,
-.service-article.is-active .service-article__copy h2 {
+.service-article:target > h2,
+.service-article.is-active > h2 {
   color: var(--dental-blue);
 }
 
-.service-article__copy h2 {
-  margin: 0 0 1rem;
+.service-article > h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  text-align: center;
   font-family: var(--font-display);
   font-size: clamp(1.55rem, 3vw, 2rem);
   font-weight: 800;

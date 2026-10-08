@@ -6,7 +6,7 @@
 }
 
 .app-shell {
-  max-width: 68rem;
+  max-width: max(68.0rem, min(75.556vw, 98.6rem));
   margin: 0 auto;
   padding: 3rem clamp(1.35rem, 5vw, 3.5rem) 5rem;
 }

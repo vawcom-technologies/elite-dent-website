@@ -7,6 +7,22 @@
   const SCRIPTS = pack.SCRIPTS || {};
   const HUB = pack.HUB || {};
 
+  // German lines are studio recordings (assets/audio/guide/<page>/<id>.de.mp3), keyed by their text.
+  // Anything without a file, and all English, still comes from the Piper endpoint.
+  const RECORDED = new Map();
+  const recordedUrls = new Set();
+  (() => {
+    const add = (folder, step) => {
+      if (step?.id && step.text?.de) RECORDED.set(step.text.de, `/assets/audio/guide/${folder}/${step.id}.de.mp3`);
+    };
+    for (const [path, sc] of Object.entries(SCRIPTS)) {
+      const folder = path === "/" ? "home" : path.replace(/^\//, "");
+      sc.steps.forEach((step) => add(folder, step));
+    }
+    DEFAULT_SCRIPT.steps.forEach((step) => add("shared", step));
+    Object.values(HUB).forEach((node) => add("shared", node));
+  })();
+
   function normalizePath(pathname) {
     const trimmed = pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
     return trimmed === "" ? "/" : trimmed;
@@ -52,6 +68,7 @@
   audio.playbackRate = 1.12;
 
   let playGen = 0;
+  let loadedStep = -1; // step index the audio element currently holds
   let wantPaused = false;
   let status = "idle";
   let stepIndex = 0;
@@ -168,6 +185,14 @@
       : "";
   }
 
+  // render() runs on every scroll tick; rewriting a button's children each time restarts its hover/press
+  // state and can swallow a click that is in progress, so only touch the DOM when the markup changed.
+  function setIcon(el, html) {
+    if (el._icon === html) return;
+    el._icon = html;
+    el.innerHTML = html;
+  }
+
   function render() {
     const playing = status === "playing" || status === "loading";
     const en = lang === "en";
@@ -212,17 +237,17 @@
     root.classList.toggle("has-media", !!image);
 
     avatar.classList.toggle("is-talking", status === "playing");
-    playBtn.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+    setIcon(playBtn, playing ? ICON_PAUSE : ICON_PLAY);
     playBtn.setAttribute("aria-label", playing ? "Pause" : en ? "Resume" : "Fortsetzen");
-    muteBtn.innerHTML = muted ? ICON_MUTE : ICON_UNMUTE;
+    setIcon(muteBtn, muted ? ICON_MUTE : ICON_UNMUTE);
     muteBtn.setAttribute("aria-pressed", muted ? "true" : "false");
     muteBtn.setAttribute("aria-label", muted ? (en ? "Unmute" : "Ton an") : en ? "Mute" : "Stumm");
-    closeBtn.innerHTML = ICON_CLOSE;
+    setIcon(closeBtn, ICON_CLOSE);
     closeBtn.setAttribute("aria-label", en ? "Move guide aside" : "Begleitung zur Seite legen");
     root.classList.toggle("is-min", minimized && !hubOpen);
     openBtn.hidden = !(minimized && !hubOpen);
     openBtn.setAttribute("aria-label", en ? "Open the guide" : "Begleitung öffnen");
-    topicsBtn.innerHTML = ICON_TOPICS;
+    setIcon(topicsBtn, ICON_TOPICS);
     topicsBtn.setAttribute("aria-label", en ? "Where to next?" : "Wohin als Nächstes?");
     renderReplies();
   }
@@ -290,14 +315,29 @@
     if (pending) return pending;
     const job = (async () => {
       // Bump v whenever the voice or its speed changes, so the CDN doesn't serve old audio
-      const res = await fetch(`/api/tts?v=4&lang=${lang}&text=${encodeURIComponent(text)}`);
+      const file = lang === "de" ? RECORDED.get(text) : null;
+      if (file) {
+        const rec = await fetch(file).catch(() => null);
+        if (rec?.ok) {
+          const recUrl = URL.createObjectURL(await rec.blob());
+          recordedUrls.add(recUrl);
+          ttsCache.set(key, recUrl);
+          return recUrl;
+        }
+      }
+      const url = `/api/tts?v=4&lang=${lang}&text=${encodeURIComponent(text)}`;
+      let res = await fetch(url);
+      if (res.status >= 500) {
+        await new Promise((r) => setTimeout(r, 600));
+        res = await fetch(url);
+      }
       if (!res.ok) return null;
       const blob = await res.blob();
       if (!blob) return null;
       if (ttsCache.has(key)) return ttsCache.get(key);
-      const url = URL.createObjectURL(blob);
-      ttsCache.set(key, url);
-      return url;
+      const objUrl = URL.createObjectURL(blob);
+      ttsCache.set(key, objUrl);
+      return objUrl;
     })()
       .catch(() => null)
       .finally(() => {
@@ -349,9 +389,10 @@
       root.dataset.voice = "piper";
       if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
       utterance = null;
-      audio.playbackRate = 1.12;
+      audio.playbackRate = recordedUrls.has(cached) ? 1 : 1.12;
       audio.muted = muted;
       audio.src = cached;
+      loadedStep = index;
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.then === "function") {
         playPromise.then(
@@ -930,9 +971,11 @@
     try {
       audio.pause();
     } catch (_) {}
-    audio.playbackRate = 1.12;
+    // Studio recordings play at their natural speed; the 1.12x is only for the slower Piper voice
+    audio.playbackRate = recordedUrls.has(src) ? 1 : 1.12;
     audio.muted = muted;
     audio.src = src;
+    loadedStep = stepIndex;
     try {
       audio.load();
     } catch (_) {}
@@ -1087,6 +1130,8 @@
       const start = firstStartIndex();
       if (start < 0) {
         checkScroll();
+        // Nothing new in view: replay the current line instead of ignoring the click
+        if (status === "idle") playStep(stepIndex);
         return;
       }
       playStep(start);
@@ -1100,7 +1145,8 @@
     status = "playing";
     render();
 
-    if (audio.src) {
+    // Only resume audio that belongs to this line; after a pause during loading it can still be the previous one
+    if (audio.src && !audio.ended && loadedStep === stepIndex) {
       audio.muted = muted;
       audio.play().then(
         () => {
@@ -1293,7 +1339,12 @@
   const avatarModel = avatar.querySelector(".site-guide__model");
   // Framing: face in the small bubble, head and shoulders in the full-screen intro
   const AVATAR_FRAME = { small: { radius: 0.8, y: 1.5 }, intro: { radius: 1.15, y: 1.47 } };
-  const NECK = [0, 1.4, -0.02];
+  // The head mesh includes the neck and upper chest skin, which overlaps the shirt collar. Rotating the
+  // whole mesh made that skin slide over the shirt, so the bend is done per vertex in the shader instead:
+  // everything below the collar stays put and the rotation fades in over the neck (y = NECK_FIXED..NECK_FREE, all below the chin).
+  const NECK = [0, 1.3, -0.02];
+  const NECK_FIXED = 1.27;
+  const NECK_FREE = 1.37; // chin starts at y=1.38, so the whole head and face move as one piece
 
   // model-viewer keeps its three.js scene behind a symbol; there is no public node API
   function avatarHead() {
@@ -1302,13 +1353,35 @@
     const head = scene?.getObjectByName("head");
     const hair = scene?.getObjectByName("hair");
     if (!head || !hair) return null;
-    scene.updateMatrixWorld(true);
+    // Detached helper: its rotation matrix is shared with the shader as a uniform
     const neck = new head.parent.constructor();
-    neck.position.set(...NECK);
-    head.parent.add(neck);
-    neck.updateMatrixWorld(true);
-    neck.attach(head);
-    neck.attach(hair);
+    const uRot = { value: neck.matrix };
+    const bend = (shader) => {
+      shader.uniforms.uNeckRot = uRot;
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          "#include <common>",
+          `#include <common>
+uniform mat4 uNeckRot;
+float neckW(float y) { return smoothstep(${NECK_FIXED.toFixed(3)}, ${NECK_FREE.toFixed(3)}, y); }`
+        )
+        .replace(
+          "#include <beginnormal_vertex>",
+          `#include <beginnormal_vertex>
+objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(position.y)));`
+        )
+        .replace(
+          "#include <begin_vertex>",
+          `vec3 transformed = mix(position, (uNeckRot * vec4(position - vec3(${NECK.join(",")}), 1.0)).xyz + vec3(${NECK.join(",")}), neckW(position.y));`
+        );
+    };
+    for (const mesh of [head, hair]) {
+      for (const mat of [].concat(mesh.material)) {
+        mat.onBeforeCompile = bend;
+        mat.customProgramCacheKey = () => "neckbend";
+        mat.needsUpdate = true;
+      }
+    }
     return { scene, neck };
   }
 
@@ -1372,13 +1445,14 @@
       lookX += (cursorX + glanceX - lookX) * 0.04;
       lookY += (cursorY + glanceY - lookY) * 0.04;
 
-      const nod = talk * (0.045 * Math.sin(t * 10.7) + 0.025 * Math.sin(t * 18.1 + 1.3));
-      const emphasis = talk * 0.03 * Math.max(0, Math.sin(t * 1.9));
+      const nod = talk * (0.03 * Math.sin(t * 10.7) + 0.015 * Math.sin(t * 18.1 + 1.3));
+      const emphasis = talk * 0.02 * Math.max(0, Math.sin(t * 1.9));
       rig.neck.rotation.set(
-        lookY * 0.12 + nod + emphasis + 0.01 * Math.sin(t * 0.5),
-        lookX * 0.32 + talk * 0.03 * Math.sin(t * 2.3),
-        0.035 * Math.sin(t * 0.37) + talk * 0.025 * Math.sin(t * 3.1)
+        lookY * 0.08 + nod + emphasis + 0.006 * Math.sin(t * 0.5),
+        lookX * 0.24 + talk * 0.02 * Math.sin(t * 2.3),
+        0.015 * Math.sin(t * 0.37) + talk * 0.012 * Math.sin(t * 3.1)
       );
+      rig.neck.updateMatrix();
       rig.scene.queueRender();
     }
 

@@ -127,6 +127,7 @@
   phone?.addEventListener("blur", validatePhone);
 
   file?.addEventListener("change", () => {
+    document.getElementById("hkp-file-name").textContent = file.files?.[0]?.name || "Keine Datei ausgewählt";
     setFormError("");
     void checkHkpFile();
   });
