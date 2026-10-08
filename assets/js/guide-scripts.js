@@ -152,7 +152,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-milling",
           when: "#milling",
           spotlight: "#milling",
-          image: "/assets/images/display/perfectsmile.jpg",
+          image: "/assets/images/servicespg/milling.jpg",
           text: {
             de: "Fräsmaschine: präzise digitale Fertigung von Zahnersatz aus biokompatiblen Materialien.",
             en: "Milling machine: precise digital production of dental restorations from biocompatible materials.",
@@ -162,7 +162,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-printing",
           when: "#printing",
           spotlight: "#printing",
-          image: "/assets/images/heroimg.png",
+          image: "/assets/images/servicespg/3dprinting.jpg",
           text: {
             de: "3D-Druck: Modelle, Schienen und Schablonen direkt aus dem digitalen Scan.",
             en: "3D printing: models, splints and templates straight from the digital scan.",
@@ -172,7 +172,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-aligners",
           when: "#aligners",
           spotlight: "#aligners",
-          image: "/assets/images/heroimg.png",
+          image: "/assets/images/servicespg/aligner.jpg",
           text: {
             de: "Transparente Aligner: dezente Schienen, die Engstände und Lücken Schritt für Schritt ausgleichen.",
             en: "Clear aligners: discreet trays that gradually even out crowding and gaps.",
@@ -182,7 +182,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-template",
           when: "#template",
           spotlight: "#template",
-          image: "/assets/images/display/perfectsmile2.jpg",
+          image: "/assets/images/servicespg/digitaldrilling.jpg",
           text: {
             de: "Digitale Bohrschablone: Die Implantatposition wird digital geplant und geführt übertragen.",
             en: "Digital drilling template: the implant position is planned digitally and transferred under guidance.",
@@ -192,7 +192,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-splint",
           when: "#splint",
           spotlight: "#splint",
-          image: "/assets/images/display/perfectsmile.jpg",
+          image: "/assets/images/servicespg/railtherapy.jpg",
           text: {
             de: "Schienentherapie: individuelle Aufbissschienen, die Zähne vor Knirschen und Pressen schützen.",
             en: "Splint therapy: custom bite splints that protect teeth from grinding and clenching.",
@@ -202,7 +202,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-zirconia",
           when: "#zirconia",
           spotlight: "#zirconia",
-          image: "/assets/images/display/teeth.jpg",
+          image: "/assets/images/servicespg/zirconiarestoration.jpg",
           text: {
             de: "Zirkonversorgungen: ästhetischer, biokompatibler Zahnersatz für Kassen- und Privatpatienten, mit 10 Jahren Garantie.",
             en: "Zirconia restorations: aesthetic, biocompatible dental restorations for statutory and private patients, with a 10-year guarantee.",
@@ -212,7 +212,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-veneers",
           when: "#veneers",
           spotlight: "#veneers",
-          image: "/assets/images/display/teeth.jpg",
+          image: "/assets/images/servicespg/veneers.jpg",
           text: {
             de: "Veneers: Form und Farbe verfeinern mit dünnen Keramiken, die zu Ihrem Lächeln passen.",
             en: "Veneers: refine shape and color with thin ceramics that suit your smile.",
@@ -222,7 +222,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-implants",
           when: "#implants",
           spotlight: "#implants",
-          image: "/assets/images/display/perfectsmile2.jpg",
+          image: "/assets/images/servicespg/implants.jpg",
           text: {
             de: "Implantate: fehlende Zähne ersetzen mit stabilem Fundament und natürlich wirkender Krone.",
             en: "Implants: replace missing teeth with a stable foundation and a natural-looking crown.",
@@ -232,7 +232,7 @@ window.ELITEDENT_GUIDE = {
           id: "services-abutments",
           when: "#abutments",
           spotlight: "#abutments",
-          image: "/assets/images/display/perfectsmile.jpg",
+          image: "/assets/images/servicespg/hybridabutments.jpg",
           text: {
             de: "Hybrid-Abutments: die präzise Verbindung zwischen Implantat und Krone, aus Titanbasis und Zirkon.",
             en: "Hybrid abutments: the precise link between implant and crown, made of a titanium base and zirconia.",
