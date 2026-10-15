@@ -25,7 +25,7 @@ Apple opens these in a browser. They must be:
 - on a real public host (not `localhost`, not `127.0.0.1`, not a LAN IP)
 - reachable without login, VPN, or basic-auth
 
-Host the folders `support/`, `privacy/`, and `impressum/` at the domain root (each `index.html` becomes `/support`, `/privacy`, `/impressum`). The existing `forgot-password/` page can live on the same host.
+Host the folders `support/`, `privacy/`, `impressum/`, `forgot-password/`, and `confirm-email/` at the domain root (each `index.html` becomes `/support`, `/privacy`, `/impressum`, `/forgot-password`, `/confirm-email`).
 
 ## 3. Company details used on the pages
 
@@ -48,11 +48,18 @@ Do **not** put demo passwords, API keys, or patient data on these pages.
 https://elite-d.de/support
 https://elite-d.de/privacy
 https://elite-d.de/impressum
+https://elite-d.de/forgot-password
+https://elite-d.de/confirm-email
 ```
 
-Optional same-host page already in this repo: `https://elite-d.de/forgot-password`
+Legal pages default to **German**, with an **EN** toggle (stored in `localStorage`). Append `?lang=en` or `?lang=de` to force a language.
 
-Pages default to **German**, with an **EN** toggle (stored in `localStorage`). Append `?lang=en` or `?lang=de` to force a language.
+Auth landing pages (`forgot-password`, `confirm-email`) are English UI and talk to the Elite Dent production Supabase project. Backend redirects already point here:
+
+- `PASSWORD_RESET_REDIRECT_URL=https://elite-d.de/forgot-password/`
+- `EMAIL_CONFIRM_REDIRECT_URL=https://elite-d.de/confirm-email/`
+
+In Supabase → Authentication → URL configuration, allow those two HTTPS URLs (and set Site URL to `https://elite-d.de` or the confirm-email path as needed).
 
 ## Pages in this set
 
@@ -61,7 +68,9 @@ Pages default to **German**, with an **EN** toggle (stored in `localStorage`). A
 | `/support` | `support/index.html` | Support URL — how to get help, FAQ, reviewer note |
 | `/privacy` | `privacy/index.html` | Privacy Policy URL — GDPR notice |
 | `/impressum` | `impressum/index.html` | TMG legal notice |
+| `/forgot-password` | `forgot-password/index.html` | Password-reset landing from Supabase email link |
+| `/confirm-email` | `confirm-email/index.html` | Signup email-confirmation landing from Supabase |
 
-Shared chrome: `assets/css/legal.css`, `assets/js/legal.js`.
+Shared chrome for legal pages: `assets/css/legal.css`, `assets/js/legal.js`. Auth pages share `assets/css/fonts.css` and Nunito fonts under `assets/fonts/`.
 
 Do not change the Flutter iOS app, `Info.plist`, or signing for these URLs. Paste the HTTPS links in App Store Connect after the host is live.

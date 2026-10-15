@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Confirmed — Elite Dent</title>
+    <meta name="robots" content="noindex" />
+
+    <link rel="preload" href="../assets/fonts/nunito-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../assets/css/fonts.css?v=2" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary: #0f3d36;
+            --primary-hover: #0a2e29;
+            --primary-light: #e8f2ef;
+            --accent: #2F6FED;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --success-bg: #f0fdf4;
+            --success-text: #166534;
+            --success-border: #bbf7d0;
+            --error-bg: #fef2f2;
+            --error-text: #991b1b;
+            --error-border: #fecaca;
+            --info-bg: #eff6ff;
+            --info-text: #1e40af;
+            --info-border: #bfdbfe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Nunito", system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-body);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(15, 61, 54, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(47, 111, 237, 0.08) 0px, transparent 50%);
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 440px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.02),
+                0 20px 25px -5px rgba(0, 0, 0, 0.05),
+                0 0 0 1px rgba(0, 0, 0, 0.03);
+            text-align: center;
+        }
+
+        .brand-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .brand-icon svg { width: 28px; height: 28px; }
+
+        .brand-icon.error {
+            background: var(--error-bg);
+            color: var(--error-text);
+        }
+
+        .brand-icon.loading {
+            background: #f1f5f9;
+            color: var(--text-muted);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .message {
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: left;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .message.show { display: flex; animation: fadeIn 0.25s ease; }
+        .message svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+        .message.success {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+        }
+        .message.error {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-border);
+        }
+        .message.info {
+            background: var(--info-bg);
+            color: var(--info-text);
+            border: 1px solid var(--info-border);
+        }
+
+        .steps {
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .steps.show { display: block; }
+
+        .steps li {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0 0 10px 18px;
+        }
+
+        .steps li:last-child { margin-bottom: 0; }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .links a:hover { text-decoration: underline; }
+
+        .footer {
+            margin-top: 28px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .spinner {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="brand-icon loading" id="icon">
+        <div class="spinner" id="spinner"></div>
+    </div>
+
+    <h1 id="title">Confirming your email…</h1>
+    <p class="subtitle" id="subtitle">Please wait a moment.</p>
+
+    <div id="message" class="message"></div>
+
+    <ol class="steps" id="steps">
+        <li>Open the <strong>Elite Dent</strong> app on your iPad.</li>
+        <li>Sign in with the email and password you registered.</li>
+        <li>If access is still pending, wait for an administrator to verify your account.</li>
+    </ol>
+
+    <div class="links">
+        <a href="mailto:support@elite-d.de">Need help? Contact support</a>
+        <a href="/support/">Support center</a>
+    </div>
+
+    <p class="footer">Elite Dent · elite-d.de</p>
+</div>
+
+<script>
+// EliteDent production Supabase project (same as backend/.env)
+const SUPABASE_URL = "https://rlsshhqohjfszuiweteh.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsc3NoaHFvaGpmc3p1aXdldGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1NzUyNTEsImV4cCI6MjEwMzE1MTI1MX0.ju7EsEYmtltzvXlmAV_1OulflNOyhfANDuRt53yuPL0";
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const icon = document.getElementById("icon");
+const title = document.getElementById("title");
+const subtitle = document.getElementById("subtitle");
+const msg = document.getElementById("message");
+const steps = document.getElementById("steps");
+
+const CHECK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+const ERROR_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>`;
+const INFO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>`;
+
+function showBanner(text, type) {
+    msg.className = "message " + type + " show";
+    const iconSvg = type === "success" ? CHECK_SVG : type === "error" ? ERROR_SVG : INFO_SVG;
+    msg.innerHTML = iconSvg + `<span>${text}</span>`;
+}
+
+function setSuccess(heading, body) {
+    icon.className = "brand-icon";
+    icon.innerHTML = CHECK_SVG;
+    title.textContent = heading;
+    subtitle.textContent = body;
+    steps.classList.add("show");
+}
+
+function setError(heading, body) {
+    icon.className = "brand-icon error";
+    icon.innerHTML = ERROR_SVG;
+    title.textContent = heading;
+    subtitle.textContent = body;
+}
+
+function parseParams() {
+    const hash = window.location.hash.startsWith("#")
+        ? window.location.hash.slice(1)
+        : "";
+    const query = window.location.search.startsWith("?")
+        ? window.location.search.slice(1)
+        : "";
+    const fromHash = new URLSearchParams(hash);
+    const fromQuery = new URLSearchParams(query);
+    return {
+        access_token: fromHash.get("access_token") || fromQuery.get("access_token"),
+        refresh_token: fromHash.get("refresh_token") || fromQuery.get("refresh_token"),
+        type: fromHash.get("type") || fromQuery.get("type"),
+        error: fromHash.get("error") || fromQuery.get("error"),
+        error_code: fromHash.get("error_code") || fromQuery.get("error_code"),
+        error_description:
+            fromHash.get("error_description") || fromQuery.get("error_description"),
+    };
+}
+
+async function boot() {
+    const p = parseParams();
+
+    if (p.error || p.error_code) {
+        const detail = (p.error_description || p.error || "Confirmation failed")
+            .replace(/\+/g, " ");
+        setError("Link invalid or expired", detail);
+        showBanner(
+            "Request a new confirmation email from the Elite Dent signup screen, or contact support.",
+            "error"
+        );
+        return;
+    }
+
+    if (p.access_token && p.refresh_token) {
+        const { error } = await supabaseClient.auth.setSession({
+            access_token: p.access_token,
+            refresh_token: p.refresh_token,
+        });
+        if (error) {
+            setError("Could not finish confirmation", error.message);
+            showBanner(error.message, "error");
+            return;
+        }
+        // Drop tokens from the URL bar after establishing the session.
+        history.replaceState(null, "", window.location.pathname);
+        setSuccess(
+            "Email confirmed",
+            "Your email is verified. An administrator must still approve your account before you can sign in."
+        );
+        showBanner(
+            "You can close this tab and open the Elite Dent app.",
+            "success"
+        );
+        return;
+    }
+
+    // Direct visit with no tokens (e.g. Site URL opened manually).
+    setSuccess(
+        "Welcome to Elite Dent",
+        "If you just confirmed your email, you are all set. Sign in from the app after an administrator verifies your account."
+    );
+    showBanner(
+        "This page is the landing destination after email confirmation.",
+        "info"
+    );
+}
+
+boot();
+</script>
+
+</body>
+</html>
