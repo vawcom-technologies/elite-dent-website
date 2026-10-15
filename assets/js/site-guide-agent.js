@@ -1484,8 +1484,9 @@
   // directly (nod while talking, glances, small tilts, turning toward the cursor). The camera
   // itself stays level, so the figure never moves up and down.
   const MODEL_VIEWER = "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
-  // femalebot-guide-lite.glb with a WebP texture and meshopt-compressed geometry (scripts/optimize-glb.cjs)
-  const AVATAR_SRC = "/assets/femalebot/femalebot-guide-web.glb?v=1";
+  // femalebot-guide-lite.glb with a mouth and teeth added (scripts/add-avatar-mouth.cjs), then a WebP
+  // texture and meshopt-compressed geometry (scripts/optimize-glb.cjs)
+  const AVATAR_SRC = "/assets/femalebot/femalebot-guide-web.glb?v=2";
   const avatarModel = avatar.querySelector(".site-guide__model");
   // Framing: face in the small bubble, head and shoulders in the full-screen intro
   // Her body sits ~6cm right of the model's origin (her face ~4cm), so x re-centres her in frame
@@ -1559,11 +1560,115 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     avatarModel.play();
   }
 
+  // The baked "point" clip aims her nearly straight arm level and almost at the camera, palm down with
+  // the index finger stuck out, so the hand looms large and the fingers look odd. On top of it she turns
+  // it into an open, palm-up "here it is" gesture: the upper arm turns slightly toward the content
+  // (screen-left) and drops toward her side so the elbow bends, the forearm aims a little upward, the
+  // index finger relaxes back in line with the other fingers (which have no bones of their own), the
+  // forearm and wrist roll the palm up, the wrist turns the fingers toward the content, and the hand
+  // shrinks back to its true size on screen.
+  // It runs in onBeforeRender, i.e. after model-viewer's mixer has posed the bones.
+  const POINT_SWING = -0.15; // upper arm, radians around the vertical (negative = toward screen-left)
+  const POINT_DROP = 0.35; // upper arm, radians down toward her side
+  const POINT_AIM = [5, 0]; // degrees above level for the forearm and the hand
+  const POINT_ROLL_FOREARM = 0.6; // share of the palm-up roll done by the forearm; the wrist does the rest
+  const POINT_HAND_TURN = -0.9; // wrist, radians around the vertical, pointing the fingers toward the content
+  const POINT_HAND_SCALE = 0.96; // the hand is nearest the camera, so perspective enlarges it ~4%
+  // Palm normal in the mesh's rest pose (arms hanging, palms facing the thighs), found from the hand's vertices
+  const PALM_REST = [0.98, -0.15, -0.07];
+  function avatarPointPose() {
+    const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
+    const scene = sym && avatarModel[sym];
+    const names = ["RightArm", "RightForeArm", "RightHand", "RightHandIndex1", "RightHandIndex2", "RightHandIndex3"];
+    const all = names.map((n) => scene?.getObjectByName(`mixamorig${n}`));
+    let skin = null;
+    scene?.traverse((o) => {
+      if (o.isSkinnedMesh) skin = o;
+    });
+    if (all.includes(undefined) || !skin) return;
+    const [arm, forearm, hand, finger] = all;
+    const V = hand.position.constructor;
+    const Q = hand.quaternion.constructor;
+    const M = skin.bindMatrix.constructor;
+    const up = new V(0, 1, 0);
+    const a = new V();
+    const b = new V();
+    const axis = new V();
+    const rot = new Q();
+    const parent = new Q();
+    const bones = all.map((bone) => ({ bone, base: new Q(), applied: null }));
+    // Rest-pose data from the skin: each bone's world matrix at bind time is the inverse of its boneInverse
+    const { bones: skelBones, boneInverses } = skin.skeleton;
+    const restInverse = (bone) => boneInverses[skelBones.indexOf(bone)];
+    const restLocal = (bone) => {
+      const q = new Q();
+      new M().multiplyMatrices(restInverse(bone.parent), restInverse(bone).clone().invert()).decompose(new V(), q, new V());
+      return q;
+    };
+    const fingerRest = all.slice(2).map((bone) => [bone, restLocal(bone)]);
+    const palmLocal = new V(...PALM_REST).normalize();
+    restInverse(hand).decompose(new V(), rot, new V());
+    palmLocal.applyQuaternion(rot);
+
+    const dirOf = (from, to) => to.getWorldPosition(b).sub(from.getWorldPosition(a)).normalize();
+    // Rotate a bone in world space, around its own joint
+    const turn = (bone, ax, angle) => {
+      rot.setFromAxisAngle(ax, angle);
+      bone.parent.getWorldQuaternion(parent);
+      bone.quaternion.premultiply(parent.clone().invert().multiply(rot).multiply(parent));
+      bone.updateMatrixWorld(true);
+    };
+    const tilt = (bone, end, angle) => turn(bone, axis.crossVectors(dirOf(bone, end), up).normalize(), angle);
+    const aim = (bone, end, deg, w) => tilt(bone, end, ((deg * Math.PI) / 180 - Math.asin(dirOf(bone, end).y)) * w);
+    // Twist a bone around its own length so the palm faces as nearly straight up as it can
+    const rollPalmUp = (bone, end, share) => {
+      const along = dirOf(bone, end).clone();
+      const palm = palmLocal.clone().applyQuaternion(hand.getWorldQuaternion(rot)).projectOnPlane(along).normalize();
+      const lift = up.clone().projectOnPlane(along).normalize();
+      turn(bone, along, Math.atan2(along.dot(axis.crossVectors(palm, lift)), palm.dot(lift)) * share);
+    };
+    scene.onBeforeRender = () => {
+      // Once the clip stops, the mixer no longer resets the bones, so undo our last pose instead of stacking it
+      for (const s of bones) {
+        if (s.applied && s.bone.quaternion.equals(s.applied)) s.bone.quaternion.copy(s.base);
+        s.applied = null;
+      }
+      arm.updateMatrixWorld(true);
+      // Full effect while the forearm is near level, fading out as the arm drops back to her side
+      const level = avatarModel.animationName === "point" ? dirOf(forearm, hand).y : -1;
+      const w = Math.min(1, Math.max(0, (level + 0.7) / 0.5));
+      hand.scale.setScalar(1 + (POINT_HAND_SCALE - 1) * w);
+      hand.updateMatrixWorld(true);
+      if (!w) return;
+      for (const s of bones) s.base.copy(s.bone.quaternion);
+      turn(arm, up, POINT_SWING * w);
+      tilt(arm, forearm, -POINT_DROP * w);
+      aim(forearm, hand, POINT_AIM[0], w);
+      for (const [bone, rest] of fingerRest) bone.quaternion.slerp(rest, w);
+      arm.updateMatrixWorld(true);
+      rollPalmUp(forearm, hand, POINT_ROLL_FOREARM * w);
+      rollPalmUp(hand, finger, w);
+      turn(hand, up, POINT_HAND_TURN * w);
+      aim(hand, finger, POINT_AIM[1], w);
+      for (const s of bones) s.applied = s.bone.quaternion.clone();
+    };
+  }
+
   // Lip movement: the model has a "jaw" bone (added in Blender) that opens with the loudness of
   // the voice. Each clip is decoded once into a loudness curve sampled at MOUTH_FPS, then read at
   // audio.currentTime, so the audio itself never goes through Web Audio.
   const MOUTH_FPS = 50;
-  const MOUTH_MAX = 0.055; // radians, fully open; more stretches the lip texture (the model has no mouth interior)
+  const MOUTH_MAX = 0.045; // radians, fully open
+  // Her resting smile keeps the lips closed. In the welcome intro, until she starts talking, she
+  // holds a bigger smile that parts the lips to show a hint of teeth; after that it only comes back
+  // every once in a while when she is idle, then relaxes. While she talks the teeth stay in shadow, so they
+  // only ever show in that smile. Sized to read at her real on-screen size (a face of ~60-120 px).
+  const GRIN_MS = 3000;
+  const GRIN_EVERY = [20000, 45000]; // ms of idle before each one (random in this range)
+  const GRIN_JAW = 0.04; // radians; lips parted enough to show the upper teeth, not an open mouth
+  const GRIN_SMILE = 1.5; // times the resting smile
+  const TEETH_SHADOW = [0.03, 0.01, 0.01]; // teeth tint outside the smile: the mouth interior's dark red
+  const smileAmount = { value: 1 }; // shared by the smile shaders
   const envelopes = new Map();
 
   function loadEnvelope(src) {
@@ -1597,7 +1702,11 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     const jaw = scene?.getObjectByName("jaw");
     if (!jaw) return null;
     const Quat = jaw.quaternion.constructor;
-    return { scene, jaw, rest: jaw.quaternion.clone(), open: new Quat(), axis: new jaw.position.constructor(1, 0, 0), Quat };
+    const teeth = [];
+    scene.traverse((o) => {
+      if (o.isSkinnedMesh && o.material.name === "teeth") teeth.push(o.material);
+    });
+    return { scene, jaw, teeth, rest: jaw.quaternion.clone(), open: new Quat(), axis: new jaw.position.constructor(1, 0, 0), Quat };
   }
 
   // A slight, friendly resting smile. The face has no expression shapes, so the mouth corners are
@@ -1608,26 +1717,28 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     [-0.0154, 0.7604, 0.0963, -1],
     [0.0375, 0.7604, 0.0974, 1],
   ];
-  const SMILE_LIFT = [0.0018, 0.006, -0.002]; // out to the side, up, back into the cheek
+  const SMILE_LIFT = [0.003, 0.009, -0.003]; // out to the side, up, back into the cheek; much more reads as a smirk
 
   function avatarSmile() {
     const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
-    let face = null;
+    // Face, mouth interior and teeth all bend together, so the lifted corners never uncover the teeth
+    const mats = [];
     avatarModel[sym]?.traverse((o) => {
-      if (o.isSkinnedMesh) face = o;
+      if (o.isSkinnedMesh) mats.push(...[].concat(o.material));
     });
-    if (!face) return;
-    for (const mat of [].concat(face.material)) {
+    for (const mat of mats) {
       const before = mat.onBeforeCompile;
       mat.onBeforeCompile = (shader, renderer) => {
         before?.call(mat, shader, renderer);
+        shader.uniforms.uSmile = smileAmount;
         shader.vertexShader = shader.vertexShader
           .replace(
             "#include <common>",
             `#include <common>
+uniform float uSmile;
 vec3 smileAt(vec3 p, vec3 c, float side) {
   vec3 d = (p - c) / vec3(0.013, 0.008, 0.012);
-  return exp(-0.5 * dot(d, d)) * vec3(side * ${SMILE_LIFT[0]}, ${SMILE_LIFT[1]}, ${SMILE_LIFT[2]});
+  return exp(-0.5 * dot(d, d)) * uSmile * vec3(side * ${SMILE_LIFT[0]}, ${SMILE_LIFT[1]}, ${SMILE_LIFT[2]});
 }`
           )
           .replace(
@@ -1668,6 +1779,9 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
     let rig = null;
     let mouth = null;
     let mouthOpen = 0;
+    let grin = 0;
+    let grinAt = 0;
+    let grinFrom = 0;
     avatarModel.addEventListener("finished", backToStand);
     avatarModel.addEventListener("load", () => {
       avatar.classList.add("is-3d-ready");
@@ -1683,6 +1797,9 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
       }
       try {
         avatarSmile();
+      } catch (_) {}
+      try {
+        avatarPointPose();
       } catch (_) {}
     });
 
@@ -1731,15 +1848,33 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
       avatarModel.fieldOfView = `${frame.fov || 30}deg`;
       avatarModel.cameraTarget = `${frame.x || 0}m ${frame.y}m 0m`;
       if (mouth) {
+        const speaking = !!audio.src && !audio.paused && status === "playing";
         let target = 0;
-        if (audio.src && !audio.paused && status === "playing") {
+        if (speaking) {
           const env = envelopes.get(audio.src);
           if (env === undefined) loadEnvelope(audio.src);
           else if (env) target = env[Math.floor(audio.currentTime * MOUTH_FPS)] || 0;
         }
         // Opens fast, closes a little slower, like a real jaw
         mouthOpen += (target - mouthOpen) * (target > mouthOpen ? 0.6 : 0.35);
-        mouth.open.setFromAxisAngle(mouth.axis, mouthOpen * MOUTH_MAX);
+        // The bigger smile, only after a stretch of idle; talking cancels it and restarts the wait
+        if (speaking) grinAt = grinFrom = 0;
+        else if (!grinAt && !grinFrom) grinAt = now + GRIN_EVERY[0] + Math.random() * (GRIN_EVERY[1] - GRIN_EVERY[0]);
+        if (grinAt && now >= grinAt && !reducedMotion) {
+          grinFrom = now;
+          grinAt = 0;
+        }
+        let grinTarget = intro && !speaking ? 1 : 0;
+        if (grinFrom) {
+          const k = (now - grinFrom) / GRIN_MS;
+          const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+          if (k >= 1) grinFrom = 0;
+          else grinTarget = Math.max(grinTarget, ease(k / 0.25) * ease((1 - k) / 0.35));
+        }
+        grin += (grinTarget - grin) * (speaking ? 0.35 : 0.08);
+        smileAmount.value = 1 + (GRIN_SMILE - 1) * grin;
+        for (const m of mouth.teeth) m.color.setRGB(...TEETH_SHADOW.map((c) => c + (1 - c) * grin));
+        mouth.open.setFromAxisAngle(mouth.axis, grin * GRIN_JAW + mouthOpen * MOUTH_MAX);
         mouth.jaw.quaternion.copy(mouth.rest).multiply(mouth.open);
         mouth.scene.queueRender();
       }
