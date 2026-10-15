@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Email Confirmed — EliteDent</title>
   <meta name="robots" content="noindex" />
-  <link rel="preload" href="../assets/fonts/nunito-600-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="../assets/fonts/nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="../assets/fonts/nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=2" />
-  <link rel="stylesheet" href="../assets/css/auth.css?v=1" />
+  <link rel="preload" href="/assets/fonts/nunito-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/assets/css/fonts.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/auth.css?v=2" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
       <a href="/">
         <img
           class="auth__logo"
-          src="../assets/images/elitedentlogo.png"
+          src="/assets/images/elitedentlogo.png"
           alt="EliteDent"
           width="200"
           height="56"
@@ -86,6 +86,10 @@ function setError(heading, body) {
   subtitle.textContent = body;
 }
 
+function clearUrlSecrets() {
+  history.replaceState(null, "", window.location.pathname);
+}
+
 function parseParams() {
   const hash = window.location.hash.startsWith("#")
     ? window.location.hash.slice(1)
@@ -95,58 +99,111 @@ function parseParams() {
     : "";
   const fromHash = new URLSearchParams(hash);
   const fromQuery = new URLSearchParams(query);
+  const get = (key) => fromHash.get(key) || fromQuery.get(key);
   return {
-    access_token: fromHash.get("access_token") || fromQuery.get("access_token"),
-    refresh_token: fromHash.get("refresh_token") || fromQuery.get("refresh_token"),
-    type: fromHash.get("type") || fromQuery.get("type"),
-    error: fromHash.get("error") || fromQuery.get("error"),
-    error_code: fromHash.get("error_code") || fromQuery.get("error_code"),
-    error_description:
-      fromHash.get("error_description") || fromQuery.get("error_description"),
+    access_token: get("access_token"),
+    refresh_token: get("refresh_token"),
+    token_hash: get("token_hash"),
+    token: get("token"),
+    type: get("type") || "signup",
+    code: get("code"),
+    error: get("error"),
+    error_code: get("error_code"),
+    error_description: get("error_description"),
   };
 }
 
 async function boot() {
-  const p = parseParams();
-
-  if (p.error || p.error_code) {
-    const detail = (p.error_description || p.error || "Confirmation failed")
-      .replace(/\+/g, " ");
-    setError("Link invalid or expired", detail);
-    showBanner(
-      "Request a new confirmation email from the EliteDent signup screen, or contact support.",
-      "error"
-    );
-    return;
-  }
-
-  if (p.access_token && p.refresh_token) {
-    const { error } = await supabaseClient.auth.setSession({
-      access_token: p.access_token,
-      refresh_token: p.refresh_token,
-    });
-    if (error) {
-      setError("Could not finish confirmation", error.message);
-      showBanner(error.message, "error");
+  try {
+    if (!window.supabase) {
+      setError("Could not load auth", "Please refresh this page and try again.");
+      showBanner("Authentication library failed to load.", "error");
       return;
     }
-    history.replaceState(null, "", window.location.pathname);
-    setSuccess(
-      "Email confirmed",
-      "Your email is verified. An administrator must still approve your account before you can sign in."
-    );
-    showBanner("You can close this tab and open the EliteDent app.", "success");
-    return;
-  }
 
-  setSuccess(
-    "Welcome to EliteDent",
-    "If you just confirmed your email, you are all set. Sign in from the app after an administrator verifies your account."
-  );
-  showBanner(
-    "This page is the landing destination after email confirmation.",
-    "info"
-  );
+    const p = parseParams();
+
+    if (p.error || p.error_code) {
+      const detail = (p.error_description || p.error || "Confirmation failed")
+        .replace(/\+/g, " ");
+      setError("Link invalid or expired", detail);
+      showBanner(
+        "Request a new confirmation email from the EliteDent signup screen, or contact support.",
+        "error"
+      );
+      return;
+    }
+
+    // PKCE / newer Supabase redirect: ?code=...
+    if (p.code) {
+      const { error } = await supabaseClient.auth.exchangeCodeForSession(p.code);
+      if (error) {
+        setError("Could not finish confirmation", error.message);
+        showBanner(error.message, "error");
+        return;
+      }
+      clearUrlSecrets();
+      setSuccess(
+        "Email confirmed",
+        "Your email is verified. An administrator must still approve your account before you can sign in."
+      );
+      showBanner("You can close this tab and open the EliteDent app.", "success");
+      return;
+    }
+
+    // Email OTP link: ?token_hash=...&type=signup (or token=...)
+    const tokenHash = p.token_hash || p.token;
+    if (tokenHash) {
+      const { error } = await supabaseClient.auth.verifyOtp({
+        token_hash: tokenHash,
+        type: p.type || "signup",
+      });
+      if (error) {
+        setError("Could not finish confirmation", error.message);
+        showBanner(error.message, "error");
+        return;
+      }
+      clearUrlSecrets();
+      setSuccess(
+        "Email confirmed",
+        "Your email is verified. An administrator must still approve your account before you can sign in."
+      );
+      showBanner("You can close this tab and open the EliteDent app.", "success");
+      return;
+    }
+
+    // Implicit hash tokens: #access_token=...&refresh_token=...
+    if (p.access_token && p.refresh_token) {
+      const { error } = await supabaseClient.auth.setSession({
+        access_token: p.access_token,
+        refresh_token: p.refresh_token,
+      });
+      if (error) {
+        setError("Could not finish confirmation", error.message);
+        showBanner(error.message, "error");
+        return;
+      }
+      clearUrlSecrets();
+      setSuccess(
+        "Email confirmed",
+        "Your email is verified. An administrator must still approve your account before you can sign in."
+      );
+      showBanner("You can close this tab and open the EliteDent app.", "success");
+      return;
+    }
+
+    setSuccess(
+      "Welcome to EliteDent",
+      "If you just confirmed your email, you are all set. Sign in from the app after an administrator verifies your account."
+    );
+    showBanner(
+      "This page is the landing destination after email confirmation.",
+      "info"
+    );
+  } catch (err) {
+    setError("Something went wrong", err?.message || "Please try again.");
+    showBanner("Unexpected error while confirming your email.", "error");
+  }
 }
 
 boot();
