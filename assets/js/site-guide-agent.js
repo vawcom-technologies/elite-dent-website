@@ -1484,9 +1484,8 @@
   // directly (nod while talking, glances, small tilts, turning toward the cursor). The camera
   // itself stays level, so the figure never moves up and down.
   const MODEL_VIEWER = "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
-  // femalebot-guide-lite.glb with a mouth and teeth added (scripts/add-avatar-mouth.cjs), then a WebP
-  // texture and meshopt-compressed geometry (scripts/optimize-glb.cjs)
-  const AVATAR_SRC = "/assets/femalebot/femalebot-guide-web.glb?v=2";
+  // femalebot-guide-lite.glb with a WebP texture and meshopt-compressed geometry (scripts/optimize-glb.cjs)
+  const AVATAR_SRC = "/assets/femalebot/femalebot-guide-web.glb?v=1";
   const avatarModel = avatar.querySelector(".site-guide__model");
   // Framing: face in the small bubble, head and shoulders in the full-screen intro
   // Her body sits ~6cm right of the model's origin (her face ~4cm), so x re-centres her in frame
@@ -1658,17 +1657,7 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
   // the voice. Each clip is decoded once into a loudness curve sampled at MOUTH_FPS, then read at
   // audio.currentTime, so the audio itself never goes through Web Audio.
   const MOUTH_FPS = 50;
-  const MOUTH_MAX = 0.045; // radians, fully open
-  // Her resting smile keeps the lips closed. In the welcome intro, until she starts talking, she
-  // holds a bigger smile that parts the lips to show a hint of teeth; after that it only comes back
-  // every once in a while when she is idle, then relaxes. While she talks the teeth stay in shadow, so they
-  // only ever show in that smile. Sized to read at her real on-screen size (a face of ~60-120 px).
-  const GRIN_MS = 3000;
-  const GRIN_EVERY = [20000, 45000]; // ms of idle before each one (random in this range)
-  const GRIN_JAW = 0.04; // radians; lips parted enough to show the upper teeth, not an open mouth
-  const GRIN_SMILE = 1.5; // times the resting smile
-  const TEETH_SHADOW = [0.03, 0.01, 0.01]; // teeth tint outside the smile: the mouth interior's dark red
-  const smileAmount = { value: 1 }; // shared by the smile shaders
+  const MOUTH_MAX = 0.055; // radians, fully open; more stretches the lip texture (the model has no mouth interior)
   const envelopes = new Map();
 
   function loadEnvelope(src) {
@@ -1702,11 +1691,7 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     const jaw = scene?.getObjectByName("jaw");
     if (!jaw) return null;
     const Quat = jaw.quaternion.constructor;
-    const teeth = [];
-    scene.traverse((o) => {
-      if (o.isSkinnedMesh && o.material.name === "teeth") teeth.push(o.material);
-    });
-    return { scene, jaw, teeth, rest: jaw.quaternion.clone(), open: new Quat(), axis: new jaw.position.constructor(1, 0, 0), Quat };
+    return { scene, jaw, rest: jaw.quaternion.clone(), open: new Quat(), axis: new jaw.position.constructor(1, 0, 0), Quat };
   }
 
   // A slight, friendly resting smile. The face has no expression shapes, so the mouth corners are
@@ -1721,24 +1706,22 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
 
   function avatarSmile() {
     const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
-    // Face, mouth interior and teeth all bend together, so the lifted corners never uncover the teeth
-    const mats = [];
+    let face = null;
     avatarModel[sym]?.traverse((o) => {
-      if (o.isSkinnedMesh) mats.push(...[].concat(o.material));
+      if (o.isSkinnedMesh) face = o;
     });
-    for (const mat of mats) {
+    if (!face) return;
+    for (const mat of [].concat(face.material)) {
       const before = mat.onBeforeCompile;
       mat.onBeforeCompile = (shader, renderer) => {
         before?.call(mat, shader, renderer);
-        shader.uniforms.uSmile = smileAmount;
         shader.vertexShader = shader.vertexShader
           .replace(
             "#include <common>",
             `#include <common>
-uniform float uSmile;
 vec3 smileAt(vec3 p, vec3 c, float side) {
   vec3 d = (p - c) / vec3(0.013, 0.008, 0.012);
-  return exp(-0.5 * dot(d, d)) * uSmile * vec3(side * ${SMILE_LIFT[0]}, ${SMILE_LIFT[1]}, ${SMILE_LIFT[2]});
+  return exp(-0.5 * dot(d, d)) * vec3(side * ${SMILE_LIFT[0]}, ${SMILE_LIFT[1]}, ${SMILE_LIFT[2]});
 }`
           )
           .replace(
@@ -1779,9 +1762,6 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
     let rig = null;
     let mouth = null;
     let mouthOpen = 0;
-    let grin = 0;
-    let grinAt = 0;
-    let grinFrom = 0;
     avatarModel.addEventListener("finished", backToStand);
     avatarModel.addEventListener("load", () => {
       avatar.classList.add("is-3d-ready");
@@ -1848,33 +1828,15 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
       avatarModel.fieldOfView = `${frame.fov || 30}deg`;
       avatarModel.cameraTarget = `${frame.x || 0}m ${frame.y}m 0m`;
       if (mouth) {
-        const speaking = !!audio.src && !audio.paused && status === "playing";
         let target = 0;
-        if (speaking) {
+        if (audio.src && !audio.paused && status === "playing") {
           const env = envelopes.get(audio.src);
           if (env === undefined) loadEnvelope(audio.src);
           else if (env) target = env[Math.floor(audio.currentTime * MOUTH_FPS)] || 0;
         }
         // Opens fast, closes a little slower, like a real jaw
         mouthOpen += (target - mouthOpen) * (target > mouthOpen ? 0.6 : 0.35);
-        // The bigger smile, only after a stretch of idle; talking cancels it and restarts the wait
-        if (speaking) grinAt = grinFrom = 0;
-        else if (!grinAt && !grinFrom) grinAt = now + GRIN_EVERY[0] + Math.random() * (GRIN_EVERY[1] - GRIN_EVERY[0]);
-        if (grinAt && now >= grinAt && !reducedMotion) {
-          grinFrom = now;
-          grinAt = 0;
-        }
-        let grinTarget = intro && !speaking ? 1 : 0;
-        if (grinFrom) {
-          const k = (now - grinFrom) / GRIN_MS;
-          const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
-          if (k >= 1) grinFrom = 0;
-          else grinTarget = Math.max(grinTarget, ease(k / 0.25) * ease((1 - k) / 0.35));
-        }
-        grin += (grinTarget - grin) * (speaking ? 0.35 : 0.08);
-        smileAmount.value = 1 + (GRIN_SMILE - 1) * grin;
-        for (const m of mouth.teeth) m.color.setRGB(...TEETH_SHADOW.map((c) => c + (1 - c) * grin));
-        mouth.open.setFromAxisAngle(mouth.axis, grin * GRIN_JAW + mouthOpen * MOUTH_MAX);
+        mouth.open.setFromAxisAngle(mouth.axis, mouthOpen * MOUTH_MAX);
         mouth.jaw.quaternion.copy(mouth.rest).multiply(mouth.open);
         mouth.scene.queueRender();
       }
