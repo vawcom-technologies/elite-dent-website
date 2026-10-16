@@ -1559,6 +1559,100 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     avatarModel.play();
   }
 
+  // The baked "point" clip aims her nearly straight arm level and almost at the camera, palm down with
+  // the index finger stuck out, so the hand looms large and the fingers look odd. On top of it she turns
+  // it into an open, palm-up "here it is" gesture: the upper arm turns slightly toward the content
+  // (screen-left) and drops toward her side so the elbow bends, the forearm aims a little upward, the
+  // index finger relaxes back in line with the other fingers (which have no bones of their own), the
+  // forearm and wrist roll the palm up, the wrist turns the fingers toward the content, and the hand
+  // shrinks back to its true size on screen.
+  // It runs in onBeforeRender, i.e. after model-viewer's mixer has posed the bones.
+  const POINT_SWING = -0.15; // upper arm, radians around the vertical (negative = toward screen-left)
+  const POINT_DROP = 0.35; // upper arm, radians down toward her side
+  const POINT_AIM = [5, 0]; // degrees above level for the forearm and the hand
+  const POINT_ROLL_FOREARM = 0.6; // share of the palm-up roll done by the forearm; the wrist does the rest
+  const POINT_HAND_TURN = -0.9; // wrist, radians around the vertical, pointing the fingers toward the content
+  const POINT_HAND_SCALE = 0.96; // the hand is nearest the camera, so perspective enlarges it ~4%
+  // Palm normal in the mesh's rest pose (arms hanging, palms facing the thighs), found from the hand's vertices
+  const PALM_REST = [0.98, -0.15, -0.07];
+  function avatarPointPose() {
+    const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
+    const scene = sym && avatarModel[sym];
+    const names = ["RightArm", "RightForeArm", "RightHand", "RightHandIndex1", "RightHandIndex2", "RightHandIndex3"];
+    const all = names.map((n) => scene?.getObjectByName(`mixamorig${n}`));
+    let skin = null;
+    scene?.traverse((o) => {
+      if (o.isSkinnedMesh) skin = o;
+    });
+    if (all.includes(undefined) || !skin) return;
+    const [arm, forearm, hand, finger] = all;
+    const V = hand.position.constructor;
+    const Q = hand.quaternion.constructor;
+    const M = skin.bindMatrix.constructor;
+    const up = new V(0, 1, 0);
+    const a = new V();
+    const b = new V();
+    const axis = new V();
+    const rot = new Q();
+    const parent = new Q();
+    const bones = all.map((bone) => ({ bone, base: new Q(), applied: null }));
+    // Rest-pose data from the skin: each bone's world matrix at bind time is the inverse of its boneInverse
+    const { bones: skelBones, boneInverses } = skin.skeleton;
+    const restInverse = (bone) => boneInverses[skelBones.indexOf(bone)];
+    const restLocal = (bone) => {
+      const q = new Q();
+      new M().multiplyMatrices(restInverse(bone.parent), restInverse(bone).clone().invert()).decompose(new V(), q, new V());
+      return q;
+    };
+    const fingerRest = all.slice(2).map((bone) => [bone, restLocal(bone)]);
+    const palmLocal = new V(...PALM_REST).normalize();
+    restInverse(hand).decompose(new V(), rot, new V());
+    palmLocal.applyQuaternion(rot);
+
+    const dirOf = (from, to) => to.getWorldPosition(b).sub(from.getWorldPosition(a)).normalize();
+    // Rotate a bone in world space, around its own joint
+    const turn = (bone, ax, angle) => {
+      rot.setFromAxisAngle(ax, angle);
+      bone.parent.getWorldQuaternion(parent);
+      bone.quaternion.premultiply(parent.clone().invert().multiply(rot).multiply(parent));
+      bone.updateMatrixWorld(true);
+    };
+    const tilt = (bone, end, angle) => turn(bone, axis.crossVectors(dirOf(bone, end), up).normalize(), angle);
+    const aim = (bone, end, deg, w) => tilt(bone, end, ((deg * Math.PI) / 180 - Math.asin(dirOf(bone, end).y)) * w);
+    // Twist a bone around its own length so the palm faces as nearly straight up as it can
+    const rollPalmUp = (bone, end, share) => {
+      const along = dirOf(bone, end).clone();
+      const palm = palmLocal.clone().applyQuaternion(hand.getWorldQuaternion(rot)).projectOnPlane(along).normalize();
+      const lift = up.clone().projectOnPlane(along).normalize();
+      turn(bone, along, Math.atan2(along.dot(axis.crossVectors(palm, lift)), palm.dot(lift)) * share);
+    };
+    scene.onBeforeRender = () => {
+      // Once the clip stops, the mixer no longer resets the bones, so undo our last pose instead of stacking it
+      for (const s of bones) {
+        if (s.applied && s.bone.quaternion.equals(s.applied)) s.bone.quaternion.copy(s.base);
+        s.applied = null;
+      }
+      arm.updateMatrixWorld(true);
+      // Full effect while the forearm is near level, fading out as the arm drops back to her side
+      const level = avatarModel.animationName === "point" ? dirOf(forearm, hand).y : -1;
+      const w = Math.min(1, Math.max(0, (level + 0.7) / 0.5));
+      hand.scale.setScalar(1 + (POINT_HAND_SCALE - 1) * w);
+      hand.updateMatrixWorld(true);
+      if (!w) return;
+      for (const s of bones) s.base.copy(s.bone.quaternion);
+      turn(arm, up, POINT_SWING * w);
+      tilt(arm, forearm, -POINT_DROP * w);
+      aim(forearm, hand, POINT_AIM[0], w);
+      for (const [bone, rest] of fingerRest) bone.quaternion.slerp(rest, w);
+      arm.updateMatrixWorld(true);
+      rollPalmUp(forearm, hand, POINT_ROLL_FOREARM * w);
+      rollPalmUp(hand, finger, w);
+      turn(hand, up, POINT_HAND_TURN * w);
+      aim(hand, finger, POINT_AIM[1], w);
+      for (const s of bones) s.applied = s.bone.quaternion.clone();
+    };
+  }
+
   // Lip movement: the model has a "jaw" bone (added in Blender) that opens with the loudness of
   // the voice. Each clip is decoded once into a loudness curve sampled at MOUTH_FPS, then read at
   // audio.currentTime, so the audio itself never goes through Web Audio.
@@ -1608,7 +1702,7 @@ objectNormal = normalize(mix(objectNormal, mat3(uNeckRot) * objectNormal, neckW(
     [-0.0154, 0.7604, 0.0963, -1],
     [0.0375, 0.7604, 0.0974, 1],
   ];
-  const SMILE_LIFT = [0.0018, 0.006, -0.002]; // out to the side, up, back into the cheek
+  const SMILE_LIFT = [0.003, 0.009, -0.003]; // out to the side, up, back into the cheek; much more reads as a smirk
 
   function avatarSmile() {
     const sym = Object.getOwnPropertySymbols(avatarModel).find((s) => s.description === "scene");
@@ -1683,6 +1777,9 @@ ${SMILE_CORNERS.map(([x, y, z, side]) => `transformed += smileAt(position, vec3(
       }
       try {
         avatarSmile();
+      } catch (_) {}
+      try {
+        avatarPointPose();
       } catch (_) {}
     });
 
