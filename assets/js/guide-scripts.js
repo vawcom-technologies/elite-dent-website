@@ -785,3 +785,7 @@ window.ELITEDENT_GUIDE = {
     },
   },
 };
+
+// / is the milling page. The previous homepage script plays at /home/.
+window.ELITEDENT_GUIDE.SCRIPTS["/home"] = window.ELITEDENT_GUIDE.SCRIPTS["/"];
+window.ELITEDENT_GUIDE.SCRIPTS["/"] = window.ELITEDENT_GUIDE.SCRIPTS["/services/milling"];

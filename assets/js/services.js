@@ -162,6 +162,25 @@
 
   bindServiceJump();
 
+  // The orbit already lists every treatment. Keep the jump bar for scrolling,
+  // and only show it once that orbit has left the screen.
+  function holdServiceJump() {
+    const hero = document.querySelector(".svc-hero");
+    const jump = document.querySelector(".service-jump");
+    if (!hero || !jump) return;
+
+    const sync = () => {
+      jump.hidden = hero.getBoundingClientRect().bottom > 1;
+    };
+
+    sync();
+    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    window.addEventListener("hashchange", () => requestAnimationFrame(sync));
+  }
+
+  holdServiceJump();
+
   function scrollToHash() {
     const id = location.hash.slice(1);
     if (!id) return;

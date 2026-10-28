@@ -1931,9 +1931,40 @@ html:not(.is-translating) .site-footer {
 .site-footer__contact {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.55rem;
   font-style: normal;
   line-height: 1.45;
+}
+
+.site-footer__row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.site-footer__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+}
+
+.site-footer__glyph {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-footer__row > span:last-child {
+  min-width: 0;
 }
 
 @media (max-width: 479px) {
@@ -1960,9 +1991,23 @@ html:not(.is-translating) .site-footer {
 
 .site-footer__contact a {
   overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.site-footer__contact a > span:last-child {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: rgb(255 255 255 / 0.45);
+}
+
+.site-footer__contact a:hover,
+.site-footer__contact a:focus-visible {
+  text-decoration: none;
+}
+
+.site-footer__contact a:hover > span:last-child,
+.site-footer__contact a:focus-visible > span:last-child {
+  text-decoration-color: #fff;
 }
 
 .site-footer__hours {

@@ -29,7 +29,9 @@
   // The home splash is its own loading screen
   let splashNext = false;
   try {
-    splashNext = /^\/(index\.html)?$/.test(location.pathname) && !sessionStorage.getItem("elitedent-splash");
+    splashNext =
+      /^\/(?:home\/?)?(?:index\.html)?$/.test(location.pathname) &&
+      !sessionStorage.getItem("elitedent-splash");
   } catch (_) {}
 
   function arrived() {

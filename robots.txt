@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /forgot-password/
+Disallow: /confirm-email/
+Disallow: /hkp/submit/
+
+Sitemap: https://elite-d.de/sitemap.xml

@@ -578,7 +578,8 @@
   let introDone = false;
 
   function wantsIntro() {
-    return normalizePath(pathname) === "/" && introOnThisLoad && !introDone;
+    // The full-screen welcome belongs to the original homepage at /home/, not the milling page.
+    return normalizePath(pathname) === "/home" && introOnThisLoad && !introDone;
   }
   // The welcome popup always speaks German; the saved language takes over once it closes
   if (wantsIntro()) lang = "de";
