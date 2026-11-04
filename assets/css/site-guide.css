@@ -611,6 +611,13 @@ html.is-gru-intro-pending .guide-hub {
     bottom: calc(6.4rem + env(safe-area-inset-bottom, 0px));
     width: min(26rem, calc(100vw - 1.7rem));
   }
+
+  /* The round face sits on the video, clear of the title, the service bar, and the dock */
+  .site-guide.is-min:not(.is-intro) {
+    top: calc(5.75rem + env(safe-area-inset-top, 0px));
+    right: 0.75rem;
+    bottom: auto;
+  }
 }
 
 /* Minimised: only the face stays, tucked against the edge.

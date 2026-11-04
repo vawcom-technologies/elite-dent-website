@@ -15,6 +15,10 @@
   border-bottom: 1px solid rgb(29 53 87 / 0.08);
 }
 
+.service-jump[hidden] {
+  display: none;
+}
+
 .page-hero-stage .page-hero {
   min-height: clamp(24rem, 52vh, 34rem);
   padding: 2.5rem clamp(1.25rem, 4vw, 3rem) clamp(4.5rem, 12vh, 7rem);
@@ -333,15 +337,23 @@
 
 @media (max-width: 767px) {
   .services-video-hero {
-    min-height: min(88vh, 40rem);
+    /* Logo, this hero, and the service bar sit above the bottom dock */
+    min-height: calc(100svh - 14.25rem);
+    scroll-margin-top: 3.4rem;
   }
 
   .services-video-hero__inner {
-    padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+    padding-top: 1.35rem;
+    padding-bottom: 1.15rem;
   }
 
   .services-video-hero__title {
     max-width: 12ch;
+    font-size: clamp(2.15rem, 10vw, 2.8rem);
+  }
+
+  .services-video-hero__lede {
+    font-size: 1rem;
   }
 }
 
@@ -416,9 +428,15 @@
 }
 
 @media (max-width: 719px) {
+  .service-jump__inner {
+    padding-right: 1.75rem;
+    scroll-padding-inline: 1rem;
+    mask-image: linear-gradient(to right, #000 calc(100% - 1.6rem), transparent);
+  }
+
   .service-jump a {
     flex: 0 0 auto;
-    padding: 0.55rem 0.85rem;
+    padding: 0.7rem 0.85rem;
     text-align: left;
   }
 }

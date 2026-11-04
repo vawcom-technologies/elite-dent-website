@@ -785,3 +785,12 @@ window.ELITEDENT_GUIDE = {
     },
   },
 };
+
+// / is the full services page. The previous homepage script plays at /home/.
+window.ELITEDENT_GUIDE.SCRIPTS["/home"] = window.ELITEDENT_GUIDE.SCRIPTS["/"];
+window.ELITEDENT_GUIDE.SCRIPTS["/"] = {
+  title: window.ELITEDENT_GUIDE.SCRIPTS["/services"].title,
+  steps: window.ELITEDENT_GUIDE.SCRIPTS["/services"].steps.map((step, index) =>
+    index === 0 ? { ...step, spotlight: ".services-video-hero" } : step
+  ),
+};

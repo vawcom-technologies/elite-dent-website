@@ -100,7 +100,10 @@
   const STAGE_FRAME = { radius: 5.9, y: 0.98, x: -0.3, pitch: 82, fov: 20 };
   let minimized = false;
   try {
-    minimized = sessionStorage.getItem(MIN_KEY) === "1";
+    const stored = sessionStorage.getItem(MIN_KEY);
+    if (stored === "1") minimized = true;
+    else if (stored === "0") minimized = false;
+    else minimized = window.matchMedia("(max-width: 767px)").matches;
   } catch (_) {}
 
   audio.muted = muted;
@@ -578,7 +581,7 @@
   let introDone = false;
 
   function wantsIntro() {
-    return normalizePath(pathname) === "/" && introOnThisLoad && !introDone;
+    return normalizePath(pathname) === "/home" && introOnThisLoad && !introDone;
   }
   // The welcome popup always speaks German; the saved language takes over once it closes
   if (wantsIntro()) lang = "de";
@@ -817,8 +820,7 @@
   function setMinimized(value) {
     minimized = value;
     try {
-      if (value) sessionStorage.setItem(MIN_KEY, "1");
-      else sessionStorage.removeItem(MIN_KEY);
+      sessionStorage.setItem(MIN_KEY, value ? "1" : "0");
     } catch (_) {}
   }
 

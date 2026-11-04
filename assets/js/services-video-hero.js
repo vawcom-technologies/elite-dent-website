@@ -1,40 +1,57 @@
 (() => {
-  const hero = document.querySelector(".services-video-hero");
-  const video = hero?.querySelector("video");
-  if (!video) return;
+  const heroes = [...document.querySelectorAll(".services-video-hero")];
+  if (!heroes.length) return;
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) video.removeAttribute("autoplay");
 
-  // Plays while on screen, unless the visitor paused it (clicking the hero toggles it)
-  let userPaused = reduced;
-  let inView = true;
+  heroes.forEach((hero) => {
+    const video = hero.querySelector("video");
+    if (!video) return;
 
-  const sync = () => {
-    if (!userPaused && inView && !document.hidden) {
-      const play = video.play();
-      if (play && typeof play.catch === "function") play.catch(() => {});
-    } else {
-      video.pause();
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    if (reduced) {
+      video.removeAttribute("autoplay");
+      return;
     }
-  };
 
-  hero.addEventListener("click", (event) => {
-    if (event.target.closest("a, button")) return;
-    // From what's actually happening, so a tap starts it where autoplay was blocked (iOS Low Power Mode)
-    userPaused = !video.paused;
+    let userPaused = false;
+    let inView = false;
+
+    const sync = () => {
+      if (!userPaused && inView && !document.hidden) {
+        const play = video.play();
+        if (play && typeof play.catch === "function") play.catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
+
+    hero.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) return;
+      userPaused = !video.paused;
+      sync();
+    });
+
+    ["loadeddata", "canplay", "canplaythrough"].forEach((type) => {
+      video.addEventListener(type, sync);
+    });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        (entries) => {
+          inView = entries.some((entry) => entry.isIntersecting);
+          sync();
+        },
+        { threshold: 0.15 }
+      ).observe(video);
+    } else {
+      inView = true;
+    }
+
+    document.addEventListener("visibilitychange", sync);
+    window.addEventListener("pageshow", sync);
     sync();
   });
-
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(
-      (entries) => {
-        inView = entries.some((e) => e.isIntersecting);
-        sync();
-      },
-      { threshold: 0.15 }
-    ).observe(video);
-  }
-  document.addEventListener("visibilitychange", sync);
-  sync();
 })();
