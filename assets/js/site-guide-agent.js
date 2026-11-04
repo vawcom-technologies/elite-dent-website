@@ -23,6 +23,19 @@
     Object.values(HUB).forEach((node) => add("shared", node));
   })();
 
+  // File the Lana Weiss clips against the original scripts first. Then send / to the
+  // services guide and keep the old homepage guide at /home/, so both still find their files.
+  if (SCRIPTS["/"] && SCRIPTS["/services"] && !SCRIPTS["/home"]) {
+    const servicesScript = SCRIPTS["/services"];
+    SCRIPTS["/home"] = SCRIPTS["/"];
+    SCRIPTS["/"] = {
+      title: servicesScript.title,
+      steps: servicesScript.steps.map((step, index) =>
+        index === 0 ? { ...step, spotlight: ".services-video-hero" } : step
+      ),
+    };
+  }
+
   function normalizePath(pathname) {
     const trimmed = pathname.replace(/\/index\.html$/i, "").replace(/\/+$/, "");
     return trimmed === "" ? "/" : trimmed;
