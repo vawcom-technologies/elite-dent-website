@@ -6,7 +6,7 @@
 }
 
 .app-shell {
-  max-width: 68rem;
+  max-width: max(68.0rem, min(75.556vw, 98.6rem));
   margin: 0 auto;
   padding: 3rem clamp(1.35rem, 5vw, 3.5rem) 5rem;
 }
@@ -43,6 +43,28 @@
   color: var(--muted);
   font-size: 1.08rem;
   line-height: 1.65;
+}
+
+.app-download {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.app-download__actions {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.app-intro p.app-download__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .app-shot {

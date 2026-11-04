@@ -8,87 +8,529 @@
   <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#f4f8fc" />
   <meta name="color-scheme" content="light" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --navy: #1d3557;
-      --muted: #6b7c93;
-      --surface: #f4f8fc;
-      --white: #ffffff;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background: var(--surface);
-      color: var(--navy);
-      font-family: Nunito, system-ui, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
-    }
-
-    .card {
-      width: min(28rem, 100%);
-      padding: 2.2rem 1.8rem 2rem;
-      border-radius: 1.5rem;
-      background: var(--white);
-      box-shadow: 0 24px 56px rgb(15 28 48 / 0.16);
-      text-align: center;
-    }
-
-    .logo {
-      display: block;
-      width: min(220px, 70%);
-      height: auto;
-      margin: 0 auto 1.4rem;
-    }
-
-    .kicker {
-      margin: 0 0 0.45rem;
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0 0 0.7rem;
-      font-size: clamp(1.7rem, 4vw, 2.1rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-    }
-
-    p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.5;
-    }
-
-    .de {
-      margin-top: 0.85rem;
-      font-size: 0.95rem;
-    }
-  </style>
+  <style>html,body{background:#f4f8fc;margin:0}</style>
+  <link rel="preconnect" href="https://translate.google.com" />
+  <link rel="preconnect" href="https://translate.googleapis.com" />
+  <link rel="preload" href="assets/fonts/nunito-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="assets/css/fonts.css?v=2" />
+  <link rel="stylesheet" href="assets/css/critical.css?v=7" />
+  <link rel="preload" href="assets/css/home.css?v=344" as="style" />
+  <link rel="stylesheet" href="assets/css/home.css?v=344" />
+  <link rel="stylesheet" href="assets/css/services.css?v=258" />
+  <link rel="stylesheet" href="assets/css/hkp.css?v=222" />
+  <link rel="stylesheet" href="assets/css/site-guide.css?v=48" />
+  <script src="assets/js/navigate.js?v=11"></script>
+  <script src="assets/js/i18n.js?v=8"></script>
 </head>
-<body>
-  <main class="card">
-    <img class="logo" src="assets/images/elitedentlogo-nav.png" alt="EliteDent" width="400" height="221" />
-    <p class="kicker">EliteDent</p>
-    <h1>Website under construction</h1>
-    <p>This website is under construction. We'll be back shortly.</p>
-    <p class="de" lang="de">Die Website ist gerade im Aufbau. Bald geht es hier weiter.</p>
+<body class="page page--services">
+  <header class="nav nav--static notranslate" translate="no">
+    <a class="nav__brand notranslate" href="/home/" translate="no">
+      <img src="assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
+    </a>
+    <button
+      type="button"
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label="Menü öffnen"
+    >
+      <span class="nav__toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav__panel" id="nav-panel">
+      <nav class="nav__links" aria-label="Hauptnavigation" data-i18n-aria="nav-label">
+        <a href="/" data-i18n="home" aria-current="page">Startseite</a>
+        <div class="nav__services">
+          <div class="nav__services-head">
+            <a href="/services/" data-i18n="services">Leistungen</a>
+            <button
+              type="button"
+              class="nav__services-toggle"
+              aria-expanded="false"
+              aria-label="Leistungen anzeigen"
+            ></button>
+          </div>
+          <div class="nav__tabs">
+            <a href="#milling" data-i18n="milling">Fräsmaschine</a>
+            <a href="#printing" data-i18n="printing">3D-Druck</a>
+            <a href="#aligners" data-i18n="aligners">Aligner</a>
+            <a href="#template" data-i18n="template">Digitale Bohrschablone</a>
+            <a href="#splint" data-i18n="splint">Schienentherapie</a>
+            <a href="#zirconia" data-i18n="zirconia">Zirkonversorgungen</a>
+            <a href="#veneers" data-i18n="veneers">Veneers</a>
+            <a href="#implants" data-i18n="implants">Implantate</a>
+            <a href="#abutments" data-i18n="abutments">Hybrid-Abutments</a>
+          </div>
+        </div>
+        <a href="hkp/" data-i18n="hkp">HKP</a>
+        <a href="about/" data-i18n="about">Über uns</a>
+        <a href="team/" data-i18n="team">Team</a>
+        <a href="app/" data-i18n="app">App</a>
+      </nav>
+      <div class="nav__end">
+        <div class="lang-toggle notranslate" role="group" aria-label="Sprache" data-i18n-aria="lang-label" translate="no">
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
+        </div>
+        <a class="nav__cta" href="book/" data-i18n="consult">Jetzt beraten</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="google_translate_element" aria-hidden="true"></div>
+
+  <main class="services-page">
+<section class="services-video-hero" id="milling" aria-label="Fräsmaschine">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="assets/video/millingmachine-poster.webp"
+          disablepictureinpicture
+        >
+          <source src="assets/video/millingmachine.mp4" type="video/mp4" />
+        </video>
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h1 class="services-video-hero__title">Fräsmaschine</h1>
+        <p class="services-video-hero__lede">Präzise digitale Fertigung aus biokompatiblen Materialien.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <nav class="service-jump" aria-label="Weitere Leistungen">
+      <div class="service-jump__inner">
+        <a href="#milling">Fräsmaschine</a>
+        <a href="#printing">3D-Druck</a>
+        <a href="#aligners">Aligner</a>
+        <a href="#template">Digitale Bohrschablone</a>
+        <a href="#splint">Schienentherapie</a>
+        <a href="#zirconia">Zirkonversorgungen</a>
+        <a href="#veneers">Veneers</a>
+        <a href="#implants">Implantate</a>
+        <a href="#abutments">Hybrid-Abutments</a>
+      </div>
+    </nav>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  In unserer Fräsmaschine entstehen Zahnersatz und Gerüste aus Zirkon und anderen biokompatiblen Materialien. Die digitale Fertigung arbeitet äußerst präzise und gleichbleibend genau.
+                </p>
+                <p>
+                  Das Ergebnis ist eine hohe Passgenauigkeit, die den Aufwand bei der Anprobe gering hält. Durch die digitalen Abläufe schließen wir Arbeiten zeitnah ab.
+                </p>
+                <ul>
+                  <li>Digitale, äußerst präzise Fertigung</li>
+                  <li>Ausschließlich biokompatible Materialien</li>
+                  <li>Zeitnaher Abschluss durch digitale Abläufe</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/servicespg/milling-1600.webp" srcset="assets/images/servicespg/milling-800.webp 800w, assets/images/servicespg/milling-1600.webp 840w" alt="Ein helles, ebenmäßiges Lächeln" width="3648" height="5472" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="printing" aria-label="3D-Druck">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="assets/video/3dprintvid-poster.webp"
+          disablepictureinpicture
+        >
+          <source src="assets/video/3dprintvid.mp4?v=2" type="video/mp4" />
+        </video>
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">3D-Druck</h2>
+        <p class="services-video-hero__lede">Modelle, Schienen und Schablonen direkt aus dem Scan.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Der 3D-Druck ergänzt unsere digitale Fertigung. Modelle, Schienen und Bohrschablonen werden direkt aus dem Scan gedruckt, ohne Umwege über Abdrücke.
+                </p>
+                <p>
+                  So bleiben die Daten vom Scan bis zum fertigen Teil durchgängig digital, was die Abwicklung effizient und die Ergebnisse nachvollziehbar macht.
+                </p>
+                <ul>
+                  <li>Modelle und Schienen direkt aus dem Scan</li>
+                  <li>Durchgängig digitaler Ablauf</li>
+                  <li>Effiziente, präzise Abwicklung</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/servicespg/3dprinting-1600.webp" srcset="assets/images/servicespg/3dprinting-800.webp 800w, assets/images/servicespg/3dprinting-1600.webp 1600w" alt="Hände halten Zahnpflegeprodukte" width="5472" height="3648" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="aligners" aria-label="Aligner">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <img src="assets/images/individualservices/aligners-1600.webp" srcset="assets/images/individualservices/aligners-800.webp 800w, assets/images/individualservices/aligners-1600.webp 1600w, assets/images/individualservices/aligners-2400.webp 2400w" alt="" width="6240" height="4160" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Aligner</h2>
+        <p class="services-video-hero__lede">Dezente Schienen, die Engstände und Lücken Schritt für Schritt ausgleichen.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Engstände und kleine Lücken lassen sich ohne Metallbrackets korrigieren. Ein digitaler Scan erstellt einen Schritt-für-Schritt-Plan, den Sie vor der ersten Schiene sehen können.
+                </p>
+                <p>
+                  Die Schienen sind zum Essen und Zähneputzen herausnehmbar – der Alltag bleibt einfach. Wir prüfen den Fortschritt in angenehmen Abständen und passen die Serie an, wenn der Biss noch feiner werden soll.
+                </p>
+                <ul>
+                  <li>Digitaler Scan und Behandlungsvorschau</li>
+                  <li>Serie präzise angepasster Schienen</li>
+                  <li>Fortschrittskontrollen unterwegs</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/servicespg/aligner-1600.webp" srcset="assets/images/servicespg/aligner-800.webp 800w, assets/images/servicespg/aligner-1600.webp 1600w" alt="Nahaufnahme eines natürlich wirkenden Lächelns" width="5472" height="3648" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="template" aria-label="Digitale Bohrschablone">
+      <div class="services-video-hero__media services-video-hero__media--contain" aria-hidden="true">
+        <img src="assets/images/drilling2-1024.webp" srcset="assets/images/drilling2-800.webp 800w, assets/images/drilling2-1024.webp 1024w" alt="" width="1024" height="1024" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Digitale Bohrschablone</h2>
+        <p class="services-video-hero__lede">Geführte Implantatposition nach digitaler Planung.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Für die Implantation planen wir die Position digital und übertragen sie mit einer Bohrschablone in den Mund. Die Schablone führt den Bohrer entlang der geplanten Achse und Tiefe.
+                </p>
+                <p>
+                  Das macht den Eingriff planbarer und die spätere Versorgung exakter, weil Implantat und Zahnersatz von Anfang an aufeinander abgestimmt sind.
+                </p>
+                <ul>
+                  <li>Digitale Implantatplanung</li>
+                  <li>Gedruckte Bohrschablone für die geführte Position</li>
+                  <li>Abgestimmt auf die spätere Versorgung</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/drilling1-1000.webp" srcset="assets/images/drilling1-800.webp 800w, assets/images/drilling1-1000.webp 1000w" alt="Transparente Bohrschablone mit Bohrhülse auf einem Kiefermodell" width="1000" height="667" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="splint" aria-label="Schienentherapie">
+      <div class="services-video-hero__media services-video-hero__media--contain" aria-hidden="true">
+        <img src="assets/images/splint2-1600.webp" srcset="assets/images/splint2-800.webp 800w, assets/images/splint2-1600.webp 1600w" alt="" width="1600" height="2400" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Schienentherapie</h2>
+        <p class="services-video-hero__lede">Individuelle Aufbissschienen gegen Knirschen und Pressen.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Knirschen und Pressen belasten Zähne und Kiefergelenk. Eine individuell angefertigte Aufbissschiene schützt die Zähne und kann die Muskulatur entlasten.
+                </p>
+                <p>
+                  Die Schiene wird nach digitalem Scan gefertigt, sitzt präzise und lässt sich bei Bedarf anpassen.
+                </p>
+                <ul>
+                  <li>Individuell angefertigte Aufbissschiene</li>
+                  <li>Schutz vor Abrieb und Überlastung</li>
+                  <li>Präziser Sitz nach digitalem Scan</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/splint1.webp" alt="Transparente Aufbissschiene auf einem Kiefermodell" width="560" height="560" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="zirconia" aria-label="Zirkonversorgungen">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <img src="assets/images/individualservices/zirconia-1600.webp" srcset="assets/images/individualservices/zirconia-800.webp 800w, assets/images/individualservices/zirconia-1600.webp 1600w, assets/images/individualservices/zirconia-2400.webp 2400w" alt="" width="3024" height="4032" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Zirkonversorgungen</h2>
+        <p class="services-video-hero__lede">Ästhetischer Zirkon-Zahnersatz für Kassen- und Privatpatienten.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Zirkon ist belastbar, biokompatibel und wirkt natürlich. Wir fertigen hochwertige und ästhetisch ansprechende Zirkon-Zahnersätze für Kassen- und Privatpatienten.
+                </p>
+                <p>
+                  Unser Fokus liegt nicht auf dem finanziellen Aspekt, sondern auf der Qualität des Ergebnisses: 100 % Passgenauigkeit ist unser Anspruch, und auf unsere Arbeit gewähren wir 10 Jahre Garantie.
+                </p>
+                <ul>
+                  <li>Für Kassen- und Privatpatienten</li>
+                  <li>Ausschließlich biokompatible Materialien</li>
+                  <li>10 Jahre Garantie</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/servicespg/zirconiarestoration-1600.webp" srcset="assets/images/servicespg/zirconiarestoration-800.webp 800w, assets/images/servicespg/zirconiarestoration-1600.webp 1400w" alt="Nahaufnahme eines natürlich wirkenden Lächelns" width="5184" height="3456" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="veneers" aria-label="Veneers">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <img src="assets/images/individualservices/veneers-1600.webp" srcset="assets/images/individualservices/veneers-800.webp 800w, assets/images/individualservices/veneers-1600.webp 1600w, assets/images/individualservices/veneers-2400.webp 2400w" alt="" width="5760" height="3840" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Veneers</h2>
+        <p class="services-video-hero__lede">Form und Farbe verfeinern mit dünnen Keramiken, die zu Ihrem Lächeln passen.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Absplitterungen, Lücken und ungleichmäßige Farbe können ein Lächeln unfertig wirken lassen. Dünne Keramik-Veneers verfeinern Form und Farbe, sodass das Ergebnis wie Ihre Zähne wirkt – nur ruhiger und ebenmäßiger.
+                </p>
+                <p>
+                  Wir planen die Proportionen zu Ihrem Gesicht, nicht nach einer Standardvorlage. Wo möglich bleibt die Präparation schonend; danach kleben wir Keramik, die für Stabilität und Resistenz gegen Verfärbungen gewählt ist.
+                </p>
+                <ul>
+                  <li>Mock-up und Farbabstimmung</li>
+                  <li>Schonende Präparation, wo möglich</li>
+                  <li>Langlebige, verfärbungsresistente Keramik</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media service-article__media--contain">
+                <img src="assets/images/servicespg/veneers.png" alt="Nahaufnahme von Veneers an den oberen Frontzähnen" width="530" height="231" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="implants" aria-label="Implantate">
+      <div class="services-video-hero__media" aria-hidden="true">
+        <img src="assets/images/individualservices/implants-1536.webp" srcset="assets/images/individualservices/implants-800.webp 800w, assets/images/individualservices/implants-1536.webp 1536w" alt="" width="1536" height="1024" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Implantate</h2>
+        <p class="services-video-hero__lede">Fehlende Zähne ersetzen mit stabilem Fundament und natürlich wirkender Krone.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Ein fehlender Zahn beeinflusst Kauen, Sprechen und die Nachbarzähne. Ein Implantat setzt eine Titanwurzel im Knochen, darauf eine individuelle Krone, die sich beim Essen und Sprechen sicher anfühlt.
+                </p>
+                <p>
+                  Die Planung berücksichtigt Knochen, Biss und Nachbarzähne, damit die Versorgung hält. Hinweise zur Heilung und eine farblich angepasste Krone schließen den Prozess ab.
+                </p>
+                <ul>
+                  <li>Klinische und bildgebende Untersuchung</li>
+                  <li>Präzise Setzung und Begleitung der Heilung</li>
+                  <li>Krone abgestimmt auf die Nachbarzähne</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media service-article__media--gallery">
+                <img src="assets/images/implant1-1600.webp" srcset="assets/images/implant1-800.webp 800w, assets/images/implant1-1600.webp 1600w" sizes="(min-width: 800px) 40vw, 92vw" alt="Implantatgetragene Brücke mit Abutments" width="1920" height="1095" loading="lazy" decoding="async" />
+                <img src="assets/images/implant2-800.webp" alt="Implantatgetragene Brücke mit Abutments, Frontansicht" width="1128" height="928" loading="lazy" decoding="async" />
+                <img src="assets/images/implant3-800.webp" alt="Implantatgetragene Brücke mit Abutments, Seitenansicht" width="1920" height="1095" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+<section class="services-video-hero" id="abutments" aria-label="Hybrid-Abutments">
+      <div class="services-video-hero__media services-video-hero__media--contain" aria-hidden="true">
+        <img src="assets/images/individualservices/hybridabutments-1112.webp" srcset="assets/images/individualservices/hybridabutments-800.webp 800w, assets/images/individualservices/hybridabutments-1112.webp 1112w" sizes="(min-width: 800px) 60vw, 100vw" alt="" width="1112" height="1280" decoding="async" />
+        <div class="services-video-hero__veil"></div>
+      </div>
+      <div class="services-video-hero__inner">
+        <p class="services-video-hero__kicker">Leistungen</p>
+        <h2 class="services-video-hero__title">Hybrid-Abutments</h2>
+        <p class="services-video-hero__lede">Präzise Verbindung zwischen Implantat und Krone.</p>
+        <a class="services-video-hero__cta" href="book/">Jetzt beraten</a>
+      </div>
+    </section>
+
+    <div class="service-feed">
+
+      <article class="service-article">
+              <div class="service-article__copy">
+                <p>
+                  Ein Hybrid-Abutment verbindet das Implantat mit der Krone. Es besteht aus einer Titanbasis und einem Aufbau aus Zirkon, der individuell gefertigt wird.
+                </p>
+                <p>
+                  So sitzt die Krone präzise auf dem Implantat und der Übergang zum Zahnfleisch wirkt natürlich und ästhetisch.
+                </p>
+                <ul>
+                  <li>Titanbasis mit Aufbau aus Zirkon</li>
+                  <li>Individuell gefertigt</li>
+                  <li>Natürlicher Übergang zum Zahnfleisch</li>
+                </ul>
+                <a class="service-article__cta" href="book/">Jetzt beraten</a>
+              </div>
+              <figure class="service-article__media">
+                <img src="assets/images/servicespg/hybridabutments-1600.webp" srcset="assets/images/servicespg/hybridabutments-800.webp 800w, assets/images/servicespg/hybridabutments-1600.webp 1600w" alt="Ein helles, ebenmäßiges Lächeln" width="5184" height="3456" loading="lazy" decoding="async" />
+              </figure>
+            </article>
+
+    </div>
+
+    <section class="hkp-band reveal" data-reveal>
+      <h2>Schon einen Heil- und Kostenplan?</h2>
+      <p>Senden Sie uns Ihren bestehenden HKP. Wir prüfen Plan und Kosten und melden uns mit den nächsten Schritten.</p>
+      <a class="hkp-band__btn" href="book/">Jetzt beraten</a>
+    </section>
+
+    <section class="cta-band reveal" data-reveal>
+      <h2>Nicht sicher, wo Sie anfangen sollen?</h2>
+      <p>Beantworten Sie drei kurze Fragen – wir schlagen einen ruhigen Einstieg für Ihre Beratung vor.</p>
+      <a class="cta-band__btn" href="assess/">Lächel-Check starten</a>
+    </section>
   </main>
+
+  <footer class="site-footer" id="kontakt">
+    <div class="site-footer__inner">
+      <div class="site-footer__info">
+        <a class="site-footer__brand" href="/">
+          <img src="assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" loading="lazy" decoding="async" />
+        </a>
+        <p class="site-footer__tagline">Dentaltechnik der Zukunft</p>
+        <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+          <a href="/" data-i18n="home" aria-current="page">Startseite</a>
+          <a href="services/" data-i18n="services">Leistungen</a>
+          <a href="hkp/" data-i18n="hkp">HKP</a>
+          <a href="about/" data-i18n="about">Über uns</a>
+          <a href="team/" data-i18n="team">Team</a>
+          <a href="app/" data-i18n="app">App</a>
+          <a class="site-footer__cta" href="book/" data-i18n="consult">Jetzt beraten</a>
+        </nav>
+        <div class="site-footer__cols">
+          <div class="site-footer__col">
+            <h2>Kontakt</h2>
+            <address class="site-footer__contact">
+              <span class="site-footer__row"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.25"/></svg></span><span>Hirsauer Straße 63<br />75180 Pforzheim</span></span>
+              <a class="site-footer__row" href="tel:+4917625858231"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></span><span>+49 176 25858231</span></a>
+              <a class="site-footer__row" href="tel:+4972312038818"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span>Festnetz: 07231 2038818</span></a>
+              <a class="site-footer__row" href="mailto:elitedent@outlook.de"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>elitedent@outlook.de</span></a>
+            </address>
+          </div>
+          <div class="site-footer__col">
+            <h2>Öffnungszeiten</h2>
+            <ul class="site-footer__hours">
+              <li><span>Mo–Do</span><span>08:30–17:00</span></li>
+              <li><span>Fr–So</span><span>geschlossen</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="site-footer__location">
+        <a
+          class="site-footer__map"
+          href="https://www.google.com/maps/search/?api=1&query=Hirsauer%20Stra%C3%9Fe%2063%2C%2075180%20Pforzheim%2C%20Germany"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="assets/images/footer-map.svg?v=99"
+            alt="Karte: EliteDent, Hirsauer Straße 63, Pforzheim – in Google Maps öffnen"
+            width="1600"
+            height="900"
+            decoding="async"
+          />
+        </a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p>© 2026 <span class="notranslate" translate="no">EliteDent</span></p>
+      <nav aria-label="Rechtliches">
+        <a href="support/">Support</a>
+        <a href="privacy/">Datenschutz</a>
+        <a href="impressum/">Impressum</a>
+      </nav>
+    </div>
+    <p class="site-footer__credit">Copyright © 2026 | Powered by <a class="notranslate" translate="no" href="https://vawcom.com" target="_blank" rel="noopener noreferrer">VAWCOM</a></p>
+  </footer>
+
+  <script src="assets/js/nav.js?v=25" defer></script>
+  <script src="assets/js/services.js?v=18" defer></script>
+  <script src="assets/js/services-video-hero.js?v=3" defer></script>
+  <script src="assets/js/assess-expand.js?v=3" defer></script>
+  <script src="assets/js/guide-scripts.js?v=27" defer></script>
+  <script src="assets/js/site-guide-agent.js?v=98" defer></script>
 </body>
 </html>

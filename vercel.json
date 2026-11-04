@@ -4,5 +4,15 @@
       "includeFiles": "{voices/**,node_modules/sherpa-onnx-linux-x64/**}",
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/scan-upload", "destination": "https://dental-lab-ai-production.up.railway.app/scan-upload" },
+    { "source": "/scan-upload/logo.png", "destination": "https://dental-lab-ai-production.up.railway.app/scan-upload/logo.png" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
+    }
+  ]
 }

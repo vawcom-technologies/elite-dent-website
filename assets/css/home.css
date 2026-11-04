@@ -32,103 +32,86 @@ body {
   }
 }
 
-/* Hold previous page paint during MPA navigations — desktop/tablet only */
-@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-  @view-transition {
-    navigation: auto;
-  }
-
-  ::view-transition-group(root) {
-    background-color: #f4f8fc;
-  }
-
-  ::view-transition-old(root) {
-    animation: vt-out 80ms cubic-bezier(0.4, 0, 0.2, 1) both;
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-new(root) {
-    /* Keep new page opaque — avoids flashing through white mid-crossfade */
-    animation: none;
-    opacity: 1;
-    mix-blend-mode: normal;
-  }
-
-  .nav {
-    view-transition-name: site-nav;
-  }
-
-  ::view-transition-group(site-nav) {
-    animation-duration: 80ms;
-  }
+/* Page transitions: the page veil in critical.css does the fading; the view transition only keeps
+   the old page painted until the new one has rendered, instead of flashing blank */
+@view-transition {
+  navigation: auto;
 }
 
-@keyframes vt-out {
-  to {
-    opacity: 0;
-  }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
 }
 
-@keyframes vt-mobile-out {
-  to {
-    opacity: 0;
-    transform: scale(0.985);
-  }
+/* Email chooser (navigate.js): webmail, mail app, or copy the address */
+.mail-chooser {
+  width: min(22rem, calc(100vw - 2rem));
+  padding: 1.4rem 1.25rem 1.25rem;
+  border: 0;
+  border-radius: 1.25rem;
+  background: var(--white);
+  color: var(--navy);
+  font-family: var(--font-ui);
+  box-shadow: 0 1.25rem 3rem rgb(29 53 87 / 0.25);
 }
 
-@keyframes vt-mobile-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.mail-chooser::backdrop {
+  background: rgb(29 53 87 / 0.35);
 }
 
-/* Liquid page transitions on mobile */
-@media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
-  @view-transition {
-    navigation: auto;
-  }
-
-  ::view-transition-group(root) {
-    background-color: #f4f8fc;
-  }
-
-  ::view-transition-old(root) {
-    animation: vt-mobile-out 220ms cubic-bezier(0.32, 0.72, 0, 1) both;
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-new(root) {
-    animation: vt-mobile-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 35ms both;
-    mix-blend-mode: normal;
-  }
-
-  .nav {
-    view-transition-name: site-nav;
-  }
-
-  .nav-dock {
-    view-transition-name: site-nav-dock;
-  }
-
-  ::view-transition-group(site-nav),
-  ::view-transition-group(site-nav-dock) {
-    animation-duration: 320ms;
-    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-  }
+.mail-chooser__title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
 }
 
-/* Enter-only fallback when cross-document view transitions aren't available */
-@media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
-  html.page-from-nav .home:not([hidden]),
-  html.page-from-nav .page {
-    animation: vt-mobile-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  }
+.mail-chooser__address {
+  margin: 0.2rem 0 1rem;
+  color: var(--muted);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.mail-chooser__options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.mail-chooser__options a,
+.mail-chooser__options button {
+  display: block;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgb(29 53 87 / 0.12);
+  border-radius: 0.8rem;
+  background: var(--surface);
+  color: var(--navy);
+  font: 700 0.95rem/1.2 var(--font-ui);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mail-chooser__options a:hover,
+.mail-chooser__options button:hover,
+.mail-chooser__options a:focus-visible,
+.mail-chooser__options button:focus-visible {
+  border-color: var(--dental-blue);
+  outline: none;
+}
+
+.mail-chooser__close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .home {
@@ -150,7 +133,9 @@ body {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   column-gap: 0.5rem;
-  padding: 1.35rem clamp(0.85rem, 3.2vw, 3rem);
+  padding-block: 1.35rem;
+  /* On ultrawide screens keep logo and buttons within a 120rem band instead of the far edges */
+  padding-inline: max(clamp(0.85rem, 3.2vw, 3rem), calc((100% - 120rem) / 2));
   opacity: 0;
   transform: translateY(-8px);
 }
@@ -168,7 +153,7 @@ body {
 
 .nav__brand img {
   display: block;
-  height: clamp(42px, 4.8vw, 54px);
+  height: clamp(3.5rem, 6.2vw, 4.5rem);
   width: auto;
 }
 
@@ -235,7 +220,7 @@ body {
   background: var(--orb);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.7),
-    0 4px 14px rgb(74 144 226 / 0.2);
+    0 0.25rem 0.875rem rgb(74 144 226 / 0.2);
   pointer-events: none;
   opacity: 0;
   transform: translate3d(0, 0, 0);
@@ -297,7 +282,7 @@ body {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateX(-50%) translateY(6px);
+    transform: translateX(-50%) translateY(0.375rem);
     transition:
       opacity 0.2s ease,
       transform 0.2s ease,
@@ -312,6 +297,12 @@ body {
     right: 0;
     bottom: 100%;
     height: 1.35rem;
+  }
+
+  /* The panel can't rise above the nav's own layer (20); lift the nav while it's open so a section
+     the guide is spotlighting (36, site-guide.css) doesn't cover it */
+  .nav:has(.nav__services:hover, .nav__services:focus-within) {
+    z-index: 47;
   }
 
   .nav__services:hover .nav__tabs,
@@ -366,7 +357,7 @@ body {
   border: 1px solid rgb(255 255 255 / 0.12);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.18),
-    0 8px 20px rgb(29 53 87 / 0.16);
+    0 0.5rem 1.25rem rgb(29 53 87 / 0.16);
   transition:
     background 0.25s ease,
     box-shadow 0.25s ease,
@@ -607,10 +598,6 @@ html:not(.is-translating) .site-footer {
     padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   }
 
-  .site-footer {
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-  }
-
   .nav {
     display: flex;
     align-items: center;
@@ -637,7 +624,7 @@ html:not(.is-translating) .site-footer {
   }
 
   .nav__brand img {
-    height: 48px;
+    height: 4rem;
   }
 
   .nav__toggle {
@@ -654,7 +641,7 @@ html:not(.is-translating) .site-footer {
     left: 50%;
     bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
     z-index: 48;
-    width: min(420px, calc(100vw - 1.4rem));
+    width: min(26.25rem, calc(100vw - 1.4rem));
     translate: -50% 0;
     pointer-events: none;
   }
@@ -671,7 +658,7 @@ html:not(.is-translating) .site-footer {
     border: 1px solid rgb(29 53 87 / 0.08);
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.95),
-      0 10px 30px rgb(29 53 87 / 0.14);
+      0 0.625rem 1.875rem rgb(29 53 87 / 0.14);
     pointer-events: auto;
   }
 
@@ -777,8 +764,8 @@ html:not(.is-translating) .site-footer {
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
-    width: min(420px, calc(100vw - 1.4rem));
-    max-height: min(calc(100dvh - 8.5rem - env(safe-area-inset-bottom, 0px)), 520px);
+    width: min(26.25rem, calc(100vw - 1.4rem));
+    max-height: min(calc(100dvh - 8.5rem - env(safe-area-inset-bottom, 0px)), 32.5rem);
     margin: 0;
     padding: 1.15rem 1.15rem 1.25rem;
     border-radius: 1.35rem;
@@ -788,7 +775,7 @@ html:not(.is-translating) .site-footer {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translate(-50%, 12px) scale(0.98);
+    transform: translate(-50%, 0.75rem) scale(0.98);
     transition:
       opacity 0.22s ease,
       transform 0.22s ease,
@@ -965,31 +952,37 @@ html:not(.is-translating) .site-footer {
   }
 }
 
-/* —— Hero: centered title + orb + image rising —— */
+/* —— Hero: centered title + orb + image rising ——
+   One composition, scaled to fit every screen. It is drawn at the 13" iPad landscape size, where
+   1u = 1px (hero 845px tall under the nav, title 104px, image 636px wide), and --u scales it as
+   large as fits both the height left under the nav and the width (image ≤ 92% of the screen).
+   Height-bound screens (desktop, landscape) fill the first screen exactly; width-bound ones
+   (portrait tablets, phones) end the hero early, so there's never a dead band. */
 .hero {
+  /* Nav padding + logo height (see .nav / .nav__brand img) */
+  --nav-h: calc(2.7rem + clamp(3.5rem, 6.2vw, 4.5rem));
+  --u: min(calc((100svh - var(--nav-h)) / 845), calc(100vw / 691));
   position: relative;
-  display: grid;
-  place-items: center;
-  /* Nav padding + logo height, so nav and hero together fill the first screen; 36rem floor keeps the title clear of the image on short windows */
-  min-height: max(36rem, calc(100svh - 2.7rem - clamp(42px, 4.8vw, 54px)));
-  padding: 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
   overflow: hidden;
   contain: layout style;
 }
 
 /* Large stacked title — always above the orb/image */
 .hero__title {
-  position: absolute;
-  top: clamp(4%, 6vh, 8%);
-  left: 50%;
+  position: relative;
   z-index: 10;
-  width: min(920px, 94vw);
-  margin: 0;
-  transform: translateX(-50%);
+  flex: none;
+  /* box scales with the font, so the title always breaks into the same three lines */
+  width: min(calc(var(--u) * 920), 94vw);
+  margin: calc(var(--u) * 48) 0 0;
   text-align: center;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3rem, 9.5vw, 6.5rem);
+  font-size: calc(var(--u) * 104);
   line-height: 0.92;
   letter-spacing: -0.03em;
   pointer-events: none;
@@ -998,7 +991,7 @@ html:not(.is-translating) .site-footer {
 .hero__word {
   display: block;
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(1.75rem);
 }
 
 .hero__word--1 {
@@ -1023,15 +1016,19 @@ html:not(.is-translating) .site-footer {
 }
 
 .hero__stage {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  /* The orb is 1.64× the image */
+  --fig-w: calc(var(--u) * 636);
+  position: relative;
   z-index: 2;
-  height: min(78vh, 680px);
+  flex: none;
+  width: 100%;
+  height: calc(var(--u) * 548);
+  /* the dome rises behind the bottom of the title */
+  margin-top: calc(var(--u) * -38);
   display: grid;
   place-items: end center;
-  overflow: hidden; /* cuts the circle off at the section bottom */
+  /* cuts the circle off at the section bottom only, so the instruments can fan out above the stage */
+  clip-path: inset(-100vh -100vw 0 -100vw);
 }
 
 /* Circle sits on the bottom edge; lower half is clipped away */
@@ -1041,7 +1038,7 @@ html:not(.is-translating) .site-footer {
   left: 50%;
   bottom: 0;
   z-index: 1;
-  width: min(120vw, 920px);
+  width: calc(var(--fig-w) * 1.64);
   aspect-ratio: 1;
   border-radius: 50%;
   opacity: 0;
@@ -1133,7 +1130,7 @@ html:not(.is-translating) .site-footer {
 .hero__figure {
   position: relative;
   z-index: 2;
-  width: min(560px, 90%);
+  width: var(--fig-w);
   margin-bottom: 0;
   transform: translateY(28%) scale(0.9);
   opacity: 0;
@@ -1162,7 +1159,7 @@ html:not(.is-translating) .site-footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: min(280px, 80vw);
+  min-width: min(17.5rem, 80vw);
   min-height: 3.15rem;
   padding: 0.9rem 1.75rem;
   border-radius: 999px;
@@ -1176,7 +1173,7 @@ html:not(.is-translating) .site-footer {
   border: 1px solid rgb(29 53 87 / 0.08);
   box-shadow: 0 10px 30px rgb(29 53 87 / 0.08);
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(1rem);
 }
 
 .home.is-ready .hero__cta {
@@ -1201,7 +1198,7 @@ html:not(.is-translating) .site-footer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.15rem;
-  max-width: 1020px;
+  max-width: max(63.75rem, min(70.833vw, 92.44rem));
   margin: 0 auto;
 }
 
@@ -1252,7 +1249,7 @@ html:not(.is-translating) .site-footer {
 
 .stats-card[data-reveal] {
   opacity: 0;
-  transform: translateY(28px) scale(0.94);
+  transform: translateY(1.75rem) scale(0.94);
 }
 
 .stats-card[data-reveal].is-in {
@@ -1270,7 +1267,7 @@ html:not(.is-translating) .site-footer {
 @keyframes stats-bounce-in {
   0% {
     opacity: 0;
-    transform: translateY(28px) scale(0.94);
+    transform: translateY(1.75rem) scale(0.94);
   }
 
   55% {
@@ -1279,7 +1276,7 @@ html:not(.is-translating) .site-footer {
   }
 
   75% {
-    transform: translateY(4px) scale(0.99);
+    transform: translateY(0.25rem) scale(0.99);
   }
 
   100% {
@@ -1291,7 +1288,7 @@ html:not(.is-translating) .site-footer {
 @keyframes stats-settle-in {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(1.125rem) scale(0.98);
   }
 
   to {
@@ -1303,7 +1300,7 @@ html:not(.is-translating) .site-footer {
 @keyframes stats-lottie-in {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.92);
+    transform: translateY(0.625rem) scale(0.92);
   }
 
   to {
@@ -1686,7 +1683,7 @@ html:not(.is-translating) .site-footer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.35rem;
-  max-width: 1080px;
+  max-width: max(67.5rem, min(75.000vw, 97.88rem));
   margin: 0 auto;
 }
 
@@ -1701,7 +1698,7 @@ html:not(.is-translating) .site-footer {
   background: var(--surface);
   contain: layout;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(1.25rem);
   transition:
     opacity 0.35s ease,
     transform 0.4s cubic-bezier(0.22, 0.8, 0.3, 1),
@@ -1710,8 +1707,8 @@ html:not(.is-translating) .site-footer {
 
 @media (min-width: 720px) {
   .service-card {
-    grid-template-columns: minmax(320px, 1fr) 1.15fr;
-    min-height: 260px;
+    grid-template-columns: minmax(20rem, 1fr) 1.15fr;
+    min-height: 16.25rem;
   }
 }
 
@@ -1734,7 +1731,7 @@ html:not(.is-translating) .site-footer {
 
 .service-card__media {
   position: relative;
-  min-height: 220px;
+  min-height: 13.75rem;
   overflow: hidden;
   background: var(--orb);
 }
@@ -1749,7 +1746,7 @@ html:not(.is-translating) .site-footer {
 .service-card__media img {
   display: block;
   width: 100%;
-  height: 220px;
+  height: 13.75rem;
   object-fit: cover;
   object-position: 50% 42%;
   transition: transform 0.45s ease;
@@ -1761,6 +1758,19 @@ html:not(.is-translating) .site-footer {
     inset: 0;
     height: 100%;
   }
+}
+
+/* Wide shots on black (veneers): show the whole image centred on black instead of cropping it */
+.service-card__media--contain {
+  display: flex;
+  /* teeth sit on the top edge; the black below blends into the photo's black background */
+  align-items: flex-start;
+  background: #000;
+}
+
+.service-card__media--contain img {
+  position: static;
+  height: auto;
 }
 
 .service-card:hover .service-card__media img,
@@ -1828,7 +1838,7 @@ html:not(.is-translating) .site-footer {
   grid-template-columns: 1fr;
   align-items: stretch;
   gap: 0;
-  max-width: 1080px;
+  max-width: max(67.5rem, min(75.000vw, 97.88rem));
   margin: 0 auto;
   overflow: hidden;
   border-radius: 1.35rem;
@@ -1836,13 +1846,13 @@ html:not(.is-translating) .site-footer {
   border: 1px solid rgb(29 53 87 / 0.07);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.9),
-    0 14px 34px rgb(29 53 87 / 0.08);
+    0 0.875rem 2.125rem rgb(29 53 87 / 0.08);
 }
 
 @media (min-width: 720px) {
   .about-preview__card {
-    grid-template-columns: 1.15fr minmax(320px, 1fr);
-    min-height: 260px;
+    grid-template-columns: 1.15fr minmax(20rem, 1fr);
+    min-height: 16.25rem;
   }
 }
 
@@ -1910,7 +1920,7 @@ html:not(.is-translating) .site-footer {
   position: relative;
   z-index: 0;
   width: 100%;
-  min-height: 220px;
+  min-height: 13.75rem;
   margin: 0;
   overflow: hidden;
   background: var(--orb);
@@ -1946,64 +1956,268 @@ html:not(.is-translating) .site-footer {
 
 /* —— Footer —— */
 .site-footer {
+  --footer-blue: #428fe6;
   position: relative;
   z-index: 5;
-  border-top: 1px solid rgb(29 53 87 / 0.1);
-  background: var(--white);
-  padding: 2rem clamp(1.25rem, 4vw, 3rem);
+  background: var(--footer-blue);
+  color: #fff;
+  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1rem, 4vw, 3rem) 1rem;
+  font-size: clamp(0.85rem, 2.2vw, 0.9rem);
 }
 
 .site-footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem 2rem;
-  max-width: 1100px;
+  display: grid;
+  /* minmax(0, …) stops the iframe's intrinsic 300px width from widening the page. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem 3rem;
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
   margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: center;
+  }
 }
 
 .site-footer__brand {
   display: inline-flex;
-  align-items: center;
-  text-decoration: none;
+  margin-bottom: 1rem;
 }
 
 .site-footer__brand img {
   display: block;
-  height: 36px;
+  height: 3.25rem;
   width: auto;
+  /* Logo artwork is navy; render it white on the blue footer. */
+  filter: brightness(0) invert(1);
+}
+
+.site-footer__tagline {
+  margin: 0 0 1rem;
+  color: rgb(255 255 255 / 0.8);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 2.5rem;
+}
+
+.site-footer__col h2 {
+  margin: 0 0 0.5rem;
+  color: rgb(255 255 255 / 0.7);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .site-footer__nav {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.site-footer__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.site-footer__row {
+  display: flex;
   align-items: center;
-  gap: 0.35rem 1.35rem;
+  gap: 0.6rem;
 }
 
-.site-footer__nav a {
-  color: var(--muted);
+.site-footer__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+}
+
+.site-footer__glyph {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-footer__row > span:last-child {
+  min-width: 0;
+}
+
+@media (max-width: 479px) {
+  .site-footer__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.site-footer a {
+  color: #fff;
   text-decoration: none;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
-.site-footer__nav a:hover,
-.site-footer__nav a:focus-visible {
-  color: var(--navy);
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
   outline: none;
 }
 
 .site-footer__nav a.site-footer__cta {
-  color: var(--dental-blue);
+  font-weight: 800;
 }
 
-.site-footer__nav a.site-footer__cta:hover,
-.site-footer__nav a.site-footer__cta:focus-visible {
-  color: var(--navy);
+.site-footer__contact a {
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.site-footer__contact a > span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(255 255 255 / 0.45);
+}
+
+.site-footer__contact a:hover,
+.site-footer__contact a:focus-visible {
+  text-decoration: none;
+}
+
+.site-footer__contact a:hover > span:last-child,
+.site-footer__contact a:focus-visible > span:last-child {
+  text-decoration-color: #fff;
+}
+
+.site-footer__hours {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.site-footer__hours li:last-child {
+  border-bottom: none;
+}
+
+.site-footer__hours span:last-child {
+  color: rgb(255 255 255 / 0.8);
+  text-align: right;
+}
+
+.site-footer__map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 15rem;
+  /* Soft feather on every edge so the map melts into the footer. */
+  --feather-y: linear-gradient(to bottom, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  --feather-x: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  -webkit-mask-image: var(--feather-y), var(--feather-x);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--feather-y), var(--feather-x);
+  mask-composite: intersect;
+  display: block;
+  overflow: hidden;
+}
+
+@media (max-width: 479px) {
+  .site-footer__map {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Static map drawn from OpenStreetMap data; regenerate with scripts/build-footer-map.js.
+   Never drawn narrower than 40rem so labels stay readable; smaller frames crop around the centred pin. */
+.site-footer__map img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: max(100%, 40rem);
+  height: auto;
+  max-width: none;
+  transform: translate(-50%, -50%);
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
+  margin: 1.5rem auto 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(255 255 255 / 0.25);
+  font-size: 0.78rem;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.site-footer__bottom p {
+  margin: 0;
+}
+
+.site-footer__credit {
+  max-width: max(68.75rem, min(76.389vw, 99.69rem));
+  margin: 0.85rem auto 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(255 255 255 / 0.25);
+  font-size: 0.78rem;
+  text-align: center;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.site-footer__credit a {
+  margin-left: 0.25em;
+  color: #fff;
+  font-weight: 800;
+}
+
+.site-footer__bottom nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+@media (max-width: 767px) {
+  /* Extend the blue under the page's bottom padding reserved for the mobile nav. */
+  .site-footer {
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+    margin-bottom: calc(-5.5rem - env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer__bottom {
+    gap: 0.55rem 1rem;
+  }
+
+  .site-footer__bottom nav {
+    flex-wrap: wrap;
+    gap: 0.45rem 1rem;
+  }
 }
 
 /* —— Inner pages (services, about) —— */
@@ -2030,7 +2244,7 @@ html:not(.is-translating) .site-footer {
 .page-hero__orb {
   position: absolute;
   z-index: 0;
-  width: min(78vw, 560px);
+  width: min(78vw, 35rem);
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--orb);
@@ -2050,7 +2264,7 @@ html:not(.is-translating) .site-footer {
   --hero-copy-end: calc(40rem + clamp(1.25rem, 4vw, 3rem));
   position: absolute;
   z-index: 0;
-  width: min(34vw, 400px);
+  width: min(34vw, 25rem);
   max-width: calc(100% - var(--hero-copy-end) - 2rem);
   aspect-ratio: 1;
   left: calc(var(--hero-copy-end) + (100% - var(--hero-copy-end)) / 2);
@@ -2071,7 +2285,7 @@ html:not(.is-translating) .site-footer {
     left: auto;
     right: 4%;
     top: 12%;
-    width: min(48vw, 260px);
+    width: min(48vw, 16.25rem);
     max-width: none;
     transform: none;
   }
@@ -2264,74 +2478,22 @@ html:not(.is-translating) .site-footer {
 /* Mobile layout overrides (after base hero/services so they win on source order) */
 @media (max-width: 767px) {
   .hero {
-    position: relative;
-    display: block;
-    min-height: calc(min(62svh, 500px) + clamp(8rem, 24vw, 10rem) - 10px);
-    height: auto;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .hero__title {
-    position: absolute;
-    top: calc(4.25rem + env(safe-area-inset-top, 0px) - 10px);
-    left: 50%;
-    bottom: auto;
-    z-index: 5;
-    width: min(22rem, 92vw);
-    margin: 0;
-    padding: 0 1rem;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: clamp(2.25rem, 10.5vw, 3rem);
-    line-height: 1;
-    pointer-events: none;
-    text-shadow: none;
+    --nav-h: 5.4rem;
   }
 
   .hero__word--2 {
     text-shadow:
-      0 0 12px rgb(244 248 252 / 0.92),
-      0 1px 5px rgb(255 255 255 / 0.85);
-  }
-
-  .hero__stage {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    height: min(62svh, 500px);
-    min-height: 420px;
-    margin-top: 0;
-    overflow: hidden;
-    contain: layout paint;
-    z-index: 2;
-  }
-
-  .hero__orb {
-    --orb-y: 34%;
-    width: 118vw;
-    max-width: none;
-    transform: translate3d(-50%, var(--orb-y), 0) scale(1);
+      0 0 0.75rem rgb(244 248 252 / 0.92),
+      0 1px 0.3125rem rgb(255 255 255 / 0.85);
   }
 
   .home.is-ready .hero__orb {
     animation: orb-grow-mobile 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) 0.02s forwards;
   }
 
-  .hero__figure {
-    position: relative;
-    z-index: 4;
-    width: min(400px, 96%);
-    margin-bottom: 0.35rem;
-  }
-
   .hero__cta {
     bottom: clamp(0.65rem, 2vh, 1rem);
-    min-width: min(240px, 78vw);
+    min-width: min(15rem, 78vw);
     min-height: 2.85rem;
     padding: 0.75rem 1.35rem;
     font-size: 0.7rem;
@@ -2360,7 +2522,7 @@ html:not(.is-translating) .site-footer {
   }
 
   .about-preview__visual {
-    min-height: 220px;
+    min-height: 13.75rem;
   }
 
   .page-hero {
@@ -2377,17 +2539,39 @@ html:not(.is-translating) .site-footer {
 }
 
 /* —— iPad portrait (and similarly narrow tablets) —— */
+/* Below 1200px a centred link row doesn't leave the right side enough room for EN/DE + the
+   button (German labels are long), so the side columns size to their content and the links
+   centre in the space between them */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nav {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .nav__links {
+    justify-self: center;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1023px) {
   .nav {
     padding: 1rem 0.9rem;
   }
 
+  .nav__links {
+    gap: 0.1rem;
+  }
+
+  .nav__links > a,
+  .nav__services-head > a {
+    padding: 0 0.4rem;
+  }
+
   .nav__brand img {
-    height: 42px;
+    height: 3.5rem;
   }
 
   .hero {
-    min-height: max(36rem, calc(100svh - 2rem - 42px));
+    --nav-h: 5.5rem;
   }
 
   .nav__links > a,
@@ -2424,61 +2608,11 @@ html:not(.is-translating) .site-footer {
   }
 }
 
-/* iPad portrait: fill the tall viewport instead of leaving a dead band */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .hero {
-    min-height: calc(100svh - 4.75rem);
-  }
-
-  .hero__title {
-    top: clamp(1.2%, 2.2vh, 3.5%);
-    width: min(780px, 90vw);
-    font-size: clamp(2.75rem, 6.6vw, 4.35rem);
-  }
-
-  .hero__stage {
-    height: min(78vh, 920px);
-  }
-
-  .hero__orb {
-    --orb-y: 38%;
-    width: min(155vw, 1120px);
-  }
-
-  .hero__figure {
-    width: min(700px, 90%);
-  }
-}
-
 /* iPad landscape + phone landscape: keep title off the figure */
 @media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) and (max-height: 1024px) and (pointer: coarse) {
-  .hero {
-    min-height: calc(100svh - 4.5rem);
-  }
-
-  .hero__title {
-    top: clamp(0.4rem, 1.6vh, 1.25rem);
-    width: min(760px, 78vw);
-    font-size: clamp(2.15rem, 4.6vw, 3.35rem);
-    line-height: 0.94;
-  }
-
-  .hero__stage {
-    height: min(78vh, 560px);
-  }
-
-  .hero__orb {
-    --orb-y: 50%;
-    width: min(110vw, 800px);
-  }
-
-  .hero__figure {
-    width: min(470px, 52vw);
-  }
-
   .hero__cta {
     bottom: 0.85rem;
-    min-width: min(240px, 42vw);
+    min-width: min(15rem, 42vw);
     min-height: 2.7rem;
     padding: 0.7rem 1.35rem;
   }
@@ -2490,24 +2624,6 @@ html:not(.is-translating) .site-footer {
 
 /* Very short landscape (phones rotated) */
 @media (min-width: 768px) and (max-width: 950px) and (orientation: landscape) and (max-height: 520px) {
-  .hero {
-    min-height: calc(100svh - 4rem);
-  }
-
-  .hero__title {
-    top: 0.15rem;
-    font-size: clamp(1.7rem, 4.2vw, 2.35rem);
-    width: min(620px, 72vw);
-  }
-
-  .hero__stage {
-    height: min(82vh, 340px);
-  }
-
-  .hero__figure {
-    width: min(260px, 36vw);
-  }
-
   .hero__cta {
     bottom: 0.45rem;
     min-height: 2.35rem;

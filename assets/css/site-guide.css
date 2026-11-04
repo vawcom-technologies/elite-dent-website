@@ -38,7 +38,37 @@ html.is-gru-intro .home {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: linear-gradient(160deg, #ffffff 0%, #eef5fb 42%, var(--orb, #d9ebf9) 100%);
+  /* The practice's reception, the twin standing between the desks in front of the logo wall.
+     The gap between the desks is at 49.1% of the photo, so shift it right by 0.9% of the photo's
+     rendered width to put the gap exactly at screen centre, where she stands. The photo (3:2) is
+     sized like cover but always at least 1.9% wider than the screen, so the shift never uncovers
+     the left edge on wide screens.
+     On narrow phones, covering the height would crop the logo on the wall, so the photo is capped
+     to keep the sign's lettering (39.85% of the photo's width) inside the screen with 1rem each
+     side. It then sits at the top, and the floor's colour carries on below it (mostly behind the
+     text panel), fading in over the photo's last 4rem. Wider screens are unaffected. */
+  --hub-photo-w: max(101.9vw, min(150dvh, (100vw - 2rem) / 0.3985));
+  --hub-photo-h: calc(var(--hub-photo-w) / 1.5);
+  /* centred when the photo covers the height, pinned to the top when it doesn't */
+  --hub-photo-top: min(0px, (100dvh - var(--hub-photo-h)) / 2);
+  /* height of the strip left below the photo; 0 whenever it covers */
+  --hub-floor: max(0px, 100dvh - var(--hub-photo-h));
+  /* read by site-guide-agent.js (hubSignBox) to find the logo on the wall */
+  --hub-gap-shift: 0.009;
+  background-color: #f4f8fc;
+  background-image:
+    linear-gradient(transparent, #dac8ba),
+    url("../images/reception.jpg?v=1"),
+    linear-gradient(#dac8ba, #dac8ba);
+  background-repeat: no-repeat;
+  background-size:
+    100% min(4rem, var(--hub-floor) * 100),
+    var(--hub-photo-w) auto,
+    100% var(--hub-floor);
+  background-position:
+    0 calc(var(--hub-photo-h) - 4rem),
+    calc(50% + var(--hub-gap-shift) * var(--hub-photo-w)) var(--hub-photo-top),
+    0 var(--hub-photo-h);
   opacity: 0;
   visibility: hidden;
   transition:
@@ -98,8 +128,9 @@ html.is-gru-intro-pending .guide-hub {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
-  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  /* Only a short fade at the very bottom, tucked behind the text panel that overlaps it */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
 }
 
 .site-guide.is-intro .site-guide__body {
@@ -127,9 +158,20 @@ html.is-gru-intro-pending .guide-hub {
   pointer-events: none;
 }
 
+/* Frosted panel behind the words. It overlaps the bottom of the figure, so her legs read as
+   passing behind the panel rather than fading out over the reception backdrop. */
 .site-guide.is-intro .site-guide__body {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 46rem;
+  margin-top: -5rem;
+  padding: 1.1rem 1.5rem 1.25rem;
+  border-radius: 1.25rem;
+  background: rgb(255 255 255 / 0.55);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  box-shadow: 0 10px 30px rgb(29 53 87 / 0.12);
 }
 
 .site-guide.is-intro .site-guide__kicker {
@@ -230,7 +272,7 @@ html.is-gru-intro-pending .guide-hub {
 @keyframes guide-reply-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(0.375rem);
   }
 }
 
@@ -259,6 +301,8 @@ html.is-gru-intro-pending .guide-hub {
     flex-direction: column;
     flex: 0 1 auto;
     min-height: 0;
+    margin-top: -3.5rem;
+    padding: 0.9rem 1rem 1rem;
   }
 
   .site-guide.is-intro .site-guide__line {
@@ -440,12 +484,12 @@ html.is-gru-intro-pending .guide-hub {
   height: 2.5rem;
 }
 
-.site-guide:not(.is-intro) .site-guide__close {
+.site-guide.is-min .site-guide__close {
   display: none;
 }
 
 .site-guide:not(.is-intro) .site-guide__kicker {
-  padding-right: 0;
+  padding-right: 1.9rem;
 }
 
 .site-guide__body {
@@ -568,17 +612,17 @@ html.is-gru-intro-pending .guide-hub {
     width: min(26rem, calc(100vw - 1.7rem));
   }
 
-  .site-guide:not(.is-intro):not(.is-min) .site-guide__close {
-    display: inline-flex;
-  }
-
-  .site-guide:not(.is-intro) .site-guide__kicker {
-    padding-right: 1.9rem;
+  /* The round face sits on the video, clear of the title, the service bar, and the dock */
+  .site-guide.is-min:not(.is-intro) {
+    top: calc(5.75rem + env(safe-area-inset-top, 0px));
+    right: 0.75rem;
+    bottom: auto;
   }
 }
 
-/* Minimised: only the face stays, tucked against the edge */
-.site-guide.is-min {
+/* Minimised: only the face stays, tucked against the edge.
+   :not(.is-intro) matches the specificity of the breakpoint rules below so the bubble wins at every width. */
+.site-guide.is-min:not(.is-intro) {
   width: 3.6rem;
   height: 3.6rem;
   padding: 0;
@@ -590,7 +634,7 @@ html.is-gru-intro-pending .guide-hub {
   display: none;
 }
 
-.site-guide.is-min .site-guide__avatar {
+.site-guide.is-min:not(.is-intro) .site-guide__avatar {
   width: 100%;
   height: 100%;
 }
@@ -627,9 +671,9 @@ html.is-gru-intro-pending .guide-hub {
   outline: 3px solid transparent;
   outline-offset: 12px;
   border-radius: 1rem;
+  /* Colour only: animating outline-offset repaints the whole (often huge) section on every frame */
   transition:
     outline-color 0.7s ease,
-    outline-offset 0.45s ease,
     transform 0.45s ease;
 }
 
@@ -641,6 +685,27 @@ html.is-guide-spotlighting .is-guide-spotlight {
   z-index: 46;
   border-radius: 999px;
   outline-offset: 8px;
+}
+
+/* Full-bleed media hero: rounding would clip its corners, and an outside outline sits off-screen */
+.services-video-hero.is-guide-spotlight {
+  border-radius: 0;
+  outline: 0;
+}
+
+/* Frame drawn above the video layer; an inset outline would be painted underneath it */
+.services-video-hero.is-guide-spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 3px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.7s ease;
+}
+
+html.is-guide-spotlighting .services-video-hero.is-guide-spotlight::after {
+  border-color: rgb(74 144 226 / 0.92);
 }
 
 a.is-guide-spotlight,
@@ -665,5 +730,160 @@ html.is-guide-spotlighting [data-assess-expand].is-guide-spotlight {
   html.is-guide-spotlighting button.is-guide-spotlight,
   html.is-guide-spotlighting [data-assess-expand].is-guide-spotlight {
     transform: none;
+  }
+}
+
+/* 3D avatar: the photo stays underneath until the model has actually loaded (a phone that can't render it keeps the photo) */
+.site-guide__model {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  object-fit: cover;
+  pointer-events: none;
+  --poster-color: transparent;
+  --progress-bar-color: transparent;
+  --progress-bar-height: 0px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* She loads after the page, so fade her in rather than pop */
+.site-guide__avatar.is-3d-ready .site-guide__model {
+  opacity: 1;
+}
+
+.site-guide__avatar:not(.has-3d) .site-guide__model {
+  display: none;
+}
+
+/* The large portrait is the old face, so it only shows if the 3D avatar fails. The small one is a
+   still of her own face: it holds the circle while the model loads (slow on mobile data), then
+   cross-fades out once the model is ready, and comes back if the model fails */
+.site-guide__avatar.has-model:not(.is-3d-failed) .site-guide__face--large,
+.site-guide.is-stage .site-guide__avatar.has-model:not(.is-3d-failed) .site-guide__face {
+  display: none !important;
+}
+
+.site-guide__face--small {
+  transition: opacity 0.5s ease;
+}
+
+.site-guide__avatar.is-3d-ready .site-guide__face--small {
+  opacity: 0;
+}
+
+/* Keep the intro figure square so the camera framing doesn't change with the stage's shape */
+.site-guide.is-intro .site-guide__model {
+  left: 50%;
+  width: auto;
+  aspect-ratio: 1;
+  translate: -50% 0;
+}
+
+.site-guide__kicker[hidden] {
+  display: none;
+}
+
+/* Desktop stage: she stands at the bottom of the window over the page's own right-hand margin
+   (sized to the gap beside the ~980px content column) without changing the layout, and talks in a
+   thought bubble above her head. Minimising drops back to the face bubble. */
+@media (min-width: 1200px) and (pointer: fine) {
+  html {
+    --guide-stage-w: clamp(14rem, calc((100vw - 980px) / 2), 22rem);
+    --guide-figure-h: clamp(18rem, calc(100vh - 26rem), 40rem);
+  }
+
+  .site-guide.is-stage {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    width: var(--guide-stage-w);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .site-guide.is-stage .site-guide__body,
+  .site-guide.is-stage .site-guide__close {
+    pointer-events: auto;
+  }
+
+  /* Fixed height so her size never depends on the bubble; feet on the window's bottom edge */
+  .site-guide.is-stage .site-guide__avatar,
+  .site-guide.is-stage .site-guide__avatar.has-model {
+    order: 2;
+    flex: 0 0 auto;
+    width: 100%;
+    height: var(--guide-figure-h);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  /* Canvas reaches 10rem past the column so the pointing arm isn't cut off; it never takes clicks */
+  .site-guide.is-stage .site-guide__model {
+    left: -10rem;
+    width: calc(100% + 10rem);
+  }
+
+  /* Thought bubble: rounded cloud with two trailing puffs down toward her head */
+  .site-guide.is-stage .site-guide__body {
+    order: 1;
+    flex: 0 0 auto;
+    position: relative;
+    width: max(calc(var(--guide-stage-w) - 1.25rem), 14rem);
+    margin: 0 0.75rem 1.9rem 0;
+    padding: 0.95rem 1.15rem;
+    overflow: visible;
+    border-radius: 1.6rem;
+    background: #fff;
+    border: 0;
+    box-shadow: 0 12px 32px rgb(29 53 87 / 0.14);
+  }
+
+  /* Puffs sit in front of the box so the white merges into it, each one touching the next;
+     the shadow only falls below so no seam shows on the box */
+  .site-guide.is-stage .site-guide__body::before,
+  .site-guide.is-stage .site-guide__body::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 5px 8px -3px rgb(29 53 87 / 0.16);
+  }
+
+  .site-guide.is-stage .site-guide__body::before {
+    right: 4.3rem;
+    bottom: -0.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .site-guide.is-stage .site-guide__body::after {
+    right: 4rem;
+    bottom: -1.5rem;
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  /* Smaller topic photo so the bubble always fits above her head */
+  .site-guide.is-stage .site-guide__media {
+    height: 5rem;
+  }
+
+  .site-guide.is-stage .site-guide__close {
+    top: 0.45rem;
+    right: 1.2rem;
   }
 }

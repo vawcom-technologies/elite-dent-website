@@ -3,6 +3,8 @@
   --dental-blue: #4a90e2;
   --orb: #d9ebf9;
   --surface: #f4f8fc;
+  /* The smile sits right of centre; the white studio space on the left takes the logo */
+  --splash-photo: #fff url("../images/perfectsmile-splash.jpg?v=1") 70% 50% / cover no-repeat;
 }
 
 *,
@@ -22,8 +24,10 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: #428fe6;
+  background: #fff;
   pointer-events: none;
+  /* Viewer distance for the photo's turn, fitted to the reference video (about 1.1 widths) */
+  perspective: 110vw;
 }
 
 .splash.is-handoff,
@@ -110,80 +114,105 @@ html.no-splash .home .hero__figure {
   z-index: 25;
 }
 
+/* The smile photo starts turned toward the viewer like a card (swung right, tipped back, rolled)
+   and eases flat as the teeth fly in. Pose and timing are fitted to the reference video's
+   corners frame by frame: about 60% of the turn is done after 1s, all of it by 3.4s. */
 .splash__veil {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #428fe6;
+  background: var(--splash-photo);
   opacity: 1;
+  transform-origin: 50% 50%;
+  transform: translate3d(-8.6vw, -1.6vh, 29.2vw) rotateX(13.7deg) rotateY(-32.6deg) rotateZ(8deg);
+  transition:
+    transform 3.4s cubic-bezier(0.4, 1, 0.78, 1),
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.splash.is-playing .splash__veil,
+.splash.is-seated .splash__veil {
+  transform: none;
 }
 
 .splash.is-revealing .splash__veil {
   opacity: 0;
-  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.splash__film {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #428fe6;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+/* Projection probes only; read once to frame the lockup, then removed */
+.splash__hotspot {
+  width: 0;
+  height: 0;
+  pointer-events: none;
 }
 
-.splash.is-ready .splash__film {
-  opacity: 1;
-}
-
-.splash.is-handoff .splash__film {
-  opacity: 0;
-  transition: opacity 0.18s linear;
-}
-
+/* In the photo's white space, left of the smile, so the finished lockup never covers its teeth */
 .splash__brand {
   position: absolute;
-  left: 50%;
-  top: 56.2%;
+  left: 21%;
+  top: 50%;
   z-index: 2;
-  width: min(63vw, 1180px);
+  width: min(34vw, 46rem);
   aspect-ratio: 3248 / 1800;
   transform: translate(-50%, -50%) translateZ(0);
   transform-origin: 50% 50%;
   backface-visibility: hidden;
   contain: layout style;
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
-.splash__brand[hidden] {
-  display: block;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.splash.is-handoff .splash__brand {
-  opacity: 1;
-  visibility: visible;
-}
-
+.splash__shell,
 .splash__mark {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  opacity: 0;
   transform: translateZ(0);
 }
 
+.splash__arch {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  opacity: 0;
+  --poster-color: transparent;
+  --progress-bar-height: 0;
+}
+
+.splash.is-playing .splash__arch {
+  opacity: 1;
+}
+
+.splash.is-seated .splash__shell {
+  opacity: 1;
+  transition: opacity 0.6s ease 0.25s;
+}
+
+.splash__brand.is-flat .splash__shell {
+  display: none;
+}
+
+.splash.is-seated .splash__brand.is-flat .splash__mark {
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .splash__veil {
+    transform: none;
+  }
+
   .splash,
   .splash__veil,
-  .splash__film,
+  .splash__shell,
+  .splash__mark,
   .nav__brand img,
   .home.is-splash-landed .nav__links,
   .home.is-splash-landed .nav__end,
@@ -191,37 +220,19 @@ html.no-splash .home .hero__figure {
   .home.is-splash-complete .nav__end {
     transition: none;
   }
-
-  .splash__film {
-    display: none;
-  }
-
-  .splash__brand,
-  .splash__brand[hidden] {
-    opacity: 1;
-    visibility: visible;
-  }
 }
 
 @media (max-width: 767px) {
-  .splash,
-  .splash__veil,
-  .splash__film {
-    background: #4a91e2;
-  }
-
-  .splash.is-handoff:not(.is-revealing) {
-    background: #4a91e2;
-  }
-
-  /* Phones play splash-mobile.mp4, a portrait film with its backdrop baked in, full-bleed */
-  .splash__film {
-    object-fit: cover;
-    object-position: 50% 50%;
+  /* Portrait crop keeps the smile in the middle; the logo sits below it, over the chin */
+  /* Slightly oversized so the turned photo still covers a tall screen's corners */
+  .splash__veil {
+    inset: -10%;
+    background-position: 58% 50%;
   }
 
   .splash__brand {
-    top: 50%;
+    left: 50%;
+    top: 80%;
     width: min(86vw, 22.5rem);
   }
 

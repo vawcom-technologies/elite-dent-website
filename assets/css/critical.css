@@ -2,11 +2,15 @@
 html {
   background: #f4f8fc;
   color-scheme: light;
+  /* Big screens: scale the whole (rem-based) layout up from a 1440×900 (13" laptop) baseline,
+     using whichever side is relatively smaller so ultrawides don't blow up. 100%–150%. */
+  font-size: clamp(100%, min(1.1111vw, 1.7778vh), 150%);
 }
 
 body {
   margin: 0;
   background: #f4f8fc;
+  font-family: "Nunito", system-ui, sans-serif;
 }
 
 .nav--static,
@@ -14,4 +18,82 @@ html.no-splash .home .nav {
   opacity: 1;
   transform: none;
   animation: none;
+}
+
+/* Page veil (navigate.js): covers the page while it is left and until the next one is ready.
+   ::before is the cover, ::after the spinner that appears once the wait is noticeable. */
+html::before,
+html::after {
+  content: "";
+  position: fixed;
+  z-index: 10001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+html::before {
+  inset: 0;
+  background: #f4f8fc;
+}
+
+html::after {
+  top: 50%;
+  left: 50%;
+  z-index: 10002;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  border: 3px solid rgb(74 144 226 / 0.2);
+  border-top-color: #4a90e2;
+  border-radius: 50%;
+  animation: page-spin 0.8s linear infinite;
+  transition-duration: 0.2s;
+}
+
+html.is-arriving::before,
+html.is-leaving::before {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html.is-leaving::before {
+  transition-duration: 0.22s;
+}
+
+html.is-arriving::after,
+html.is-leaving::after {
+  opacity: 1;
+  transition-delay: 0.5s;
+}
+
+/* 3D models in page content fade in once loaded (navigate.js adds .is-loaded) */
+.page model-viewer {
+  transition: opacity 0.5s ease;
+}
+
+.page model-viewer:not(.is-loaded) {
+  opacity: 0;
+}
+
+/* Loaded while the veil is still up: just be there when it lifts */
+html.is-arriving .page model-viewer {
+  transition: none;
+}
+
+@keyframes page-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html::before,
+  html::after {
+    transition-duration: 0s;
+  }
+
+  html::after {
+    animation-duration: 2.4s;
+  }
 }

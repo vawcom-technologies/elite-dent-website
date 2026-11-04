@@ -120,7 +120,7 @@ The script wordmark in `elitedentlogo.png` is the brand face. Site type stays ro
 - Sticky/static bar; no heavy chrome
 - Logo mark ~54px tall
 - **Home** → `/` · **Services** → `/services/` · **About** → `/about/`
-- Desktop: hover (or focus) **Services** to open a single-column panel of the six treatments; each tab deep-links to `/services/#<id>`
+- Desktop: hover (or focus) **Services** to open a single-column panel of the six treatments; each tab links to its own page `/services/<id>/`
 - Mobile: no hover panel — **Services** goes to `/services/`
 
 ### Buttons / CTAs
@@ -135,7 +135,7 @@ The script wordmark in `elitedentlogo.png` is the brand face. Site type stays ro
 - **One service per row** — large banner blocks (photo + copy), easy to scan
 - Photo on the side, fully visible
 - Title + short description + “Read more”
-- Link to `/services/#<id>` so the services page scrolls to that article
+- Link to `/services/<id>/` (one page per service)
 
 ### Services page
 
@@ -178,7 +178,7 @@ The script wordmark in `elitedentlogo.png` is the brand face. Site type stays ro
 | --- | --- | --- |
 | Splash smile | `assets/images/perfectsmile.jpg` | Paramount-style splash background |
 | Logo | `assets/images/elitedentlogo.png` | Nav + splash wordmark (clip-path reveals implant first) |
-| Hero | `assets/images/heroimg.png` | Home hero figure |
+| Hero | `assets/images/heroimg-{800,1200,1800}.webp` (from `heroimg1.png`) | Home hero figure |
 | Hero smile crop | `assets/images/herosmile.png` | Optional teeth-focused media |
 | Card / support media | `perfectsmile.jpg`, `perfectsmile2.jpg`, etc. | Service cards, not hero clutter |
 

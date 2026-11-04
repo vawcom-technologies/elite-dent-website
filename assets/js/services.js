@@ -91,7 +91,10 @@
 
   function bindServiceJump() {
     const jump = document.querySelector(".service-jump");
-    const articles = [...document.querySelectorAll(".service-article[id]")];
+    const articles = [
+      ...document.querySelectorAll(".services-video-hero[id]"),
+      ...document.querySelectorAll(".service-article[id]"),
+    ];
     if (!jump || !articles.length) return;
 
     const links = [...jump.querySelectorAll("a[href^='#']")];
@@ -114,6 +117,15 @@
       articles.forEach((article) => {
         article.classList.toggle("is-active", article.id === id);
       });
+      const current = linkById.get(id);
+      const scroller = current?.parentElement;
+      if (current && scroller && scroller.scrollWidth > scroller.clientWidth + 1) {
+        const left = current.offsetLeft - (scroller.clientWidth - current.offsetWidth) / 2;
+        scroller.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+      }
+      window.dispatchEvent(
+        new CustomEvent("elitedent:service-section", { detail: { id } })
+      );
     };
 
     links.forEach((a) => {
@@ -158,6 +170,25 @@
   }
 
   bindServiceJump();
+
+  // The orbit already lists every treatment. Show the same list in the jump
+  // bar only after that orbit has left the screen.
+  function holdServiceJump() {
+    const hero = document.querySelector(".svc-hero");
+    const jump = document.querySelector(".service-jump");
+    if (!hero || !jump) return;
+
+    const sync = () => {
+      jump.hidden = hero.getBoundingClientRect().bottom > 72;
+    };
+
+    sync();
+    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    window.addEventListener("hashchange", () => requestAnimationFrame(sync));
+  }
+
+  holdServiceJump();
 
   function scrollToHash() {
     const id = location.hash.slice(1);

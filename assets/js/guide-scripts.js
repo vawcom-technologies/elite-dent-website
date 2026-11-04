@@ -38,12 +38,15 @@ window.ELITEDENT_GUIDE = {
         en: "Sure. What are you looking for?",
       },
       replies: [
-        { href: "/services/#whitening", label: { de: "Hellere Zähne", en: "Whiter teeth" } },
-        { href: "/services/#aligners", label: { de: "Geradere Zähne", en: "Straighter teeth" } },
-        { href: "/services/#veneers", label: { de: "Form und Farbe mit Veneers", en: "Shape and colour with veneers" } },
-        { href: "/services/#implants", label: { de: "Einen fehlenden Zahn ersetzen", en: "Replacing a missing tooth" } },
-        { href: "/services/#preventive", label: { de: "Kontrolle und Reinigung", en: "A check-up and cleaning" } },
-        { href: "/services/#restorative", label: { de: "Eine Füllung oder Krone", en: "A filling or crown" } },
+        { href: "/services/milling/", label: { de: "Fräsmaschine", en: "Milling machine" } },
+        { href: "/services/printing/", label: { de: "3D-Druck", en: "3D printing" } },
+        { href: "/services/aligners/", label: { de: "Geradere Zähne mit Alignern", en: "Straighter teeth with aligners" } },
+        { href: "/services/template/", label: { de: "Eine digitale Bohrschablone", en: "A digital drilling template" } },
+        { href: "/services/splint/", label: { de: "Schienentherapie", en: "Splint therapy" } },
+        { href: "/services/zirconia/", label: { de: "Zirkonversorgungen", en: "Zirconia restorations" } },
+        { href: "/services/veneers/", label: { de: "Form und Farbe mit Veneers", en: "Shape and colour with veneers" } },
+        { href: "/services/implants/", label: { de: "Einen fehlenden Zahn ersetzen", en: "Replacing a missing tooth" } },
+        { href: "/services/abutments/", label: { de: "Hybrid-Abutments", en: "Hybrid abutments" } },
         { href: "/assess/", label: { de: "Ich bin mir noch unsicher", en: "I'm not sure yet" } },
         { go: "start", back: true, label: { de: "Zurück", en: "Back" } },
       ],
@@ -71,8 +74,8 @@ window.ELITEDENT_GUIDE = {
           when: "start",
           intro: true,
           text: {
-            de: "Hallo und willkommen bei EliteDent. Ich bin Erlan Djaniev und führe Sie heute durch unsere Seite.",
-            en: "Hello and welcome to EliteDent. I'm Erlan Djaniev, and I'll show you around our site today.",
+            de: "Elite Dent – Dentaltechnik der Zukunft.",
+            en: "Elite Dent – Dental Technology of the Future.",
           },
         },
         {
@@ -129,7 +132,7 @@ window.ELITEDENT_GUIDE = {
         {
           id: "services-page",
           when: "start",
-          spotlight: ".page-hero",
+          spotlight: ".svc-hero",
           image: "/assets/images/display/equipment.jpg",
           text: {
             de: "Willkommen. Hier finden Sie alle unsere Behandlungen. Zu jeder erklären wir, wie sie abläuft und was ein Termin umfasst.",
@@ -138,7 +141,7 @@ window.ELITEDENT_GUIDE = {
         },
         {
           id: "services-assess",
-          when: ".page-hero__cta, [data-assess-expand]",
+          when: ".services-video-hero__cta, [data-assess-expand]",
           spotlight: "[href*='assess'], [data-assess-expand]",
           text: {
             de: "Der kurze Check führt Sie mit ein paar Fragen zu einem ruhigen nächsten Schritt.",
@@ -146,30 +149,70 @@ window.ELITEDENT_GUIDE = {
           },
         },
         {
-          id: "services-whitening",
-          when: "#whitening",
-          spotlight: "#whitening",
-          image: "/assets/images/display/perfectsmile.jpg",
+          id: "services-milling",
+          when: "#milling",
+          spotlight: "#milling",
+          image: "/assets/images/servicespg/milling-800.webp",
           text: {
-            de: "Zahnaufhellung: ein helleres Lächeln mit kontrolliertem, schmelzschonendem Bleaching in der Praxis.",
-            en: "Whitening: a brighter smile with controlled, enamel-friendly bleaching in the practice.",
+            de: "Fräsmaschine: präzise digitale Fertigung von Zahnersatz aus biokompatiblen Materialien.",
+            en: "Milling machine: precise digital production of dental restorations from biocompatible materials.",
+          },
+        },
+        {
+          id: "services-printing",
+          when: "#printing",
+          spotlight: "#printing",
+          image: "/assets/images/servicespg/3dprinting-800.webp",
+          text: {
+            de: "3D-Druck: Modelle, Schienen und Schablonen direkt aus dem digitalen Scan.",
+            en: "3D printing: models, splints and templates straight from the digital scan.",
           },
         },
         {
           id: "services-aligners",
           when: "#aligners",
           spotlight: "#aligners",
-          image: "/assets/images/heroimg.png",
+          image: "/assets/images/servicespg/aligner-800.webp",
           text: {
             de: "Transparente Aligner: dezente Schienen, die Engstände und Lücken Schritt für Schritt ausgleichen.",
             en: "Clear aligners: discreet trays that gradually even out crowding and gaps.",
           },
         },
         {
+          id: "services-template",
+          when: "#template",
+          spotlight: "#template",
+          image: "/assets/images/servicespg/digitaldrilling-800.webp",
+          text: {
+            de: "Digitale Bohrschablone: Die Implantatposition wird digital geplant und geführt übertragen.",
+            en: "Digital drilling template: the implant position is planned digitally and transferred under guidance.",
+          },
+        },
+        {
+          id: "services-splint",
+          when: "#splint",
+          spotlight: "#splint",
+          image: "/assets/images/wearsplint-800.webp",
+          text: {
+            de: "Schienentherapie: individuelle Aufbissschienen, die Zähne vor Knirschen und Pressen schützen.",
+            en: "Splint therapy: custom bite splints that protect teeth from grinding and clenching.",
+          },
+        },
+        {
+          id: "services-zirconia",
+          when: "#zirconia",
+          spotlight: "#zirconia",
+          image: "/assets/images/servicespg/zirconiarestoration-800.webp",
+          text: {
+            de: "Zirkonversorgungen: ästhetischer, biokompatibler Zahnersatz für Kassen- und Privatpatienten, mit 10 Jahren Garantie.",
+            en: "Zirconia restorations: aesthetic, biocompatible dental restorations for statutory and private patients, with a 10-year guarantee.",
+          },
+        },
+        {
           id: "services-veneers",
           when: "#veneers",
           spotlight: "#veneers",
-          image: "/assets/images/display/teeth.jpg",
+          image: "/assets/images/servicespg/veneers.png",
           text: {
             de: "Veneers: Form und Farbe verfeinern mit dünnen Keramiken, die zu Ihrem Lächeln passen.",
             en: "Veneers: refine shape and color with thin ceramics that suit your smile.",
@@ -179,30 +222,20 @@ window.ELITEDENT_GUIDE = {
           id: "services-implants",
           when: "#implants",
           spotlight: "#implants",
-          image: "/assets/images/display/perfectsmile2.jpg",
+          image: "/assets/images/implant1-800.webp",
           text: {
             de: "Implantate: fehlende Zähne ersetzen mit stabilem Fundament und natürlich wirkender Krone.",
             en: "Implants: replace missing teeth with a stable foundation and a natural-looking crown.",
           },
         },
         {
-          id: "services-preventive",
-          when: "#preventive",
-          spotlight: "#preventive",
-          image: "/assets/images/display/perfectsmile.jpg",
+          id: "services-abutments",
+          when: "#abutments",
+          spotlight: "#abutments",
+          image: "/assets/images/servicespg/hybridabutments-800.webp",
           text: {
-            de: "Prophylaxe: Kontrollen und Reinigungen, die Zähne und Zahnfleisch langfristig gesund halten.",
-            en: "Prevention: check-ups and cleanings that keep teeth and gums healthy over time.",
-          },
-        },
-        {
-          id: "services-restorative",
-          when: "#restorative",
-          spotlight: "#restorative",
-          image: "/assets/images/display/teeth.jpg",
-          text: {
-            de: "Zahnerhaltung: Füllungen, Kronen und Reparaturen, die Komfort und Funktion wiederherstellen.",
-            en: "Restorative care: fillings, crowns, and repairs that restore comfort and function.",
+            de: "Hybrid-Abutments: die präzise Verbindung zwischen Implantat und Krone, aus Titanbasis und Zirkon.",
+            en: "Hybrid abutments: the precise link between implant and crown, made of a titanium base and zirconia.",
           },
         },
         {
@@ -225,25 +258,313 @@ window.ELITEDENT_GUIDE = {
         },
       ],
     },
+    "/services/milling": {
+      title: { de: "Fräsmaschine", en: "Milling machine" },
+      steps: [
+        {
+          id: "services-milling",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/milling-800.webp",
+          text: {
+            de: "Fräsmaschine: präzise digitale Fertigung von Zahnersatz aus biokompatiblen Materialien.",
+            en: "Milling machine: precise digital production of dental restorations from biocompatible materials.",
+          },
+        },
+        {
+          id: "services-milling-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-milling-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/printing": {
+      title: { de: "3D-Druck", en: "3D printing" },
+      steps: [
+        {
+          id: "services-printing",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/3dprinting-800.webp",
+          text: {
+            de: "3D-Druck: Modelle, Schienen und Schablonen direkt aus dem digitalen Scan.",
+            en: "3D printing: models, splints and templates straight from the digital scan.",
+          },
+        },
+        {
+          id: "services-printing-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-printing-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/aligners": {
+      title: { de: "Aligner", en: "Aligners" },
+      steps: [
+        {
+          id: "services-aligners",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/aligner-800.webp",
+          text: {
+            de: "Transparente Aligner: dezente Schienen, die Engstände und Lücken Schritt für Schritt ausgleichen.",
+            en: "Clear aligners: discreet trays that gradually even out crowding and gaps.",
+          },
+        },
+        {
+          id: "services-aligners-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-aligners-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/template": {
+      title: { de: "Digitale Bohrschablone", en: "Digital drilling template" },
+      steps: [
+        {
+          id: "services-template",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/digitaldrilling-800.webp",
+          text: {
+            de: "Digitale Bohrschablone: Die Implantatposition wird digital geplant und geführt übertragen.",
+            en: "Digital drilling template: the implant position is planned digitally and transferred under guidance.",
+          },
+        },
+        {
+          id: "services-template-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-template-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/splint": {
+      title: { de: "Schienentherapie", en: "Splint therapy" },
+      steps: [
+        {
+          id: "services-splint",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/wearsplint-800.webp",
+          text: {
+            de: "Schienentherapie: individuelle Aufbissschienen, die Zähne vor Knirschen und Pressen schützen.",
+            en: "Splint therapy: custom bite splints that protect teeth from grinding and clenching.",
+          },
+        },
+        {
+          id: "services-splint-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-splint-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/zirconia": {
+      title: { de: "Zirkonversorgungen", en: "Zirconia restorations" },
+      steps: [
+        {
+          id: "services-zirconia",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/zirconiarestoration-800.webp",
+          text: {
+            de: "Zirkonversorgungen: ästhetischer, biokompatibler Zahnersatz für Kassen- und Privatpatienten, mit 10 Jahren Garantie.",
+            en: "Zirconia restorations: aesthetic, biocompatible dental restorations for statutory and private patients, with a 10-year guarantee.",
+          },
+        },
+        {
+          id: "services-zirconia-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-zirconia-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/veneers": {
+      title: { de: "Veneers", en: "Veneers" },
+      steps: [
+        {
+          id: "services-veneers",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/veneers.png",
+          text: {
+            de: "Veneers: Form und Farbe verfeinern mit dünnen Keramiken, die zu Ihrem Lächeln passen.",
+            en: "Veneers: refine shape and color with thin ceramics that suit your smile.",
+          },
+        },
+        {
+          id: "services-veneers-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-veneers-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/implants": {
+      title: { de: "Implantate", en: "Implants" },
+      steps: [
+        {
+          id: "services-implants",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/implant1-800.webp",
+          text: {
+            de: "Implantate: fehlende Zähne ersetzen mit stabilem Fundament und natürlich wirkender Krone.",
+            en: "Implants: replace missing teeth with a stable foundation and a natural-looking crown.",
+          },
+        },
+        {
+          id: "services-implants-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-implants-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
+    "/services/abutments": {
+      title: { de: "Hybrid-Abutments", en: "Hybrid abutments" },
+      steps: [
+        {
+          id: "services-abutments",
+          when: "start",
+          spotlight: ".services-video-hero",
+          image: "/assets/images/servicespg/hybridabutments-800.webp",
+          text: {
+            de: "Hybrid-Abutments: die präzise Verbindung zwischen Implantat und Krone, aus Titanbasis und Zirkon.",
+            en: "Hybrid abutments: the precise link between implant and crown, made of a titanium base and zirconia.",
+          },
+        },
+        {
+          id: "services-abutments-hkp",
+          when: ".hkp-band",
+          spotlight: ".hkp-band",
+          text: {
+            de: "Schon einen Heil- und Kostenplan? Hier können Sie ihn einreichen und wir prüfen ihn für Sie.",
+            en: "Already have a treatment and cost plan? You can submit it here and we will review it for you.",
+          },
+        },
+        {
+          id: "services-abutments-cta",
+          when: ".cta-band",
+          spotlight: ".cta-band",
+          text: {
+            de: "Falls Sie nach dem Lesen noch schwanken, können Sie den Lächel-Check hier unten jederzeit öffnen.",
+            en: "If you're still undecided after reading, you can open the smile check down here at any time.",
+          },
+        },
+      ],
+    },
     "/about": {
       title: { de: "Über uns", en: "About" },
       steps: [
         {
           id: "about-page",
           when: "start",
-          spotlight: ".about-essay__header",
+          spotlight: ".services-video-hero",
           text: {
             de: "Lassen Sie mich kurz beginnen. Mich bewegen Forschung, Innovation und Lösungen mit echtem Nutzen.",
             en: "Let me begin with a short introduction. I care about research, new ideas, and solutions that actually help people.",
-          },
-        },
-        {
-          id: "about-figure",
-          when: ".about-essay__figure",
-          spotlight: ".about-essay__figure",
-          text: {
-            de: "Das Ergebnis, das wir anstreben, wirkt unaufdringlich: ein Lächeln, das wie Sie an einem guten Tag aussieht.",
-            en: "The result we aim for is understated: a smile that looks like you on a good day.",
           },
         },
         {
@@ -433,8 +754,8 @@ window.ELITEDENT_GUIDE = {
           when: ".hkp-process",
           spotlight: ".hkp-process",
           text: {
-            de: "Ihr Plan kommt direkt mit in die Beratungsanfrage. Name, Kontakt und Dokument reichen.",
-            en: "Your plan goes straight into the consultation request. Your name, contact details, and the document are enough.",
+            de: "Zwei Schritte: Anfrage mit HKP senden, dann melden wir uns mit der Einschätzung.",
+            en: "Two steps: send your request with the HKP, then we follow up with an assessment.",
           },
         },
         {
@@ -442,8 +763,8 @@ window.ELITEDENT_GUIDE = {
           when: ".hkp-close",
           spotlight: ".hkp-close",
           text: {
-            de: "Häufige Fragen finden Sie hier. Wenn Sie bereit sind, öffnen Sie Jetzt beraten.",
-            en: "Common questions are here. When you're ready, open Consult now.",
+            de: "Häufige Fragen finden Sie hier. Wenn Sie bereit sind, öffnen Sie Jetzt beraten oben oder im vorherigen Abschnitt.",
+            en: "Common questions are here. When you're ready, open Consult now in the hero or the steps section.",
           },
         },
       ],
@@ -463,4 +784,13 @@ window.ELITEDENT_GUIDE = {
       ],
     },
   },
+};
+
+// / is the full services page. The previous homepage script plays at /home/.
+window.ELITEDENT_GUIDE.SCRIPTS["/home"] = window.ELITEDENT_GUIDE.SCRIPTS["/"];
+window.ELITEDENT_GUIDE.SCRIPTS["/"] = {
+  title: window.ELITEDENT_GUIDE.SCRIPTS["/services"].title,
+  steps: window.ELITEDENT_GUIDE.SCRIPTS["/services"].steps.map((step, index) =>
+    index === 0 ? { ...step, spotlight: ".services-video-hero" } : step
+  ),
 };

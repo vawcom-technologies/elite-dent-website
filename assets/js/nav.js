@@ -50,7 +50,7 @@
   function currentDockKey() {
     const path = location.pathname.replace(/\/index\.html$/, "");
     if (/\/assess\/?$/.test(path)) return "assess";
-    if (/\/services\/?$/.test(path)) return "services";
+    if (/\/services(\/|$)/.test(path)) return "services";
     if (!inSubpage() || path === "" || path === "/") return "home";
     return null;
   }

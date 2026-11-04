@@ -1,7 +1,7 @@
 /* HKP — landing layout + submit form + admin */
 
 .hkp-page {
-  width: min(100%, 72rem);
+  width: min(100%, max(72.0rem, min(80.000vw, 104.4rem)));
   margin: 0 auto;
   padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 4.5rem;
   background: var(--surface);
@@ -54,6 +54,8 @@
   min-height: 16rem;
   display: none;
   place-items: center;
+  aspect-ratio: 1 / 1.05;
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
@@ -64,28 +66,69 @@
 
 @media (min-width: 768px) and (max-width: 899px) {
   .hkp-hero__visual {
-    min-height: 18rem;
+    min-height: 20rem;
   }
 
-  .hkp-hero__visual img {
-    width: min(52%, 15rem);
+  .hkp-hero__fallback {
+    width: min(78%, 18rem);
+  }
+
+  .hkp-hero__model {
+    width: min(100%, 24rem);
+    height: min(100%, 24rem);
   }
 }
 
 .hkp-hero__orb {
   position: absolute;
   z-index: 0;
-  width: min(78%, 22rem);
+  width: min(82%, 24rem);
   aspect-ratio: 1;
   border-radius: 50%;
   background: linear-gradient(160deg, #e8f4fc 0%, var(--orb) 55%, #c5dff2 100%);
+  pointer-events: none;
 }
 
-.hkp-hero__visual img {
+.hkp-hero__fallback {
   position: relative;
   z-index: 1;
   width: min(78%, 20rem);
   height: auto;
+  grid-area: 1 / 1;
+  display: none;
+}
+
+.hkp-hero__model {
+  position: relative;
+  z-index: 2;
+  /* Larger than the orb so square viewer edges fall outside the glow */
+  width: min(108%, 30rem);
+  height: min(108%, 30rem);
+  max-height: 30rem;
+  grid-area: 1 / 1;
+  background-color: transparent;
+  --poster-color: transparent;
+  --progress-bar-color: transparent;
+  --progress-bar-height: 0px;
+  --progress-mask: transparent;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.hkp-hero__model:active {
+  cursor: grabbing;
+}
+
+.hkp-hero__visual--ready .hkp-hero__fallback {
+  display: none;
+}
+
+.hkp-hero__visual--fallback .hkp-hero__fallback {
+  display: block;
+}
+
+.hkp-hero__visual--fallback .hkp-hero__model {
+  display: none;
 }
 
 .hkp-cta {
@@ -115,11 +158,6 @@
 }
 
 .hkp-features__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem 2rem;
   margin-bottom: 1.5rem;
 }
 
@@ -183,23 +221,10 @@
 }
 
 .hkp-card p {
-  margin: 0 0 1rem;
+  margin: 0;
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.55;
-}
-
-.hkp-card__link {
-  margin-top: auto;
-  color: var(--dental-blue);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-}
-
-.hkp-card__link:hover {
-  color: var(--navy);
 }
 
 .hkp-process {
@@ -294,36 +319,6 @@
   padding: 0.5rem 0 1rem;
 }
 
-@media (min-width: 900px) {
-  .hkp-close {
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
-}
-
-.hkp-close__cta {
-  padding: 1.75rem 1.5rem;
-  background: var(--white);
-  border-radius: 1.5rem;
-  border: 1px solid rgb(29 53 87 / 0.08);
-}
-
-.hkp-close__cta h2 {
-  margin: 0 0 0.55rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 3vw, 1.9rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-}
-
-.hkp-close__cta p {
-  margin: 0 0 1.2rem;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
 .hkp-faq h2 {
   margin: 0 0 0.35rem;
   font-family: var(--font-display);
@@ -370,24 +365,50 @@
   line-height: 1.55;
 }
 
-.hkp-file input[type="file"] {
-  width: 100%;
+.hkp-file__pick {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
   padding: 0.85rem 0.95rem;
   border: 1px dashed rgb(29 53 87 / 0.28);
   border-radius: 0.75rem;
   background: var(--surface);
   color: var(--navy);
-  font: inherit;
   font-size: 0.92rem;
+}
+
+/* Native input stays for validation/submit; its English UI text is hidden behind the German label */
+.hkp-file__pick input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hkp-file__btn {
+  flex: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 700;
+}
+
+.hkp-file__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hkp-band {
   margin: 2.75rem 0 0;
-  padding: 2.6rem clamp(1.25rem, 4vw, 3rem);
+  padding: 3.25rem clamp(1.25rem, 4vw, 3rem);
   background: var(--navy);
   color: var(--white);
   text-align: center;
-  border-radius: 1.5rem;
 }
 
 .hkp-band h2 {
@@ -425,12 +446,14 @@
   background: #e8f1fb;
 }
 
-/* Same width as the service cards below */
+/* Home only: inset card among the service cards */
 .home .hkp-band {
   box-sizing: border-box;
-  width: min(1080px, calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
+  width: min(max(67.5rem, min(75.000vw, 97.88rem)), calc(100% - 2 * clamp(1.25rem, 4vw, 3rem)));
   /* Bottom gap mirrors the stats section's bottom padding so the band sits centred on the light background */
   margin: 0 auto 4.25rem;
+  border-radius: 1.5rem;
+  padding: 2.6rem clamp(1.25rem, 4vw, 3rem);
 }
 
 @media (max-width: 767px) {
@@ -452,12 +475,12 @@
   --dental-blue: #4a90e2;
   --surface: #f4f8fc;
   --muted: #6b7c93;
-  --font-display: system-ui, sans-serif;
+  --font-display: "Nunito", system-ui, sans-serif;
   min-height: 100vh;
   margin: 0;
   background: var(--surface);
   color: var(--navy);
-  font-family: system-ui, sans-serif;
+  font-family: "Nunito", system-ui, sans-serif;
 }
 
 .hkp-admin-shell {
@@ -481,7 +504,7 @@
 
 .hkp-admin-login h1 {
   margin: 0;
-  font-family: var(--font-display, Georgia, serif);
+  font-family: var(--font-display, "Nunito", system-ui, sans-serif);
   font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -548,7 +571,7 @@
 
 .hkp-admin__header h1 {
   margin: 0;
-  font-family: var(--font-display, Georgia, serif);
+  font-family: var(--font-display, "Nunito", system-ui, sans-serif);
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;

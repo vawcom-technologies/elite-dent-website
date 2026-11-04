@@ -10,8 +10,8 @@ const VOICES_DIR = path.join(__dirname, "..", "voices");
 const RELEASE = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models";
 // Both archives ship identical espeak-ng-data, so only the German copy is kept
 const VOICES = [
-  { name: "de_DE-thorsten-medium", espeak: true },
-  { name: "en_GB-alan-medium", espeak: false },
+  { name: "de_DE-ramona-low", espeak: true },
+  { name: "en_GB-jenny_dioco-medium", espeak: false },
 ];
 
 async function fetchVoice({ name, espeak }) {

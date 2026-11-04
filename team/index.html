@@ -7,24 +7,22 @@
   <meta name="theme-color" content="#f4f8fc" />
   <meta name="color-scheme" content="light" />
   <style>html,body{background:#f4f8fc;margin:0}</style>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://translate.google.com" />
   <link rel="preconnect" href="https://translate.googleapis.com" />
-  <link rel="stylesheet" href="../assets/css/critical.css?v=1" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="../assets/css/home.css?v=113" />
-  <link rel="stylesheet" href="../assets/css/team.css?v=1" />
-  <link rel="stylesheet" href="../assets/css/site-guide.css?v=23" />
-  <script src="../assets/js/navigate.js?v=3"></script>
-  <script src="../assets/js/i18n.js?v=7"></script>
+  <link rel="preload" href="../assets/fonts/nunito-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=2" />
+  <link rel="stylesheet" href="../assets/css/critical.css?v=7" />
+  <link rel="stylesheet" href="../assets/css/home.css?v=344" />
+  <link rel="stylesheet" href="../assets/css/team.css?v=203" />
+  <link rel="stylesheet" href="../assets/css/site-guide.css?v=48" />
+  <script src="../assets/js/navigate.js?v=11"></script>
+  <script src="../assets/js/i18n.js?v=8"></script>
 </head>
 <body class="page page--team">
   <header class="nav nav--static notranslate" translate="no">
-    <a class="nav__brand notranslate" href="../" translate="no">
+    <a class="nav__brand notranslate" href="/home/" translate="no">
       <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
     </a>
     <button
@@ -50,12 +48,15 @@
             ></button>
           </div>
           <div class="nav__tabs">
-            <a href="../services/#whitening" data-i18n="whitening">Bleaching</a>
-            <a href="../services/#aligners" data-i18n="aligners">Aligner</a>
-            <a href="../services/#veneers" data-i18n="veneers">Veneers</a>
-            <a href="../services/#implants" data-i18n="implants">Implantate</a>
-            <a href="../services/#preventive" data-i18n="preventive">Prophylaxe</a>
-            <a href="../services/#restorative" data-i18n="restorative">Zahnerhaltung</a>
+            <a href="../services/milling/" data-i18n="milling">Fräsmaschine</a>
+            <a href="../services/printing/" data-i18n="printing">3D-Druck</a>
+            <a href="../services/aligners/" data-i18n="aligners">Aligner</a>
+            <a href="../services/template/" data-i18n="template">Digitale Bohrschablone</a>
+            <a href="../services/splint/" data-i18n="splint">Schienentherapie</a>
+            <a href="../services/zirconia/" data-i18n="zirconia">Zirkonversorgungen</a>
+            <a href="../services/veneers/" data-i18n="veneers">Veneers</a>
+            <a href="../services/implants/" data-i18n="implants">Implantate</a>
+            <a href="../services/abutments/" data-i18n="abutments">Hybrid-Abutments</a>
           </div>
         </div>
         <a href="../hkp/" data-i18n="hkp">HKP</a>
@@ -100,117 +101,103 @@
                 decoding="async"
               />
             </figure>
-            <p class="team-person__role">Gründer · Digitale Betreuung &amp; Patientenführung</p>
+            <p class="team-person__role">Zahntechnikermeister · Inhaber der Elite Dent</p>
             <h3 class="notranslate" translate="no">Erlan Djaniev</h3>
             <p>
-              Filler-Profil: Leidenschaft für klare Erklärungen, Innovation und ruhige Erstgespräche.
-              Stellt die Praxis digital vor und begleitet Patientinnen und Patienten durch den nächsten Schritt.
+              Ich verfüge über langjährige Erfahrung in den Bereichen Keramik/Zirkonästhetik,
+              festsitzende Zahnprothetik und Implantologie.
             </p>
-            <a class="team-person__cv" href="cv-erlan.html">Lebenslauf ansehen</a>
           </article>
 
           <article class="team-person">
             <figure class="team-person__photo">
               <img
                 src="../assets/images/userplaceholder.png"
-                alt="Portrait von Arslan Djaniev (Platzhalterfoto)"
+                alt="Portrait von Emran Djaniev (Platzhalterfoto)"
                 width="600"
                 height="600"
                 loading="lazy"
                 decoding="async"
               />
             </figure>
-            <p class="team-person__role">Mitgründer · Klinische Planung &amp; Behandlung</p>
-            <h3 class="notranslate" translate="no">Arslan Djaniev</h3>
+            <p class="team-person__role">Manager im Qualitätsmanagement</p>
+            <h3 class="notranslate" translate="no">Emran Djaniev</h3>
             <p>
-              Filler-Profil (Name &amp; Text austauschbar): Schwerpunkt auf behutsame Behandlungsplanung,
-              Prophylaxe und langfristige Stabilität. Gemeinsam mit Erlan leitet er die Praxis.
+              Ich verfüge über mehrere Jahre Erfahrung im Qualitätsmanagement. Meine Qualifikationen umfassen
+              ausgezeichnete Kommunikations- und Präsentationsfähigkeiten sowie ein ausgeprägtes Bewusstsein für Qualitätsmerkmale.
             </p>
-            <a class="team-person__cv" href="cv-arslan.html">Lebenslauf ansehen</a>
           </article>
-        </div>
-      </section>
-
-      <section id="kontakt" class="team-contact reveal" data-reveal aria-labelledby="team-contact-heading">
-        <h2 id="team-contact-heading">Kontakt</h2>
-        <p class="team-contact__lede">
-          Schreiben Sie uns oder kommen Sie nach Pforzheim. Termine nach Vereinbarung.
-        </p>
-
-        <div class="team-contact__grid">
-          <dl class="team-contact__details">
-            <div>
-              <dt>E-Mail</dt>
-              <dd><a href="mailto:djanieverlan@gmail.com">djanieverlan@gmail.com</a></dd>
-            </div>
-            <div>
-              <dt>Telefon</dt>
-              <dd><a href="tel:+4917625858231">+49 176 25858231</a></dd>
-            </div>
-            <div>
-              <dt>Adresse</dt>
-              <dd>
-                Hirsauer Straße 63<br />
-                75180 Pforzheim<br />
-                Deutschland
-              </dd>
-            </div>
-            <div>
-              <dt>Öffnungszeiten</dt>
-              <dd>
-                <ul class="team-contact__hours">
-                  <li><span>Mo–Do</span><span>09:00–17:00</span></li>
-                  <li><span>Fr</span><span>09:00–14:00</span></li>
-                  <li><span>Sa–So</span><span>geschlossen</span></li>
-                </ul>
-              </dd>
-            </div>
-          </dl>
-
-          <div>
-            <div class="team-contact__map">
-              <iframe
-                title="EliteDent auf Google Maps: Hirsauer Straße 63, Pforzheim"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen
-                src="https://maps.google.com/maps?q=Hirsauer%20Stra%C3%9Fe%2063%2C%2075180%20Pforzheim%2C%20Germany&z=15&output=embed"
-              ></iframe>
-            </div>
-            <a
-              class="team-contact__map-link"
-              href="https://www.google.com/maps/search/?api=1&query=Hirsauer%20Stra%C3%9Fe%2063%2C%2075180%20Pforzheim%2C%20Germany"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              In Google Maps öffnen
-            </a>
-          </div>
         </div>
       </section>
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="kontakt">
     <div class="site-footer__inner">
-      <a class="site-footer__brand" href="../">
-        <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" decoding="async" />
-      </a>
-      <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
-        <a href="../" data-i18n="home">Startseite</a>
-        <a href="../services/" data-i18n="services">Leistungen</a>
-        <a href="../hkp/" data-i18n="hkp">HKP</a>
-        <a href="../about/" data-i18n="about">Über uns</a>
-        <a href="./" data-i18n="team">Team</a>
-        <a href="../app/" data-i18n="app">App</a>
-        <a class="site-footer__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+      <div class="site-footer__info">
+        <a class="site-footer__brand" href="../">
+          <img src="../assets/images/elitedentlogo-nav.png?v=1" alt="EliteDent" width="400" height="221" loading="lazy" decoding="async" />
+        </a>
+        <p class="site-footer__tagline">Dentaltechnik der Zukunft</p>
+        <nav class="site-footer__nav notranslate" aria-label="Fußzeile" data-i18n-aria="footer-label" translate="no">
+          <a href="../" data-i18n="home">Startseite</a>
+          <a href="../services/" data-i18n="services">Leistungen</a>
+          <a href="../hkp/" data-i18n="hkp">HKP</a>
+          <a href="../about/" data-i18n="about">Über uns</a>
+          <a href="../team/" data-i18n="team">Team</a>
+          <a href="../app/" data-i18n="app">App</a>
+          <a class="site-footer__cta" href="../book/" data-i18n="consult">Jetzt beraten</a>
+        </nav>
+        <div class="site-footer__cols">
+          <div class="site-footer__col">
+            <h2>Kontakt</h2>
+            <address class="site-footer__contact">
+              <span class="site-footer__row"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.25"/></svg></span><span>Hirsauer Straße 63<br />75180 Pforzheim</span></span>
+              <a class="site-footer__row" href="tel:+4917625858231"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></span><span>+49 176 25858231</span></a>
+              <a class="site-footer__row" href="tel:+4972312038818"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span>Festnetz: 07231 2038818</span></a>
+              <a class="site-footer__row" href="mailto:elitedent@outlook.de"><span class="site-footer__icon"><svg class="site-footer__glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>elitedent@outlook.de</span></a>
+            </address>
+          </div>
+          <div class="site-footer__col">
+            <h2>Öffnungszeiten</h2>
+            <ul class="site-footer__hours">
+              <li><span>Mo–Do</span><span>08:30–17:00</span></li>
+              <li><span>Fr–So</span><span>geschlossen</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="site-footer__location">
+        <a
+          class="site-footer__map"
+          href="https://www.google.com/maps/search/?api=1&query=Hirsauer%20Stra%C3%9Fe%2063%2C%2075180%20Pforzheim%2C%20Germany"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="../assets/images/footer-map.svg?v=99"
+            alt="Karte: EliteDent, Hirsauer Straße 63, Pforzheim – in Google Maps öffnen"
+            width="1600"
+            height="900"
+            decoding="async"
+          />
+        </a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p>© 2026 <span class="notranslate" translate="no">EliteDent</span></p>
+      <nav aria-label="Rechtliches">
+        <a href="../support/">Support</a>
+        <a href="../privacy/">Datenschutz</a>
+        <a href="../impressum/">Impressum</a>
       </nav>
     </div>
+    <p class="site-footer__credit">Copyright © 2026 | Powered by <a class="notranslate" translate="no" href="https://vawcom.com" target="_blank" rel="noopener noreferrer">VAWCOM</a></p>
   </footer>
 
-  <script src="../assets/js/nav.js?v=24" defer></script>
-  <script src="../assets/js/services.js?v=13" defer></script>
-  <script src="../assets/js/guide-scripts.js?v=15" defer></script>
-  <script src="../assets/js/site-guide-agent.js?v=39" defer></script>
+  <script src="../assets/js/nav.js?v=25" defer></script>
+  <script src="../assets/js/services.js?v=18" defer></script>
+  <script src="../assets/js/guide-scripts.js?v=26" defer></script>
+  <script src="../assets/js/site-guide-agent.js?v=98" defer></script>
 </body>
 </html>
